@@ -7,9 +7,14 @@
 //
 
 import Foundation
-
+import Charts
 
 class Measurement: NSObject {
+    
+    static let SYSTOLIC_MAX = 200
+    static let SYSTOLIC_AVG = 120
+    static let DIASTOLIC_MAX = 130
+    static let DIASTOLIC_AVG = 75
     
     var id: Int?
     var patient: Patient?

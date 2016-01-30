@@ -44,6 +44,19 @@ class MeasurementController: UIViewController, ChartViewDelegate {
     func initRealtimeChart() {
         self._initBarChart(realtimeBarChart)
         
+        let leftAxis = realtimeBarChart.leftAxis
+        leftAxis.startAtZeroEnabled = true
+        leftAxis.customAxisMax = Double(Measurement.SYSTOLIC_MAX)
+        leftAxis.drawGridLinesEnabled = false
+        
+        let rightAxis = realtimeBarChart.rightAxis
+        rightAxis.enabled = false
+        
+        let systolicLimit = ChartLimitLine(limit: Double(Measurement.SYSTOLIC_AVG), label: "Normwert (systolisch)")
+        let diastolicLimit = ChartLimitLine(limit: Double(Measurement.DIASTOLIC_AVG), label: "Normwert (diastolisch)")
+        leftAxis.addLimitLine(systolicLimit)
+        leftAxis.addLimitLine(diastolicLimit)
+        
         simulateRealtime()
     }
     
@@ -63,22 +76,31 @@ class MeasurementController: UIViewController, ChartViewDelegate {
     }
     
     func simulateRealtime() {
-        for count in 1...30 {
-            let delaySeconds = 1000.0 * Double(count)
+        for count in 0...30 {
+            let delaySeconds = 600.0 * Double(count)
             let waitTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delaySeconds * Double(NSEC_PER_MSEC)))
             
             dispatch_after(waitTime, GlobalDispatchUtils.MainQueue) {
-                print(String(count))
                 let measurement = Measurement.createRandom()
-                let value = measurement.systolicPressure ?? 0
-                let entry = BarChartDataEntry(value: Double(value), xIndex: 0)
-                let dataset = BarChartDataSet(yVals: [entry])
-                let data = BarChartData(xVals: ["Systolic Pressure"], dataSet: dataset)
-                self.realtimeBarChart.data = data
-                self.realtimeBarChart.notifyDataSetChanged()
+                self.updateRealtimeData(with: measurement)
             }
 
         }
+    }
+    
+    func updateRealtimeData(with measurement: Measurement) {
+        let value = measurement.systolicPressure ?? 0
+        let entry = BarChartDataEntry(value: Double(value), xIndex: 0)
+        let dataset = BarChartDataSet(yVals: [entry])
+        let data = BarChartData(xVals: ["Systolic Pressure"], dataSet: dataset)
+        let chart = self.realtimeBarChart
+        
+        if chart.data == nil {
+            chart.animate(xAxisDuration: NSTimeInterval(0), yAxisDuration: NSTimeInterval(1.0))
+        }
+        
+        chart.data = data
+        chart.notifyDataSetChanged()
     }
     
     func loadHistoryData() {
