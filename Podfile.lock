@@ -1,0 +1,13 @@
+PODS:
+  - Charts (2.1.6)
+  - Swinject (1.0.0)
+
+DEPENDENCIES:
+  - Charts
+  - Swinject
+
+SPEC CHECKSUMS:
+  Charts: 5e1e5ac23898e5b09d226a2fc3e9d86bc281937e
+  Swinject: f1ec058cc1809929fd5b962c3a8a8277827389b6
+
+COCOAPODS: 0.39.0

@@ -14,6 +14,14 @@
 		485DA9351C57920600583AF0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 485DA9341C57920600583AF0 /* Assets.xcassets */; };
 		485DA9401C57920600583AF0 /* cardiolaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485DA93F1C57920600583AF0 /* cardiolaTests.swift */; };
 		485DA94B1C57920600583AF0 /* cardiolaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485DA94A1C57920600583AF0 /* cardiolaUITests.swift */; };
+		8B6D9D56F08C1E8BF22A81F0 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2FFE977571B23BA6B8F1EC /* Pods.framework */; };
+		D36B09541C5C76DF0097155D /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09531C5C76DF0097155D /* DashboardController.swift */; };
+		D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09571C5C77CE0097155D /* MeasurementPlan.swift */; };
+		D36B095A1C5C78CD0097155D /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09591C5C78CD0097155D /* Patient.swift */; };
+		D36B095C1C5C79CA0097155D /* MeasurementPlanEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B095B1C5C79CA0097155D /* MeasurementPlanEntry.swift */; };
+		D36B095E1C5C7BB40097155D /* NSDate+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B095D1C5C7BB40097155D /* NSDate+Operators.swift */; };
+		D36B09621C5C8AE00097155D /* PatientRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09611C5C8AE00097155D /* PatientRepository.swift */; };
+		D36B09641C5C8B220097155D /* PlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09631C5C8B220097155D /* PlanRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +55,16 @@
 		485DA9461C57920600583AF0 /* cardiolaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cardiolaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		485DA94A1C57920600583AF0 /* cardiolaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cardiolaUITests.swift; sourceTree = "<group>"; };
 		485DA94C1C57920600583AF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C69A7268288979322C644B0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		5E2FFE977571B23BA6B8F1EC /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		71D4FA6461A3DFDB400E8C5D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		D36B09531C5C76DF0097155D /* DashboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
+		D36B09571C5C77CE0097155D /* MeasurementPlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurementPlan.swift; sourceTree = "<group>"; };
+		D36B09591C5C78CD0097155D /* Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Patient.swift; sourceTree = "<group>"; };
+		D36B095B1C5C79CA0097155D /* MeasurementPlanEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurementPlanEntry.swift; sourceTree = "<group>"; };
+		D36B095D1C5C7BB40097155D /* NSDate+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Operators.swift"; sourceTree = "<group>"; };
+		D36B09611C5C8AE00097155D /* PatientRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatientRepository.swift; sourceTree = "<group>"; };
+		D36B09631C5C8B220097155D /* PlanRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B6D9D56F08C1E8BF22A81F0 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +93,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2378BB1F7BE8B58F886673AE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5E2FFE977571B23BA6B8F1EC /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2A34E9B9F9BB83B9DB9D0543 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5C69A7268288979322C644B0 /* Pods.debug.xcconfig */,
+				71D4FA6461A3DFDB400E8C5D /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		485DA91F1C57920600583AF0 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +117,8 @@
 				485DA93E1C57920600583AF0 /* cardiolaTests */,
 				485DA9491C57920600583AF0 /* cardiolaUITests */,
 				485DA9291C57920600583AF0 /* Products */,
+				2A34E9B9F9BB83B9DB9D0543 /* Pods */,
+				2378BB1F7BE8B58F886673AE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,12 +135,17 @@
 		485DA92A1C57920600583AF0 /* cardiola */ = {
 			isa = PBXGroup;
 			children = (
+				D36B09561C5C77C20097155D /* Models */,
 				485DA92B1C57920600583AF0 /* AppDelegate.swift */,
 				485DA92D1C57920600583AF0 /* FirstViewController.swift */,
 				485DA92F1C57920600583AF0 /* SecondViewController.swift */,
 				485DA9311C57920600583AF0 /* Main.storyboard */,
 				485DA9341C57920600583AF0 /* Assets.xcassets */,
 				485DA9361C57920600583AF0 /* Info.plist */,
+				D36B09531C5C76DF0097155D /* DashboardController.swift */,
+				D36B095D1C5C7BB40097155D /* NSDate+Operators.swift */,
+				D36B09611C5C8AE00097155D /* PatientRepository.swift */,
+				D36B09631C5C8B220097155D /* PlanRepository.swift */,
 			);
 			path = cardiola;
 			sourceTree = "<group>";
@@ -125,6 +168,16 @@
 			path = cardiolaUITests;
 			sourceTree = "<group>";
 		};
+		D36B09561C5C77C20097155D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D36B09571C5C77CE0097155D /* MeasurementPlan.swift */,
+				D36B09591C5C78CD0097155D /* Patient.swift */,
+				D36B095B1C5C79CA0097155D /* MeasurementPlanEntry.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +185,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 485DA94F1C57920600583AF0 /* Build configuration list for PBXNativeTarget "cardiola" */;
 			buildPhases = (
+				9CE2B6DCDFC853418D0445E9 /* Check Pods Manifest.lock */,
 				485DA9241C57920600583AF0 /* Sources */,
 				485DA9251C57920600583AF0 /* Frameworks */,
 				485DA9261C57920600583AF0 /* Resources */,
+				C63DA80052878CB2181CDFFE /* Embed Pods Frameworks */,
+				4215DF156F78A2BD587A3B83 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -250,14 +306,69 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4215DF156F78A2BD587A3B83 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9CE2B6DCDFC853418D0445E9 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C63DA80052878CB2181CDFFE /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		485DA9241C57920600583AF0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D36B09641C5C8B220097155D /* PlanRepository.swift in Sources */,
+				D36B09541C5C76DF0097155D /* DashboardController.swift in Sources */,
+				D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */,
+				D36B095E1C5C7BB40097155D /* NSDate+Operators.swift in Sources */,
+				D36B095C1C5C79CA0097155D /* MeasurementPlanEntry.swift in Sources */,
 				485DA9301C57920600583AF0 /* SecondViewController.swift in Sources */,
 				485DA92C1C57920600583AF0 /* AppDelegate.swift in Sources */,
+				D36B09621C5C8AE00097155D /* PatientRepository.swift in Sources */,
 				485DA92E1C57920600583AF0 /* FirstViewController.swift in Sources */,
+				D36B095A1C5C78CD0097155D /* Patient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +498,7 @@
 		};
 		485DA9501C57920600583AF0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5C69A7268288979322C644B0 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -399,6 +511,7 @@
 		};
 		485DA9511C57920600583AF0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 71D4FA6461A3DFDB400E8C5D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -476,6 +589,7 @@
 				485DA9511C57920600583AF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		485DA9521C57920600583AF0 /* Build configuration list for PBXNativeTarget "cardiolaTests" */ = {
 			isa = XCConfigurationList;
@@ -484,6 +598,7 @@
 				485DA9541C57920600583AF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		485DA9551C57920600583AF0 /* Build configuration list for PBXNativeTarget "cardiolaUITests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +607,7 @@
 				485DA9571C57920600583AF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
