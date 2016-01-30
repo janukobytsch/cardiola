@@ -14,18 +14,30 @@ class MeasurementController: UIViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var historyBarChart: BarChartView!
     @IBOutlet weak var realtimeBarChart: BarChartView!
+    @IBOutlet weak var realtimeLineChart: LineChartView!
+    @IBOutlet weak var historyLineChart: LineChartView!
     
     var bloodPressureManager: BloodPressureMeasurementManager?
+    var heartFrequencyManager: HeartFrequencyMeasurementManager?
     var currentManager: MeasurementManager?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let measurements = MeasurementRepository.createRandomDataset()
+        
         bloodPressureManager = BloodPressureMeasurementManager(realtimeChart: realtimeBarChart, historyChart: historyBarChart)
         bloodPressureManager!.updateHistoryData(with: measurements)
         
+        heartFrequencyManager = HeartFrequencyMeasurementManager(realtimeChart: realtimeLineChart, historyChart: historyLineChart)
+
         currentManager = bloodPressureManager
+        currentManager?.afterModeChanged()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     func simulateRealtime() {
@@ -47,9 +59,18 @@ class MeasurementController: UIViewController {
         simulateRealtime()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func changeMeasurementMode(sender: UISegmentedControl) {
+        currentManager?.beforeModeChanged()
+        switch sender.selectedSegmentIndex {
+        case 1:
+            currentManager = heartFrequencyManager
+            simulateRealtime()
+        case 0:
+            currentManager = bloodPressureManager
+        default:
+            currentManager = bloodPressureManager
+        }
+        currentManager?.afterModeChanged()
     }
 
 }

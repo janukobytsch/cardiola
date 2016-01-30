@@ -11,26 +11,19 @@ import Charts
 
 class BloodPressureMeasurementManager: MeasurementManager {
     
-    enum ColorTemplates {
-        case SYSTOLIC, DIASTOLIC
-        func color() -> UIColor {
-            switch self {
-            case SYSTOLIC:
-                return UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
-            case DIASTOLIC:
-                return UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
-            }
-        }
-    }
-    
     var historyChart: BarChartView
     var realtimeChart: BarChartView
+    
+    var views: [UIView] {
+        return [historyChart, realtimeChart]
+    }
     
     required init(realtimeChart: ChartViewBase, historyChart: ChartViewBase) {
         self.historyChart = historyChart as! BarChartView
         self.realtimeChart = realtimeChart as! BarChartView
         initRealtimeChart()
         initHistoryChart()
+        beforeModeChanged()
     }
     
     func initHistoryChart() {
@@ -63,11 +56,11 @@ class BloodPressureMeasurementManager: MeasurementManager {
         rightAxis.enabled = false
         
         let systolicLimit = ChartLimitLine(limit: Double(Measurement.SYSTOLIC_AVG), label: "Normwert (systolisch)")
-        systolicLimit.lineColor = ColorTemplates.SYSTOLIC.color()
+        systolicLimit.lineColor = Colors.darkGray
         systolicLimit.lineDashPhase = 0.5
         
         let diastolicLimit = ChartLimitLine(limit: Double(Measurement.DIASTOLIC_AVG), label: "Normwert (diastolisch)")
-        diastolicLimit.lineColor = ColorTemplates.DIASTOLIC.color()
+        diastolicLimit.lineColor = Colors.gray
         diastolicLimit.lineDashPhase = 0.5
         
         leftAxis.addLimitLine(systolicLimit)
@@ -109,7 +102,7 @@ class BloodPressureMeasurementManager: MeasurementManager {
         }
         
         let dataset = BarChartDataSet(yVals: yValues, label: "Systolic pressure")
-        dataset.colors = [ColorTemplates.SYSTOLIC, ColorTemplates.DIASTOLIC].map({ $0.color() })
+        dataset.colors = [Colors.darkGray, Colors.gray]
         dataset.stackLabels = ["Systolisch", "Diastolisch"]
         
         let data = BarChartData(xVals: xValues, dataSet: dataset)
@@ -120,12 +113,12 @@ class BloodPressureMeasurementManager: MeasurementManager {
         let systolicValue = measurement.systolicPressure ?? 0
         let systolicEntry = BarChartDataEntry(value: Double(systolicValue), xIndex: 0)
         let datasetSystolic = BarChartDataSet(yVals: [systolicEntry], label: "Systolisch")
-        datasetSystolic.setColor(ColorTemplates.SYSTOLIC.color())
+        datasetSystolic.setColor(Colors.darkGray)
         
         let diastolicValue = measurement.diastolicPressure ?? 0
         let diastolicEntry = BarChartDataEntry(value: Double(diastolicValue), xIndex: 0)
         let datasetDiastolic = BarChartDataSet(yVals: [diastolicEntry], label: "Diastolisch")
-        datasetDiastolic.setColor(ColorTemplates.DIASTOLIC.color())
+        datasetDiastolic.setColor(Colors.gray)
         
         let data = BarChartData(xVals: ["Blutdruck"], dataSets: [datasetSystolic, datasetDiastolic])
         let chart = self.realtimeChart
@@ -140,6 +133,20 @@ class BloodPressureMeasurementManager: MeasurementManager {
 
     func startMeasurement() {
         realtimeChart.hidden = false
+    }
+    
+    func beforeModeChanged() {
+        // hide all mode-specific views
+        for view in views {
+            view.hidden = true
+        }
+    }
+    
+    func afterModeChanged() {
+        // show all mode-specific views
+        for view in views {
+            view.hidden = false
+        }
     }
     
 }

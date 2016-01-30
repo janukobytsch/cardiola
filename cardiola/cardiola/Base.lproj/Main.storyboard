@@ -119,15 +119,22 @@
                                     <segment title="Blutdruck"/>
                                     <segment title="Herzfrequenz"/>
                                 </segments>
+                                <connections>
+                                    <action selector="changeMeasurementMode:" destination="8rJ-Kc-sve" eventType="valueChanged" id="6zj-tn-oRX"/>
+                                </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bB-fp-Qo8">
-                                <rect key="frame" x="418" y="607" width="195" height="86"/>
+                                <rect key="frame" x="409" y="607" width="214" height="86"/>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Messen"/>
                                 <connections>
                                     <action selector="startMeasurement:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="64t-O1-u6D"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6VA-6a-Y9o" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="120" y="319" width="790" height="661"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eAa-iD-KMS" customClass="BarChartView" customModule="Charts">
                                 <rect key="frame" x="120" y="319" width="790" height="661"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -136,30 +143,44 @@
                                 <rect key="frame" x="1010" y="319" width="790" height="661"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TlF-aw-C9d" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="1010" y="319" width="790" height="661"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="TlF-aw-C9d" firstAttribute="centerY" secondItem="VV4-WV-dFG" secondAttribute="centerY" id="2Lf-tU-CM5"/>
                             <constraint firstItem="TtB-Y4-6Mh" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="200" id="4oB-5m-8hT"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="bottom" secondItem="eAa-iD-KMS" secondAttribute="bottom" id="4tZ-dP-q8Q"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="top" secondItem="TtB-Y4-6Mh" secondAttribute="bottom" constant="50" id="7p8-VD-30X"/>
+                            <constraint firstItem="6VA-6a-Y9o" firstAttribute="height" secondItem="eAa-iD-KMS" secondAttribute="height" id="CKp-2y-bki"/>
                             <constraint firstItem="eAa-iD-KMS" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="100" id="Cha-QY-Wzf"/>
                             <constraint firstItem="eAa-iD-KMS" firstAttribute="top" secondItem="TtB-Y4-6Mh" secondAttribute="bottom" constant="50" id="FEh-8I-CD5"/>
+                            <constraint firstItem="6VA-6a-Y9o" firstAttribute="centerY" secondItem="eAa-iD-KMS" secondAttribute="centerY" id="HHj-hE-eoh"/>
                             <constraint firstItem="TtB-Y4-6Mh" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="ILv-VB-JCS"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="top" secondItem="TtB-Y4-6Mh" secondAttribute="bottom" constant="50" id="OVQ-5I-aSl"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="leading" secondItem="eAa-iD-KMS" secondAttribute="trailing" constant="100" id="Ol7-OF-FSf"/>
+                            <constraint firstItem="TlF-aw-C9d" firstAttribute="width" secondItem="VV4-WV-dFG" secondAttribute="width" id="PeR-ZL-Py0"/>
                             <constraint firstItem="0bB-fp-Qo8" firstAttribute="centerX" secondItem="eAa-iD-KMS" secondAttribute="centerX" id="Qwh-JS-13z"/>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="eAa-iD-KMS" secondAttribute="bottom" constant="100" id="TFw-RK-Iy9"/>
+                            <constraint firstItem="TlF-aw-C9d" firstAttribute="height" secondItem="VV4-WV-dFG" secondAttribute="height" id="Ynh-GB-f88"/>
                             <constraint firstItem="0bB-fp-Qo8" firstAttribute="centerY" secondItem="eAa-iD-KMS" secondAttribute="centerY" id="ffT-Za-fr6"/>
+                            <constraint firstItem="6VA-6a-Y9o" firstAttribute="centerX" secondItem="eAa-iD-KMS" secondAttribute="centerX" id="lqx-ye-8DN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VV4-WV-dFG" secondAttribute="trailing" constant="100" id="pR3-YM-OfW"/>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="VV4-WV-dFG" secondAttribute="bottom" constant="100" id="rRa-RN-RWC"/>
+                            <constraint firstItem="TlF-aw-C9d" firstAttribute="centerX" secondItem="VV4-WV-dFG" secondAttribute="centerX" id="syZ-MR-1KD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VV4-WV-dFG" secondAttribute="trailing" constant="100" id="tlm-Bh-FNf"/>
                             <constraint firstItem="eAa-iD-KMS" firstAttribute="width" secondItem="VV4-WV-dFG" secondAttribute="width" id="xeQ-Bw-rf0"/>
+                            <constraint firstItem="6VA-6a-Y9o" firstAttribute="width" secondItem="eAa-iD-KMS" secondAttribute="width" id="xqe-MW-dmy"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="timeline" id="cPa-gy-q4n"/>
                     <connections>
                         <outlet property="historyBarChart" destination="VV4-WV-dFG" id="J4X-Wa-l7D"/>
+                        <outlet property="historyLineChart" destination="TlF-aw-C9d" id="pG8-Gb-Blq"/>
                         <outlet property="realtimeBarChart" destination="eAa-iD-KMS" id="GZg-LJ-VE6"/>
+                        <outlet property="realtimeLineChart" destination="6VA-6a-Y9o" id="LuY-1k-vqg"/>
                         <outlet property="segmentedControl" destination="TtB-Y4-6Mh" id="KHr-8t-Tbo"/>
                     </connections>
                 </viewController>

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class GlobalDispatchUtils {
     
@@ -29,6 +30,13 @@ class GlobalDispatchUtils {
     static var BackgroundQueue: dispatch_queue_t {
         return dispatch_get_global_queue(Int(QOS_CLASS_BACKGROUND.rawValue), 0)
     }
+}
+
+class Colors {
+    
+    static var gray = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+    
+    static var darkGray = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
 }
 
 

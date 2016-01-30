@@ -15,10 +15,15 @@ internal protocol MeasurementManager {
     
     init(realtimeChart: ChartViewBase, historyChart: ChartViewBase)
     
+    // MARK: Delegate
+    
+    func startMeasurement()
+    func beforeModeChanged()
+    func afterModeChanged()
+    
     // MARK: Measuring
     
     func updateRealtimeData(with measurement: Measurement)
     func updateHistoryData(with measurements: [Measurement])
-    func startMeasurement()
-
+    
 }

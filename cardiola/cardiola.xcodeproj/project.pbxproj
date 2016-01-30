@@ -20,6 +20,7 @@
 		D307FC0D1C5D20CD005B6C41 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC0C1C5D20CD005B6C41 /* Utils.swift */; };
 		D307FC131C5D5C69005B6C41 /* MeasurementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC121C5D5C69005B6C41 /* MeasurementManager.swift */; };
 		D307FC151C5D6130005B6C41 /* BloodPressureMeasurementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC141C5D6130005B6C41 /* BloodPressureMeasurementManager.swift */; };
+		D307FC171C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC161C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift */; };
 		D36B09541C5C76DF0097155D /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09531C5C76DF0097155D /* DashboardController.swift */; };
 		D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09571C5C77CE0097155D /* MeasurementPlan.swift */; };
 		D36B095A1C5C78CD0097155D /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09591C5C78CD0097155D /* Patient.swift */; };
@@ -68,6 +69,7 @@
 		D307FC0C1C5D20CD005B6C41 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		D307FC121C5D5C69005B6C41 /* MeasurementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MeasurementManager.swift; path = ../MeasurementManager.swift; sourceTree = "<group>"; };
 		D307FC141C5D6130005B6C41 /* BloodPressureMeasurementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodPressureMeasurementManager.swift; sourceTree = "<group>"; };
+		D307FC161C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HeartFrequencyMeasurementManager.swift; path = ../HeartFrequencyMeasurementManager.swift; sourceTree = "<group>"; };
 		D36B09531C5C76DF0097155D /* DashboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		D36B09571C5C77CE0097155D /* MeasurementPlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurementPlan.swift; sourceTree = "<group>"; };
 		D36B09591C5C78CD0097155D /* Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Patient.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				D307FC141C5D6130005B6C41 /* BloodPressureMeasurementManager.swift */,
 				D307FC061C5D1143005B6C41 /* MeasurementController.swift */,
 				D307FC0A1C5D1AF1005B6C41 /* MeasurementRepository.swift */,
+				D307FC161C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift */,
 				D307FC0C1C5D20CD005B6C41 /* Utils.swift */,
 			);
 			path = cardiola;
@@ -382,6 +385,7 @@
 				D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */,
 				D36B095E1C5C7BB40097155D /* NSDate+Operators.swift in Sources */,
 				D36B095C1C5C79CA0097155D /* MeasurementPlanEntry.swift in Sources */,
+				D307FC171C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift in Sources */,
 				D307FC0B1C5D1AF1005B6C41 /* MeasurementRepository.swift in Sources */,
 				485DA9301C57920600583AF0 /* SecondViewController.swift in Sources */,
 				D307FC071C5D1143005B6C41 /* MeasurementController.swift in Sources */,
