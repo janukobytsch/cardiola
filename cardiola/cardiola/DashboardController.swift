@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import Charts
 
-class DashboardController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DashboardController: UIViewController, UITableViewDelegate, UITableViewDataSource, ChartViewDelegate {
     
     let cellReuseIdentifier = "MeasurementTableViewCell"
 
@@ -40,6 +41,8 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // MARK: ChartViewDelegate
     
     // MARK: UITableViewDataSource
     

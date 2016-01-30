@@ -17,11 +17,11 @@ class MeasurementPlanEntry: NSObject {
     var formattedDate: String {
 //        let formatter = NSDateFormatter()
 //        formatter.locale = NSLocale(localeIdentifier: "de_DE")
-        return self._formatDate(NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+        return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
     }
     
     var formattedTime: String {
-        return self._formatDate(NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.FullStyle)
+        return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.FullStyle)
     }
     
     init(dueDate: NSDate, isMandatory: Bool) {
