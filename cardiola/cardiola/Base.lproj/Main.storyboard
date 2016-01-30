@@ -120,6 +120,14 @@
                                     <segment title="Herzfrequenz"/>
                                 </segments>
                             </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bB-fp-Qo8">
+                                <rect key="frame" x="418" y="607" width="195" height="86"/>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Messen"/>
+                                <connections>
+                                    <action selector="startMeasurement:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="64t-O1-u6D"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eAa-iD-KMS" customClass="BarChartView" customModule="Charts">
                                 <rect key="frame" x="120" y="319" width="790" height="661"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -139,7 +147,9 @@
                             <constraint firstItem="TtB-Y4-6Mh" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="ILv-VB-JCS"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="top" secondItem="TtB-Y4-6Mh" secondAttribute="bottom" constant="50" id="OVQ-5I-aSl"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="leading" secondItem="eAa-iD-KMS" secondAttribute="trailing" constant="100" id="Ol7-OF-FSf"/>
+                            <constraint firstItem="0bB-fp-Qo8" firstAttribute="centerX" secondItem="eAa-iD-KMS" secondAttribute="centerX" id="Qwh-JS-13z"/>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="eAa-iD-KMS" secondAttribute="bottom" constant="100" id="TFw-RK-Iy9"/>
+                            <constraint firstItem="0bB-fp-Qo8" firstAttribute="centerY" secondItem="eAa-iD-KMS" secondAttribute="centerY" id="ffT-Za-fr6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VV4-WV-dFG" secondAttribute="trailing" constant="100" id="pR3-YM-OfW"/>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="VV4-WV-dFG" secondAttribute="bottom" constant="100" id="rRa-RN-RWC"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VV4-WV-dFG" secondAttribute="trailing" constant="100" id="tlm-Bh-FNf"/>

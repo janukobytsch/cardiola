@@ -14,6 +14,9 @@ class MeasurementController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var historyBarChart: BarChartView!
     @IBOutlet weak var realtimeBarChart: BarChartView!
     
+    lazy var colorSystolic = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+    lazy var colorDiastolic = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //historyBarChart.delegate = self
@@ -48,16 +51,23 @@ class MeasurementController: UIViewController, ChartViewDelegate {
         leftAxis.startAtZeroEnabled = true
         leftAxis.customAxisMax = Double(Measurement.SYSTOLIC_MAX)
         leftAxis.drawGridLinesEnabled = false
+        leftAxis.drawLimitLinesBehindDataEnabled = true
         
         let rightAxis = realtimeBarChart.rightAxis
         rightAxis.enabled = false
         
         let systolicLimit = ChartLimitLine(limit: Double(Measurement.SYSTOLIC_AVG), label: "Normwert (systolisch)")
+        systolicLimit.lineColor = colorSystolic
+        systolicLimit.lineDashPhase = 0.5
         let diastolicLimit = ChartLimitLine(limit: Double(Measurement.DIASTOLIC_AVG), label: "Normwert (diastolisch)")
+        diastolicLimit.lineColor = colorDiastolic
+        diastolicLimit.lineDashPhase = 0.5
         leftAxis.addLimitLine(systolicLimit)
         leftAxis.addLimitLine(diastolicLimit)
         
-        simulateRealtime()
+        if realtimeBarChart.data == nil {
+            realtimeBarChart.hidden = true
+        }
     }
     
     func _initBarChart(chart: BarChartView) {
@@ -84,15 +94,21 @@ class MeasurementController: UIViewController, ChartViewDelegate {
                 let measurement = Measurement.createRandom()
                 self.updateRealtimeData(with: measurement)
             }
-
         }
     }
     
     func updateRealtimeData(with measurement: Measurement) {
-        let value = measurement.systolicPressure ?? 0
-        let entry = BarChartDataEntry(value: Double(value), xIndex: 0)
-        let dataset = BarChartDataSet(yVals: [entry])
-        let data = BarChartData(xVals: ["Systolic Pressure"], dataSet: dataset)
+        let systolicValue = measurement.systolicPressure ?? 0
+        let systolicEntry = BarChartDataEntry(value: Double(systolicValue), xIndex: 0)
+        let datasetSystolic = BarChartDataSet(yVals: [systolicEntry], label: "Systolisch")
+        datasetSystolic.setColor(colorSystolic)
+        
+        let diastolicValue = measurement.diastolicPressure ?? 0
+        let diastolicEntry = BarChartDataEntry(value: Double(diastolicValue), xIndex: 0)
+        let datasetDiastolic = BarChartDataSet(yVals: [diastolicEntry], label: "Diastolisch")
+        datasetDiastolic.setColor(colorDiastolic)
+        
+        let data = BarChartData(xVals: ["Blutdruck"], dataSets: [datasetSystolic, datasetDiastolic])
         let chart = self.realtimeBarChart
         
         if chart.data == nil {
@@ -109,8 +125,10 @@ class MeasurementController: UIViewController, ChartViewDelegate {
         
         let measurements = MeasurementRepository.createRandomDataset()
         for (index, measurement) in measurements.enumerate() {
-            let value = measurement.systolicPressure ?? 0
-            let entry = BarChartDataEntry(value: Double(value), xIndex: index)
+            let systolicPressure = measurement.systolicPressure ?? 0
+            let diastolicPressure = measurement.diastolicPressure ?? 0
+            let values = [systolicPressure, diastolicPressure].map({ Double($0) })
+            let entry = BarChartDataEntry(values: values, xIndex: index)
             yValues.append(entry)
             
             let date = measurement.formattedDate
@@ -118,8 +136,17 @@ class MeasurementController: UIViewController, ChartViewDelegate {
         }
         
         let dataset = BarChartDataSet(yVals: yValues, label: "Systolic pressure")
+        dataset.colors = [colorSystolic, colorDiastolic]
+        dataset.stackLabels = ["Systolisch", "Diastolisch"]
         let data = BarChartData(xVals: xValues, dataSet: dataset)
         historyBarChart.data = data
+    }
+    
+    @IBAction func startMeasurement(sender: UIButton) {
+        sender.enabled = false
+        sender.hidden = true
+        realtimeBarChart.hidden = false
+        simulateRealtime()
     }
     
     override func didReceiveMemoryWarning() {
