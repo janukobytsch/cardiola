@@ -13,6 +13,7 @@
 		485DA9351C57920600583AF0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 485DA9341C57920600583AF0 /* Assets.xcassets */; };
 		485DA9401C57920600583AF0 /* cardiolaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485DA93F1C57920600583AF0 /* cardiolaTests.swift */; };
 		485DA94B1C57920600583AF0 /* cardiolaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485DA94A1C57920600583AF0 /* cardiolaUITests.swift */; };
+		48907A9A1C5D8E47009AFC56 /* MeasurementEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48907A991C5D8E47009AFC56 /* MeasurementEntryView.swift */; };
 		8B6D9D56F08C1E8BF22A81F0 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2FFE977571B23BA6B8F1EC /* Pods.framework */; };
 		D307FC071C5D1143005B6C41 /* MeasurementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC061C5D1143005B6C41 /* MeasurementController.swift */; };
 		D307FC091C5D19E5005B6C41 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC081C5D19E5005B6C41 /* Measurement.swift */; };
@@ -60,6 +61,7 @@
 		485DA9461C57920600583AF0 /* cardiolaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cardiolaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		485DA94A1C57920600583AF0 /* cardiolaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cardiolaUITests.swift; sourceTree = "<group>"; };
 		485DA94C1C57920600583AF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		48907A991C5D8E47009AFC56 /* MeasurementEntryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurementEntryView.swift; sourceTree = "<group>"; };
 		5C69A7268288979322C644B0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		5E2FFE977571B23BA6B8F1EC /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D4FA6461A3DFDB400E8C5D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				D307FC0A1C5D1AF1005B6C41 /* MeasurementRepository.swift */,
 				D307FC161C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift */,
 				D307FC0C1C5D20CD005B6C41 /* Utils.swift */,
+				48907A991C5D8E47009AFC56 /* MeasurementEntryView.swift */,
 			);
 			path = cardiola;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 				485DA92C1C57920600583AF0 /* AppDelegate.swift in Sources */,
 				D36B09621C5C8AE00097155D /* PatientRepository.swift in Sources */,
 				D307FC151C5D6130005B6C41 /* BloodPressureMeasurementManager.swift in Sources */,
+				48907A9A1C5D8E47009AFC56 /* MeasurementEntryView.swift in Sources */,
 				D36B095A1C5C78CD0097155D /* Patient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

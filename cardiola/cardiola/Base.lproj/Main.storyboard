@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -60,7 +60,20 @@
                                     </label>
                                     <view contentMode="scaleToFill" placeholderIntrinsicWidth="1000" placeholderIntrinsicHeight="300" translatesAutoresizingMaskIntoConstraints="NO" id="Nni-Bf-cP3">
                                         <rect key="frame" x="0.0" y="56" width="1000" height="724"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Neue Messung erstellen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r5B-ES-Oqx">
+                                                <rect key="frame" x="81" y="307" width="838" height="109"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="74"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="r5B-ES-Oqx" firstAttribute="width" secondItem="Nni-Bf-cP3" secondAttribute="width" id="54D-nF-KyL"/>
+                                            <constraint firstItem="r5B-ES-Oqx" firstAttribute="centerY" secondItem="Nni-Bf-cP3" secondAttribute="centerY" id="7eh-ua-QWw"/>
+                                            <constraint firstItem="r5B-ES-Oqx" firstAttribute="centerX" secondItem="Nni-Bf-cP3" secondAttribute="centerX" id="z0k-VG-b6w"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -91,9 +104,11 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="event" id="acW-dT-cKf"/>
                     <connections>
-                        <outlet property="lastMeasurementLabel" destination="rb5-8x-PYR" id="yCz-wI-jEo"/>
+                        <outlet property="measurementDetailLabel" destination="rb5-8x-PYR" id="Q0V-fg-3OM"/>
+                        <outlet property="measurementDetailView" destination="Nni-Bf-cP3" id="sbV-4t-0g1"/>
                         <outlet property="measurementPlanLabel" destination="uwm-U1-FPT" id="AlC-iY-J5u"/>
                         <outlet property="measurementTable" destination="b7T-A9-zdx" id="De0-dE-71A"/>
+                        <outlet property="newMeasurementLabel" destination="r5B-ES-Oqx" id="Tj3-WX-nsm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>

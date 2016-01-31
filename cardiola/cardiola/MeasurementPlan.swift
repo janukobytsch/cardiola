@@ -37,6 +37,7 @@ class MeasurementPlan: NSObject {
             let timeInterval = NSTimeInterval(5 * 64 + index * 86400)
             let date = NSDate(timeIntervalSinceNow: timeInterval)
             let entry = MeasurementPlanEntry(dueDate: date)
+            
             entries.append(entry)
         }
         return MeasurementPlan(entries: entries)

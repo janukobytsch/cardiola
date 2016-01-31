@@ -49,8 +49,10 @@ class Measurement: NSObject {
     convenience init(heartRate: Int) {
         self.init(heartRate: heartRate, systolicPressure: 0, diastolicPressure: 0)
     }
+    
+    // MARK: Creation
 
-    static func createRandom() -> Measurement {
+    internal static func createRandom() -> Measurement {
         let systolic = random(min: 120, max: 180)
         let diastolic = random(min: 70, max: 100)
         let heartRate = random(min: 60, max: 130)
