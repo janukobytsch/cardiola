@@ -143,7 +143,7 @@
                                 <rect key="frame" x="1010" y="319" width="790" height="661"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TlF-aw-C9d" customClass="LineChartView" customModule="Charts">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TlF-aw-C9d" customClass="CombinedChartView" customModule="Charts">
                                 <rect key="frame" x="1010" y="319" width="790" height="661"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -177,8 +177,8 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="timeline" id="cPa-gy-q4n"/>
                     <connections>
+                        <outlet property="heartRateHistoryChart" destination="TlF-aw-C9d" id="Ody-7y-8I4"/>
                         <outlet property="historyBarChart" destination="VV4-WV-dFG" id="J4X-Wa-l7D"/>
-                        <outlet property="historyLineChart" destination="TlF-aw-C9d" id="pG8-Gb-Blq"/>
                         <outlet property="realtimeBarChart" destination="eAa-iD-KMS" id="GZg-LJ-VE6"/>
                         <outlet property="realtimeLineChart" destination="6VA-6a-Y9o" id="LuY-1k-vqg"/>
                         <outlet property="segmentedControl" destination="TtB-Y4-6Mh" id="KHr-8t-Tbo"/>

@@ -107,6 +107,7 @@ class BloodPressureMeasurementManager: MeasurementManager {
         
         let data = BarChartData(xVals: xValues, dataSet: dataset)
         historyChart.data = data
+        historyChart.notifyDataSetChanged()
     }
     
     func updateRealtimeData(with measurement: Measurement) {
