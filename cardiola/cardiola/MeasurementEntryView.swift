@@ -60,39 +60,41 @@ class MeasurementEntryView: UIView {
         newEntryButton.addTarget(self, action: "createNewMeasurement", forControlEvents: UIControlEvents.PrimaryActionTriggered)
         addSubview(newEntryButton)
         
-        entryStackView.frame = CGRectMake(width/2 - 400, 40, 800, 600)
+        entryStackView.frame = CGRectMake(width/2 - 400, 10, 800, 600)
         entryStackView.axis = UILayoutConstraintAxis.Vertical
         entryStackView.distribution = UIStackViewDistribution.FillEqually
         addSubview(entryStackView)
         
-        bloodPressureStackView.frame = CGRectMake(width/2 - 400, 40, 800, 200)
+        bloodPressureStackView.frame = CGRectMake(0, 0, 800, 200)
         bloodPressureStackView.axis = UILayoutConstraintAxis.Vertical
-        bloodPressureStackView.distribution = UIStackViewDistribution.FillEqually
+        bloodPressureStackView.distribution = UIStackViewDistribution.FillProportionally
         entryStackView.addArrangedSubview(bloodPressureStackView)
         
         bloodPressureTitelLabel.text = "Blutdruck:"
         bloodPressureTitelLabel.textAlignment = NSTextAlignment.Left
-        bloodPressureTitelLabel.font = bloodPressureTitelLabel.font.fontWithSize(40)
+        bloodPressureTitelLabel.font = UIFont.boldSystemFontOfSize(72)
         bloodPressureStackView.addArrangedSubview(bloodPressureTitelLabel)
-        bloodPressureValueLabel.text = "Wert XZY:"
+        bloodPressureValueLabel.text = "Wert X\nWert Y"
+        bloodPressureValueLabel.numberOfLines = 2
         bloodPressureValueLabel.textAlignment = NSTextAlignment.Right
-        bloodPressureValueLabel.font = bloodPressureValueLabel.font.fontWithSize(40)
+        bloodPressureValueLabel.font = bloodPressureValueLabel.font.fontWithSize(68)
         bloodPressureStackView.addArrangedSubview(bloodPressureValueLabel)
         
         heartRateStackView.frame = CGRectMake(width/2 - 400, 40, 800, 200)
         heartRateStackView.axis = UILayoutConstraintAxis.Vertical
-        heartRateStackView.distribution = UIStackViewDistribution.FillEqually
+        heartRateStackView.distribution = UIStackViewDistribution.FillProportionally
         entryStackView.addArrangedSubview(heartRateStackView)
         
         heartRateTitelLabel.text = "Herzfrequenz:"
         heartRateTitelLabel.textAlignment = NSTextAlignment.Left
-        heartRateTitelLabel.font = heartRateTitelLabel.font.fontWithSize(40)
+        heartRateTitelLabel.font = UIFont.boldSystemFontOfSize(72)
         heartRateStackView.addArrangedSubview(heartRateTitelLabel)
         heartRateValueLabel.text = "WErt XYZ:"
-        heartRateValueLabel.textAlignment = NSTextAlignment.Left
-        heartRateValueLabel.font = heartRateValueLabel.font.fontWithSize(40)
+        heartRateValueLabel.numberOfLines = 1
+        heartRateValueLabel.textAlignment = NSTextAlignment.Right
+        heartRateValueLabel.font = heartRateValueLabel.font.fontWithSize(68)
         heartRateStackView.addArrangedSubview(heartRateValueLabel)
-    
+        
         if entry != nil {
             updateViewWith(entry!)
         } else {
@@ -115,14 +117,23 @@ class MeasurementEntryView: UIView {
         entryStackView.hidden = !hideNewButton
         
         if hideNewButton {
+            print("Zeige blutdruck", self.entry!.types.contains(MeasurementPlanEntryType.BloodPressure))
             if self.entry!.types.contains(MeasurementPlanEntryType.BloodPressure) {
                 bloodPressureStackView.hidden = false
+                
+                let valueText = "SYS:\t" + String((self.entry?.data?.systolicPressure)!) + "\nDIA:\t" + String((self.entry?.data?.diastolicPressure)!)
+                bloodPressureValueLabel.numberOfLines = 2
+                bloodPressureValueLabel.text = valueText
             } else {
                 bloodPressureStackView.hidden = true
             }
             
             if self.entry!.types.contains(MeasurementPlanEntryType.HeartRate) {
                 heartRateStackView.hidden = false
+                
+                let valueText = "HeartRate:\t" + String((self.entry?.data?.heartRate)!) + " BPM"
+                heartRateValueLabel.numberOfLines = 1
+                heartRateValueLabel.text = valueText
             } else {
                 heartRateStackView.hidden = true
             }

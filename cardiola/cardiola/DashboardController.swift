@@ -86,6 +86,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             newMeasurementLabel.hidden = false
             let newEntry = MeasurementPlanEntry(dueDate: NSDate(timeIntervalSinceNow: 0))
             newEntry.setMeasurement(Measurement.createRandom())
+            newEntry.types = [MeasurementPlanEntryType.HeartRate, MeasurementPlanEntryType.BloodPressure]
             self.addNewEntry(newEntry)
             
         } else {

@@ -75,7 +75,7 @@ class MeasurementPlanEntry: NSObject {
         let timeInterval = NSTimeInterval(5 * 64 + random(min: 0, max: 14) * 86400)
         let date = NSDate(timeIntervalSinceNow: timeInterval)
         
-        let newEntry = MeasurementPlanEntry(dueDate: date, isMandatory: true, types:  [MeasurementPlanEntryType.HeartRate, MeasurementPlanEntryType.BloodPressure ])
+        let newEntry = MeasurementPlanEntry(dueDate: date, isMandatory: true, types: [MeasurementPlanEntryType.HeartRate, MeasurementPlanEntryType.BloodPressure])
         // newEntry.setMeasurement(Measurement.createRandom())
         return newEntry
     }
