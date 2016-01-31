@@ -25,6 +25,7 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
         self.historyChart = historyChart as! CombinedChartView
         self.realtimeChart = realtimeChart as! LineChartView
         initRealtimeChart()
+        initHistoryChart()
         beforeModeChanged()
     }
     
@@ -33,14 +34,39 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
         
         chart.descriptionText = "Herzfrequenz"
         chart.noDataTextDescription = "Es stehen keine Daten zur Verfügung"
-        chart.drawGridBackgroundEnabled = false
+        chart.drawGridBackgroundEnabled = true
         chart.drawBarShadowEnabled = false
+        chart.backgroundColor = Colors.translucent
+        chart.gridBackgroundColor = Colors.translucent
+        
+        let legend = chart.legend
+        legend.position = ChartLegend.ChartLegendPosition.BelowChartLeft
+        legend.form = ChartLegend.ChartLegendForm.Square
+        legend.xEntrySpace = 2.0
+        
+        let leftAxis = chart.leftAxis
+        leftAxis.startAtZeroEnabled = true
+        leftAxis.customAxisMax = Double(Measurement.HEART_RATE_MAX)
+        leftAxis.drawGridLinesEnabled = false
+        leftAxis.drawLimitLinesBehindDataEnabled = true
         
         let rightAxis = chart.rightAxis
         rightAxis.enabled = false
         
-        let leftAxis = chart.leftAxis
-        leftAxis.drawGridLinesEnabled = false
+        let restingLimit = ChartLimitLine(limit: Double(Measurement.HEART_RATE_RESTING), label: "Ruhepuls (Normwert)")
+        restingLimit.lineColor = Colors.red
+        restingLimit.lineDashPhase = 0.5
+        
+        let stressLimit = ChartLimitLine(limit: Double(Measurement.HEART_RATE_STRESS), label: "Belastungspuls (Normwert)")
+        stressLimit.lineColor = Colors.red
+        stressLimit.lineDashPhase = 0.5
+        
+        leftAxis.addLimitLine(restingLimit)
+        leftAxis.addLimitLine(stressLimit)
+        
+        if historyChart.data == nil {
+            historyChart.hidden = true
+        }
     }
     
     func initRealtimeChart() {
@@ -50,7 +76,7 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
         chart.noDataTextDescription = "Es stehen keine Daten zur Verfügung"
         chart.pinchZoomEnabled = false
         chart.drawGridBackgroundEnabled = false
-        chart.backgroundColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0)
+        chart.backgroundColor = Colors.translucent
         
         let legend = chart.legend
         legend.position = ChartLegend.ChartLegendPosition.BelowChartLeft
@@ -77,25 +103,15 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
         }
         
         // fit measurements in bins for same day
-        let sorted = measurements.sort({ $0.date < $1.date })
-        var binned: [[Measurement]] = [[Measurement]()]
-        var last = sorted.first
-        var newBin = [Measurement]()
-        for current in sorted {
-            let isSameDay = last!.date!.isSameDayAs(date: current.date!)
-            if !isSameDay {
-                binned.append([Measurement]())
-            }
-            var bin = binned.last!
-            bin.append(current)
-            last = current
+        let binning = measurements.collectSimilar({ $0.date! < $1.date! }) {
+            return $0.date!.isSameDayAs($1.date!)
         }
 
-        let xValues = binned.flatMap({ $0[0].formattedDate })
+        let xValues = binning.flatMap({ $0[0].formattedDate })
         
         let data = CombinedChartData(xVals: xValues)
-        data.lineData = self.createLineData(binned)
-        data.barData = self.createBarData(binned)
+        data.lineData = self.createLineData(binning)
+        data.barData = self.createBarData(binning)
         
         historyChart.data = data
         historyChart.notifyDataSetChanged()
@@ -103,14 +119,19 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
     
     func createLineData(measurements: [[Measurement]]) -> LineChartData {
         var entries = [ChartDataEntry]()
-        let binCount = measurements.count
-        for index in 0...binCount {
+        let maxIndex = measurements.count - 1
+        for index in 0...maxIndex {
             let relevantMeasurements = measurements[index]
             let average = relevantMeasurements.averageHeartRate() ?? 0
             let entry = ChartDataEntry(value: average, xIndex: index)
             entries.append(entry)
         }
-        let dataset = LineChartDataSet(yVals: entries)
+        let dataset = LineChartDataSet(yVals: entries, label: "Pulsrate (Durchschnitt)")
+        dataset.setColor(Colors.gray)
+        dataset.fillColor = Colors.gray
+        dataset.circleColors = [Colors.gray]
+        dataset.drawCubicEnabled = true
+        dataset.drawValuesEnabled = true
         let data = LineChartData()
         data.addDataSet(dataset)
         return data
@@ -118,14 +139,15 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
     
     func createBarData(measurements: [[Measurement]]) -> BarChartData {
         var entries = [BarChartDataEntry]()
-        let binCount = measurements.count
-        for index in 0...binCount {
+        let maxIndex = measurements.count - 1
+        for index in 0...maxIndex {
             let relevantMeasurements = measurements[index]
             let max = relevantMeasurements.maxHeartRate() ?? 0
             let entry = BarChartDataEntry(value: Double(max), xIndex: index)
             entries.append(entry)
         }
-        let dataset = BarChartDataSet(yVals: entries)
+        let dataset = BarChartDataSet(yVals: entries, label: "Pulsrate (Maximum)")
+        dataset.setColor(Colors.darkGray)
         let data = BarChartData()
         data.addDataSet(dataset)
         return data

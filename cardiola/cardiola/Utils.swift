@@ -34,9 +34,15 @@ class GlobalDispatchUtils {
 
 class Colors {
     
+    static var red = UIColor(red: 0.9, green: 0.05, blue: 0.05, alpha: 1.0)
+    
+    static var lightgray = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+    
     static var gray = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
     
     static var darkGray = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+    
+    static var translucent = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
 }
 
 

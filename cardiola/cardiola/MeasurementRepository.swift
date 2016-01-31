@@ -16,8 +16,9 @@ class MeasurementRepository {
     
     static func createRandomDataset() -> [Measurement] {
         var measurements = [Measurement]()
-        for _ in 0...7 {
+        for index in 0...7 {
             let measurement = Measurement.createRandom()
+            measurement.date = NSDate(timeIntervalSinceNow: Double(86400 / 2 * index))
             measurements.append(measurement)
         }
         return measurements

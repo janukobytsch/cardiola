@@ -25,7 +25,7 @@ extension NSDate {
         return components.year
     }
     
-    func isSameDayAs(date otherDate: NSDate) -> Bool {
+    func isSameDayAs(otherDate: NSDate) -> Bool {
         let calendar = NSCalendar.currentCalendar()
         let unitFlags = NSCalendarUnit(rawValue: UInt.max)
         let comp1 = calendar.components(unitFlags, fromDate: self)
