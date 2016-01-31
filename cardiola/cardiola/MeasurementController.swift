@@ -15,7 +15,7 @@ class MeasurementController: UIViewController {
     @IBOutlet weak var historyBarChart: BarChartView!
     @IBOutlet weak var realtimeBarChart: BarChartView!
     @IBOutlet weak var realtimeLineChart: LineChartView!
-    @IBOutlet weak var historyLineChart: LineChartView!
+    @IBOutlet weak var heartRateHistoryChart: CombinedChartView!
     
     var bloodPressureManager: BloodPressureMeasurementManager?
     var heartFrequencyManager: HeartFrequencyMeasurementManager?
@@ -29,7 +29,8 @@ class MeasurementController: UIViewController {
         bloodPressureManager = BloodPressureMeasurementManager(realtimeChart: realtimeBarChart, historyChart: historyBarChart)
         bloodPressureManager!.updateHistoryData(with: measurements)
         
-        heartFrequencyManager = HeartFrequencyMeasurementManager(realtimeChart: realtimeLineChart, historyChart: historyLineChart)
+        heartFrequencyManager = HeartFrequencyMeasurementManager(realtimeChart: realtimeLineChart, historyChart: heartRateHistoryChart)
+        heartFrequencyManager!.updateHistoryData(with: measurements)
 
         currentManager = bloodPressureManager
         currentManager?.afterModeChanged()

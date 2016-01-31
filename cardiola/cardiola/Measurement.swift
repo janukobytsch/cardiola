@@ -59,3 +59,23 @@ class Measurement: NSObject {
         return Measurement(heartRate: heartRate, systolicPressure: systolic, diastolicPressure: diastolic)
     }
 }
+
+
+extension _ArrayType where Generator.Element == Measurement {
+    
+    func averageHeartRate() -> Double? {
+        guard self.count != 0 else {
+            return nil
+        }
+        let heartRates = self.flatMap({ $0.heartRate })
+        return Double(heartRates.reduce(0, combine: {$0 + $1 })) / Double(self.count)
+    }
+    
+    func maxHeartRate() -> Int? {
+        guard self.count != 0 else {
+            return nil
+        }
+        let heartRates = self.flatMap({ $0.heartRate })
+        return heartRates.maxElement()
+    }
+}

@@ -22,6 +22,9 @@
 		D307FC131C5D5C69005B6C41 /* MeasurementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC121C5D5C69005B6C41 /* MeasurementManager.swift */; };
 		D307FC151C5D6130005B6C41 /* BloodPressureMeasurementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC141C5D6130005B6C41 /* BloodPressureMeasurementManager.swift */; };
 		D307FC171C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC161C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift */; };
+		D307FC191C5DA115005B6C41 /* NSDate+SameDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC181C5DA115005B6C41 /* NSDate+SameDay.swift */; };
+		D307FC1C1C5E918C005B6C41 /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC1B1C5E918C005B6C41 /* String+Subscript.swift */; };
+		D307FC1D1C5E919A005B6C41 /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC1B1C5E918C005B6C41 /* String+Subscript.swift */; };
 		D36B09541C5C76DF0097155D /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09531C5C76DF0097155D /* DashboardController.swift */; };
 		D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09571C5C77CE0097155D /* MeasurementPlan.swift */; };
 		D36B095A1C5C78CD0097155D /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09591C5C78CD0097155D /* Patient.swift */; };
@@ -29,6 +32,8 @@
 		D36B095E1C5C7BB40097155D /* NSDate+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B095D1C5C7BB40097155D /* NSDate+Operators.swift */; };
 		D36B09621C5C8AE00097155D /* PatientRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09611C5C8AE00097155D /* PatientRepository.swift */; };
 		D36B09641C5C8B220097155D /* PlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09631C5C8B220097155D /* PlanRepository.swift */; };
+		D380C1851C5E975500CDD5DD /* Array+Binning.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380C1841C5E975500CDD5DD /* Array+Binning.swift */; };
+		D380C1871C5E9A1500CDD5DD /* ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380C1861C5E9A1500CDD5DD /* ExtensionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +77,8 @@
 		D307FC121C5D5C69005B6C41 /* MeasurementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MeasurementManager.swift; path = ../MeasurementManager.swift; sourceTree = "<group>"; };
 		D307FC141C5D6130005B6C41 /* BloodPressureMeasurementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodPressureMeasurementManager.swift; sourceTree = "<group>"; };
 		D307FC161C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HeartFrequencyMeasurementManager.swift; path = ../HeartFrequencyMeasurementManager.swift; sourceTree = "<group>"; };
+		D307FC181C5DA115005B6C41 /* NSDate+SameDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSDate+SameDay.swift"; path = "../NSDate+SameDay.swift"; sourceTree = "<group>"; };
+		D307FC1B1C5E918C005B6C41 /* String+Subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Subscript.swift"; path = "../String+Subscript.swift"; sourceTree = "<group>"; };
 		D36B09531C5C76DF0097155D /* DashboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		D36B09571C5C77CE0097155D /* MeasurementPlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurementPlan.swift; sourceTree = "<group>"; };
 		D36B09591C5C78CD0097155D /* Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Patient.swift; sourceTree = "<group>"; };
@@ -79,6 +86,8 @@
 		D36B095D1C5C7BB40097155D /* NSDate+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Operators.swift"; sourceTree = "<group>"; };
 		D36B09611C5C8AE00097155D /* PatientRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatientRepository.swift; sourceTree = "<group>"; };
 		D36B09631C5C8B220097155D /* PlanRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanRepository.swift; sourceTree = "<group>"; };
+		D380C1841C5E975500CDD5DD /* Array+Binning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Binning.swift"; sourceTree = "<group>"; };
+		D380C1861C5E9A1500CDD5DD /* ExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,14 +166,17 @@
 				485DA9361C57920600583AF0 /* Info.plist */,
 				D36B09531C5C76DF0097155D /* DashboardController.swift */,
 				D36B095D1C5C7BB40097155D /* NSDate+Operators.swift */,
+				D307FC1B1C5E918C005B6C41 /* String+Subscript.swift */,
+				D307FC181C5DA115005B6C41 /* NSDate+SameDay.swift */,
 				D36B09611C5C8AE00097155D /* PatientRepository.swift */,
 				D36B09631C5C8B220097155D /* PlanRepository.swift */,
 				D307FC121C5D5C69005B6C41 /* MeasurementManager.swift */,
 				D307FC141C5D6130005B6C41 /* BloodPressureMeasurementManager.swift */,
 				D307FC061C5D1143005B6C41 /* MeasurementController.swift */,
-				D307FC0A1C5D1AF1005B6C41 /* MeasurementRepository.swift */,
 				D307FC161C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift */,
+				D307FC0A1C5D1AF1005B6C41 /* MeasurementRepository.swift */,
 				D307FC0C1C5D20CD005B6C41 /* Utils.swift */,
+				D380C1841C5E975500CDD5DD /* Array+Binning.swift */,
 				48907A991C5D8E47009AFC56 /* MeasurementEntryView.swift */,
 			);
 			path = cardiola;
@@ -174,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				485DA93F1C57920600583AF0 /* cardiolaTests.swift */,
+				D380C1861C5E9A1500CDD5DD /* ExtensionTests.swift */,
 				485DA9411C57920600583AF0 /* Info.plist */,
 			);
 			path = cardiolaTests;
@@ -386,9 +399,12 @@
 				D307FC0D1C5D20CD005B6C41 /* Utils.swift in Sources */,
 				D307FC131C5D5C69005B6C41 /* MeasurementManager.swift in Sources */,
 				D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */,
+				D307FC1C1C5E918C005B6C41 /* String+Subscript.swift in Sources */,
 				D36B095E1C5C7BB40097155D /* NSDate+Operators.swift in Sources */,
 				D36B095C1C5C79CA0097155D /* MeasurementPlanEntry.swift in Sources */,
+				D380C1851C5E975500CDD5DD /* Array+Binning.swift in Sources */,
 				D307FC171C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift in Sources */,
+				D307FC191C5DA115005B6C41 /* NSDate+SameDay.swift in Sources */,
 				D307FC0B1C5D1AF1005B6C41 /* MeasurementRepository.swift in Sources */,
 				485DA9301C57920600583AF0 /* SecondViewController.swift in Sources */,
 				D307FC071C5D1143005B6C41 /* MeasurementController.swift in Sources */,
@@ -404,6 +420,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D380C1871C5E9A1500CDD5DD /* ExtensionTests.swift in Sources */,
+				D307FC1D1C5E919A005B6C41 /* String+Subscript.swift in Sources */,
 				485DA9401C57920600583AF0 /* cardiolaTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
