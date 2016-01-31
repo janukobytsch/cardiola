@@ -111,13 +111,10 @@ class MeasurementEntryView: UIView {
     func updateView() {
         let hideNewButton = (self.entry?.data != nil)
         
-        print("Showing new button", self.entry?.data, hideNewButton)
-        
         newEntryButton.hidden = hideNewButton
         entryStackView.hidden = !hideNewButton
         
         if hideNewButton {
-            print("Zeige blutdruck", self.entry!.types.contains(MeasurementPlanEntryType.BloodPressure))
             if self.entry!.types.contains(MeasurementPlanEntryType.BloodPressure) {
                 bloodPressureStackView.hidden = false
                 
@@ -142,7 +139,6 @@ class MeasurementEntryView: UIView {
     
     func updateViewWith(entry: MeasurementPlanEntry) {
         self.entry = entry
-        print("setting entry")
         updateView()
     }
     
@@ -158,6 +154,8 @@ class MeasurementEntryView: UIView {
         } else {
             self.entry?.setMeasurement(Measurement.createRandom())
             self.updateViewWith(self.entry!)
+            
+            masterView?.updateEntryPosition(self.entry!)
         }
     }
 }
