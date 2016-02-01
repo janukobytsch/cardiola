@@ -15,26 +15,17 @@ class Patient: Object, PersistentModel {
         return "id"
     }
     
+    dynamic var hasChestPain: Bool = false
+    dynamic var hasAngina: Bool = false
     dynamic var name: String?
+    
     let plans = List<MeasurementPlan>()
-    dynamic var hasChestPain: Bool
-    dynamic var hasAngina: Bool
     let bloodSugar = RealmOptional<Int>()
     let ecg = RealmOptional<Int>()
     
-    init(name: String) {
-        self.hasChestPain = false
-        self.hasAngina = false
-        
-        super.init()
+    convenience init(name: String) {
+        self.init()
         self.name = name
-    }
-    
-    required init() {
-        self.hasChestPain = false
-        self.hasAngina = false
-        
-        super.init()
     }
     
     static func createDemoPatient() -> Patient {

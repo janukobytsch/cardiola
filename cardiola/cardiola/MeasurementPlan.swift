@@ -21,17 +21,14 @@ class MeasurementPlan: Object, PersistentModel {
         return entries.last
     }
     
-    init(entries: [MeasurementPlanEntry]) {
-        super.init()
+    convenience init(entries: [MeasurementPlanEntry]) {
+        self.init()
         self.entries.appendContentsOf(entries)
-    }
-    
-    required init() {
-        super.init()
     }
     
     func prependEntry(entry: MeasurementPlanEntry) {
         self.entries.insert(entry, atIndex: 0)
+        entry.save()
     }
     
     /**
@@ -41,6 +38,14 @@ class MeasurementPlan: Object, PersistentModel {
      */
     static func createRandomWeek() -> MeasurementPlan {
         var entries = [MeasurementPlanEntry]()
+        
+        // Load from database
+        let realm = try! Realm()
+        let dbEntries = realm.objects(MeasurementPlanEntry)
+        
+        entries.appendContentsOf(dbEntries.asArray())
+        print("Got from db", entries.count)
+        
         for index in 0...6 {
             let timeInterval = NSTimeInterval(5 * 64 + index * 86400)
             let date = NSDate(timeIntervalSinceNow: timeInterval)

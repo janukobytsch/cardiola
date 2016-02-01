@@ -22,7 +22,7 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
     }
     
     dynamic var dueDate: NSDate?
-    dynamic var isMandatory: Bool
+    dynamic var isMandatory: Bool = false
     dynamic var data: Measurement?
     var types: [MeasurementPlanEntryType] = [MeasurementPlanEntryType]()
     
@@ -36,10 +36,9 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
         return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.FullStyle)
     }
     
-    init(dueDate: NSDate, isMandatory: Bool, types : [MeasurementPlanEntryType]? = nil) {
+    convenience init(dueDate: NSDate, isMandatory: Bool, types : [MeasurementPlanEntryType]? = nil) {
+        self.init()
         self.isMandatory = isMandatory
-        
-        super.init()
         self.dueDate = dueDate
         self.data = nil
         
@@ -50,11 +49,6 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
     
     convenience init(dueDate: NSDate) {
         self.init(dueDate: dueDate, isMandatory: true)
-    }
-    
-    required init() {
-        self.isMandatory = false
-        super.init()
     }
     
     func setMeasurement(measurement: Measurement) {

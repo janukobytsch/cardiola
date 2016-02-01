@@ -12,5 +12,10 @@ extension List {
     func asArray() -> [T] {
         return self.map{ $0 }
     }
-    
+}
+
+extension Results{
+    func asArray() -> [T] {
+        return self.map{ $0 }
+    }
 }

@@ -10,9 +10,11 @@ import RealmSwift
 extension Object {
     
     func save() {
-        try! realm?.write {
+        let realm = try! Realm()
+        
+        try! realm.write {
             if self.dynamicType.primaryKey() != nil {
-                realm?.create(self.dynamicType, value: self, update: true)
+                realm.create(self.dynamicType, value: self, update: true)
             }
         }
     }

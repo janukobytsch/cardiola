@@ -39,8 +39,8 @@ class Measurement: Object, PersistentModel {
         return formatDate(self.date, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
     }
     
-    init(heartRate: Int, systolicPressure: Int, diastolicPressure: Int) {
-        super.init()
+    convenience init(heartRate: Int, systolicPressure: Int, diastolicPressure: Int) {
+        self.init()
         self.heartRate.value = heartRate
         self.systolicPressure.value = systolicPressure
         self.diastolicPressure.value = diastolicPressure
@@ -53,10 +53,6 @@ class Measurement: Object, PersistentModel {
     
     convenience init(heartRate: Int) {
         self.init(heartRate: heartRate, systolicPressure: 0, diastolicPressure: 0)
-    }
-    
-    required init() {
-        super.init()
     }
     
     // MARK: Creation

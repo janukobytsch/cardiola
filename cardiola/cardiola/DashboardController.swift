@@ -143,6 +143,8 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             measurementTable.deleteRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 2)], withRowAnimation: .Automatic)
             measurementTable.insertRowsAtIndexPaths([NSIndexPath(forRow: self.entries[doneEntriesTitle]!.count - 1 , inSection: 1)], withRowAnimation: .Automatic)
             measurementTable.endUpdates()
+            
+            entry.save()
         }
     }
     
