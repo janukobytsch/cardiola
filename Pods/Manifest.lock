@@ -1,13 +1,21 @@
 PODS:
   - Charts (2.1.6)
+  - Realm (0.97.1):
+    - Realm/Headers (= 0.97.1)
+  - Realm/Headers (0.97.1)
+  - RealmSwift (0.97.1):
+    - Realm (= 0.97.1)
   - Swinject (1.0.0)
 
 DEPENDENCIES:
   - Charts
+  - RealmSwift
   - Swinject
 
 SPEC CHECKSUMS:
   Charts: 5e1e5ac23898e5b09d226a2fc3e9d86bc281937e
+  Realm: 6854f49cc788171573a0605fe5e55d3224bc39f9
+  RealmSwift: 21aa38ae5210a8e7d3ca2fd02a0ce82476672101
   Swinject: f1ec058cc1809929fd5b962c3a8a8277827389b6
 
 COCOAPODS: 0.39.0

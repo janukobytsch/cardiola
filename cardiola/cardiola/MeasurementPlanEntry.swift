@@ -7,22 +7,28 @@
 //
 
 import Foundation
+import RealmSwift
+
+// MARK: Type
 
 enum MeasurementPlanEntryType {
     case BloodPressure, HeartRate
 }
 
-class MeasurementPlanEntry: NSObject {
+class MeasurementPlanEntry: Object, PersistentModel, Equatable {
+    dynamic var id: String = NSUUID().UUIDString
+    override static func primaryKey() -> String? {
+        return "id"
+    }
     
-    var id: Int?
-    var dueDate: NSDate?
-    var isMandatory: Bool?
-    var data: Measurement?
+    dynamic var dueDate: NSDate?
+    dynamic var isMandatory: Bool
+    dynamic var data: Measurement?
     var types: [MeasurementPlanEntryType] = [MeasurementPlanEntryType]()
     
     var formattedDate: String {
-//        let formatter = NSDateFormatter()
-//        formatter.locale = NSLocale(localeIdentifier: "de_DE")
+        //        let formatter = NSDateFormatter()
+        //        formatter.locale = NSLocale(localeIdentifier: "de_DE")
         return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
     }
     
@@ -31,9 +37,10 @@ class MeasurementPlanEntry: NSObject {
     }
     
     init(dueDate: NSDate, isMandatory: Bool, types : [MeasurementPlanEntryType]? = nil) {
+        self.isMandatory = isMandatory
+        
         super.init()
         self.dueDate = dueDate
-        self.isMandatory = isMandatory
         self.data = nil
         
         if types != nil {
@@ -43,6 +50,11 @@ class MeasurementPlanEntry: NSObject {
     
     convenience init(dueDate: NSDate) {
         self.init(dueDate: dueDate, isMandatory: true)
+    }
+    
+    required init() {
+        self.isMandatory = false
+        super.init()
     }
     
     func setMeasurement(measurement: Measurement) {
@@ -66,7 +78,7 @@ class MeasurementPlanEntry: NSObject {
         }
         return NSDateFormatter.localizedStringFromDate(dueDate, dateStyle: dateStyle,
             timeStyle: timeStyle)
-
+        
     }
     
     // MARK: Creation
@@ -79,5 +91,10 @@ class MeasurementPlanEntry: NSObject {
         // newEntry.setMeasurement(Measurement.createRandom())
         return newEntry
     }
+}
 
+// MARK: Equatable
+
+func ==(lhs: MeasurementPlanEntry, rhs: MeasurementPlanEntry) -> Bool {
+    return lhs.id == rhs.id
 }

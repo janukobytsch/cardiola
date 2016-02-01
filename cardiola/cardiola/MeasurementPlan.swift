@@ -7,23 +7,31 @@
 //
 
 import Foundation
+import RealmSwift
 
-class MeasurementPlan: NSObject {
-    
-    var id: Int?
-    var entries: [MeasurementPlanEntry]? {
-        didSet {
-            self.entries?.sortInPlace({ $0.dueDate < $1.dueDate })
-        }
+class MeasurementPlan: Object, PersistentModel {
+    dynamic var id: String = NSUUID().UUIDString
+    override static func primaryKey() -> String? {
+        return "id"
     }
     
+    let entries = List<MeasurementPlanEntry>()
+    
     var nextEntry: MeasurementPlanEntry? {
-        return entries?.last
+        return entries.last
     }
     
     init(entries: [MeasurementPlanEntry]) {
         super.init()
-        self.entries = entries
+        self.entries.appendContentsOf(entries)
+    }
+    
+    required init() {
+        super.init()
+    }
+    
+    func prependEntry(entry: MeasurementPlanEntry) {
+        self.entries.insert(entry, atIndex: 0)
     }
     
     /**

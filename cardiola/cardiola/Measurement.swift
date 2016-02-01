@@ -6,10 +6,16 @@
 //  Copyright © 2016 BPPolze. All rights reserved.
 //
 
+import RealmSwift
 import Foundation
 import Charts
 
-class Measurement: NSObject {
+class Measurement: Object, PersistentModel {
+    dynamic var id: String = NSUUID().UUIDString
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
     
     static let SYSTOLIC_MAX = 200
     static let SYSTOLIC_AVG = 120
@@ -19,12 +25,11 @@ class Measurement: NSObject {
     static let HEART_RATE_RESTING = 70
     static let HEART_RATE_STRESS = 130
     
-    var id: Int?
-    var patient: Patient?
-    var heartRate: Int?
-    var systolicPressure: Int?
-    var diastolicPressure: Int?
-    var date: NSDate?
+    dynamic var patient: Patient?
+    let heartRate = RealmOptional<Int>()
+    let systolicPressure = RealmOptional<Int>()
+    let diastolicPressure = RealmOptional<Int>()
+    dynamic var date: NSDate?
     
     var formattedDate: String {
         return formatDate(self.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
@@ -36,9 +41,9 @@ class Measurement: NSObject {
     
     init(heartRate: Int, systolicPressure: Int, diastolicPressure: Int) {
         super.init()
-        self.heartRate = heartRate
-        self.systolicPressure = systolicPressure
-        self.diastolicPressure = diastolicPressure
+        self.heartRate.value = heartRate
+        self.systolicPressure.value = systolicPressure
+        self.diastolicPressure.value = diastolicPressure
         self.date = NSDate()
     }
     
@@ -50,8 +55,12 @@ class Measurement: NSObject {
         self.init(heartRate: heartRate, systolicPressure: 0, diastolicPressure: 0)
     }
     
+    required init() {
+        super.init()
+    }
+    
     // MARK: Creation
-
+    
     internal static func createRandom() -> Measurement {
         let systolic = random(min: 120, max: 180)
         let diastolic = random(min: 70, max: 100)
@@ -67,7 +76,7 @@ extension _ArrayType where Generator.Element == Measurement {
         guard self.count != 0 else {
             return nil
         }
-        let heartRates = self.flatMap({ $0.heartRate })
+        let heartRates = self.flatMap({ $0.heartRate.value })
         return Double(heartRates.reduce(0, combine: {$0 + $1 })) / Double(self.count)
     }
     
@@ -75,7 +84,7 @@ extension _ArrayType where Generator.Element == Measurement {
         guard self.count != 0 else {
             return nil
         }
-        let heartRates = self.flatMap({ $0.heartRate })
+        let heartRates = self.flatMap({ $0.heartRate.value })
         return heartRates.maxElement()
     }
 }

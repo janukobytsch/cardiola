@@ -7,22 +7,34 @@
 //
 
 import Foundation
+import RealmSwift
 
-class Patient: NSObject {
+class Patient: Object, PersistentModel {
+    dynamic var id: String = NSUUID().UUIDString
+    override static func primaryKey() -> String? {
+        return "id"
+    }
     
-    var id: Int?
-    var name: String?
-    var plans: [MeasurementPlan]?
-    var hasChestPain: Bool?
-    var hasAngina: Bool?
-    var bloodSugar: Int?
-    var ecg: Int?
+    dynamic var name: String?
+    let plans = List<MeasurementPlan>()
+    dynamic var hasChestPain: Bool
+    dynamic var hasAngina: Bool
+    let bloodSugar = RealmOptional<Int>()
+    let ecg = RealmOptional<Int>()
     
     init(name: String) {
-        super.init()
-        self.name = name
         self.hasChestPain = false
         self.hasAngina = false
+        
+        super.init()
+        self.name = name
+    }
+    
+    required init() {
+        self.hasChestPain = false
+        self.hasAngina = false
+        
+        super.init()
     }
     
     static func createDemoPatient() -> Patient {
