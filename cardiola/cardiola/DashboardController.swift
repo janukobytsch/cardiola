@@ -33,6 +33,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var measurementDetailView: UIView!
     @IBOutlet weak var measurementTable: UITableView!
     @IBOutlet weak var newMeasurementLabel: UILabel!
+    @IBOutlet weak var measurementRadar: RadarChartView!
     var measurementEntryView: MeasurementEntryView?
     
     var patientRepository: PatientRepository?
@@ -43,6 +44,10 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     var currentPatient: Patient?
     var currentPlan: MeasurementPlan?
     
+    override var preferredFocusedView: UIView? {
+        return self.measurementTable
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,6 +56,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         
         measurementTable.dataSource = self
         measurementTable.delegate = self
+        measurementTable.remembersLastFocusedIndexPath = true
         
         currentPatient = patientRepository?.getCurrentPatient()
         currentPlan = planRepository?.currentPlan
@@ -62,11 +68,14 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         entries = [pendingEntriesTitle: currentPlan!.pendingEntries,
                     archivedEntriesTitle: currentPlan!.archivedEntries,
                     activeEntriesTitle: currentPlan!.activeEntries]
+        
+        initRadarChart()
     }
     
     override func viewWillAppear(animated: Bool) {
         // model might have changed meanwhile
         measurementTable.reloadData()
+        measurementRadar.notifyDataSetChanged()
     }
     
     override func didReceiveMemoryWarning() {
@@ -74,7 +83,55 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: ChartViewDelegate
+    // MARK: Charts
+
+    func initRadarChart() {
+        let chart = measurementRadar
+        
+        chart.descriptionText = "Vitalparameter"
+        chart.webLineWidth = 1.0
+        chart.innerWebLineWidth = 1.0
+        chart.webAlpha = 1.0
+        chart.backgroundColor = Colors.translucent
+        
+        let legend = chart.legend
+        legend.position = ChartLegend.ChartLegendPosition.BelowChartLeft
+        legend.form = ChartLegend.ChartLegendForm.Square
+        legend.xEntrySpace = 2.0
+        
+        let yAxis = chart.yAxis
+        yAxis.labelCount = 0
+        yAxis.drawTopYLabelEntryEnabled = false
+        yAxis.drawGridLinesEnabled = false
+        yAxis.drawLabelsEnabled = false
+        yAxis.startAtZeroEnabled = false
+        yAxis.drawLimitLinesBehindDataEnabled = false
+        
+        let xAxis = chart.xAxis
+        xAxis.drawGridLinesEnabled = false
+    }
+    
+    func updateChartData(selectedEntry: MeasurementPlanEntry) {
+        let chart = self.measurementRadar
+        let xValues = ["Systolischer Blutdruck", "Diastolischer Blutdruck", "Pulsrate", "Blutzucker", "Sauferstoffsättigung", "Persönliches Befinden"]
+        let measurement = selectedEntry.data
+        // TODO: support missing vital parameters
+        let values = [measurement?.systolicPressure, measurement?.diastolicPressure, measurement?.heartRate, 0, 0, 0]
+        let yValues = values.enumerate().map() {
+            return ($0.1 != nil) ? ChartDataEntry(value: 100.0, xIndex: $0.0) : ChartDataEntry(value: 0.0, xIndex: $0.0)
+        }
+        
+        let dataset = RadarChartDataSet(yVals: yValues)
+        dataset.drawFilledEnabled = true
+        dataset.setColor(Colors.darkGray)
+        dataset.fillColor = Colors.darkGray
+        dataset.lineWidth = 2.0
+        
+        let data = RadarChartData(xVals: xValues, dataSet: dataset)
+        chart.data = data
+        
+        chart.notifyDataSetChanged()
+    }
     
     // MARK: UITableViewDataSource
     
@@ -117,8 +174,10 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             addActiveEntry()
         default:
             newMeasurementLabel.hidden = true
-            measurementEntryView?.hidden = false
-            measurementEntryView?.updateViewWith(_entryForIndexPath(indexPath))
+            //measurementEntryView?.hidden = false
+            let selectedEntry = _entryForIndexPath(indexPath)
+            measurementEntryView?.updateViewWith(selectedEntry)
+            updateChartData(selectedEntry)
         }
     }
     
