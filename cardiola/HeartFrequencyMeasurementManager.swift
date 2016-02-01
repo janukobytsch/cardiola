@@ -91,12 +91,12 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
         
         let rightAxis = realtimeChart.rightAxis
         rightAxis.enabled = false
-
+        
         if realtimeChart.data == nil {
             realtimeChart.hidden = true
         }
     }
-
+    
     func updateHistoryData(with measurements: [Measurement]) {
         guard measurements.count > 0 else {
             return
@@ -106,7 +106,7 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
         let binning = measurements.collectSimilar({ $0.date! < $1.date! }) {
             return $0.date!.isSameDayAs($1.date!)
         }
-
+        
         let xValues = binning.flatMap({ $0[0].formattedDate })
         
         let data = CombinedChartData(xVals: xValues)
@@ -155,11 +155,11 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
     
     func updateRealtimeData(with measurement: Measurement) {
         let chart = self.realtimeChart
-        let heartRate = measurement.heartRate ?? 0
+        let heartRate = measurement.heartRate.value ?? 0
         let xValue = measurement.formattedTime
         let xIndex = (chart.data?.xValCount ?? -1) + 1
         let entry = ChartDataEntry(value: Double(heartRate), xIndex: xIndex)
-
+        
         if chart.data == nil {
             let dataset = self.createDataset()
             let data = LineChartData(xVals: [xValue], dataSet: dataset)

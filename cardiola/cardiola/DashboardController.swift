@@ -24,9 +24,17 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var newMeasurementLabel: UILabel!
     var measurementEntryView: MeasurementEntryView?
     
+    var _entriesWithData: [MeasurementPlanEntry] {
+        return (currentPlan!.entries.filter { $0.data != nil })
+    }
     
-//    var userRepository: UserRepository?
-//    var planRepository: MeasurementPlanRepository?
+    var _entriesWithoutData: [MeasurementPlanEntry] {
+        return (currentPlan!.entries.filter { $0.data == nil })
+    }
+    
+    
+    //    var userRepository: UserRepository?
+    //    var planRepository: MeasurementPlanRepository?
     var patientRepository = PatientRepository()
     var planRepository = PlanRepository()
     
@@ -48,9 +56,9 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         measurementDetailView.addSubview(measurementEntryView!)
         measurementEntryView?.hidden = true
         
-        entries = [todoEntriesTitle: _entriesWithoutData(), doneEntriesTitle: _entriesWithData()]
+        entries = [todoEntriesTitle: self._entriesWithoutData, doneEntriesTitle: self._entriesWithData]
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -69,7 +77,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             let entry = _entryForIndexPath(indexPath)
             cell.textLabel?.text = entry.formattedDate
         }
-    
+        
         return cell
     }
     
@@ -106,19 +114,19 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             measurementEntryView?.updateViewWith(_entryForIndexPath(indexPath))
         }
     }
-
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
     
     func addNewEntry(entry: MeasurementPlanEntry) {
-        self.currentPlan?.entries?.insert(entry, atIndex: 0)
+        self.currentPlan?.prependEntry(entry)
         self.entries[doneEntriesTitle]?.insert(entry, atIndex: 0)
         
         measurementTable.beginUpdates()
@@ -135,6 +143,8 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             measurementTable.deleteRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 2)], withRowAnimation: .Automatic)
             measurementTable.insertRowsAtIndexPaths([NSIndexPath(forRow: self.entries[doneEntriesTitle]!.count - 1 , inSection: 1)], withRowAnimation: .Automatic)
             measurementTable.endUpdates()
+            
+            entry.save()
         }
     }
     
@@ -143,7 +153,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func showAlertMessage(title: String, message: String, acceptable: Bool = false) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-
+        
         let cancelAction = UIAlertAction(title: "Zurück", style: .Cancel) { (action) in
         }
         alertController.addAction(cancelAction)
@@ -154,14 +164,6 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
         self.presentViewController(alertController, animated: true) { }
-    }
-    
-    func _entriesWithData() -> [MeasurementPlanEntry] {
-        return (currentPlan?.entries!.filter { $0.data != nil })!
-    }
-
-    func _entriesWithoutData() -> [MeasurementPlanEntry] {
-        return (currentPlan?.entries!.filter { $0.data == nil })!
     }
     
     func _entryForIndexPath(indexPath: NSIndexPath) -> MeasurementPlanEntry {

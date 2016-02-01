@@ -9,7 +9,7 @@
 import UIKit
 
 class MeasurementEntryView: UIView {
-
+    
     var masterView: DashboardController?
     var entry: MeasurementPlanEntry?
     
@@ -27,10 +27,10 @@ class MeasurementEntryView: UIView {
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func drawRect(rect: CGRect) {
-        // Drawing code
+    // Drawing code
     }
     */
-
+    
     // MARK: Init
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -118,7 +118,7 @@ class MeasurementEntryView: UIView {
             if self.entry!.types.contains(MeasurementPlanEntryType.BloodPressure) {
                 bloodPressureStackView.hidden = false
                 
-                let valueText = "SYS:\t" + String((self.entry?.data?.systolicPressure)!) + "\nDIA:\t" + String((self.entry?.data?.diastolicPressure)!)
+                let valueText = "SYS:\t" + String((self.entry?.data?.systolicPressure.value)!) + "\nDIA:\t" + String((self.entry?.data?.diastolicPressure.value)!)
                 bloodPressureValueLabel.numberOfLines = 2
                 bloodPressureValueLabel.text = valueText
             } else {
@@ -128,7 +128,7 @@ class MeasurementEntryView: UIView {
             if self.entry!.types.contains(MeasurementPlanEntryType.HeartRate) {
                 heartRateStackView.hidden = false
                 
-                let valueText = "HeartRate:\t" + String((self.entry?.data?.heartRate)!) + " BPM"
+                let valueText = "HeartRate:\t" + String((self.entry?.data?.heartRate.value)!) + " BPM"
                 heartRateValueLabel.numberOfLines = 1
                 heartRateValueLabel.text = valueText
             } else {
