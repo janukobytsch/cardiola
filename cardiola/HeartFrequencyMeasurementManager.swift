@@ -54,11 +54,11 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
         rightAxis.enabled = false
         
         let restingLimit = ChartLimitLine(limit: Double(Measurement.HEART_RATE_RESTING), label: "Ruhepuls (Normwert)")
-        restingLimit.lineColor = Colors.red
+        restingLimit.lineColor = Colors.lightgray
         restingLimit.lineDashPhase = 0.5
         
         let stressLimit = ChartLimitLine(limit: Double(Measurement.HEART_RATE_STRESS), label: "Belastungspuls (Normwert)")
-        stressLimit.lineColor = Colors.red
+        stressLimit.lineColor = Colors.lightgray
         stressLimit.lineDashPhase = 0.5
         
         leftAxis.addLimitLine(restingLimit)

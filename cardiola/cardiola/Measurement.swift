@@ -34,6 +34,8 @@ class Measurement: NSObject {
         return formatDate(self.date, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
     }
     
+    override init() { }
+    
     init(heartRate: Int, systolicPressure: Int, diastolicPressure: Int) {
         super.init()
         self.heartRate = heartRate

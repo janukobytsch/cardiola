@@ -16,13 +16,28 @@ class MeasurementController: UIViewController {
     @IBOutlet weak var realtimeBarChart: BarChartView!
     @IBOutlet weak var realtimeLineChart: LineChartView!
     @IBOutlet weak var heartRateHistoryChart: CombinedChartView!
+    @IBOutlet weak var indicatorView: UIStackView!
+    @IBOutlet weak var measureButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var doneButton: UIButton!
+    
+    override var preferredFocusedView: UIView? {
+        get {
+            return self.segmentedControl
+        }
+    }
     
     var bloodPressureManager: BloodPressureMeasurementManager?
     var heartFrequencyManager: HeartFrequencyMeasurementManager?
     var currentManager: MeasurementManager?
     
+    var measurementRecorder: MeasurementRecorder?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // todo inject shared dependencies
+        measurementRecorder = MeasurementRecorder(repository: MeasurementRepository())
         
         let measurements = MeasurementRepository.createRandomDataset()
         
@@ -34,11 +49,24 @@ class MeasurementController: UIViewController {
 
         currentManager = bloodPressureManager
         currentManager?.afterModeChanged()
+        
+        updateActionButtons()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func updateActionButtons() {
+        let isRecording = measurementRecorder?.isRecording() ?? false
+        measureButton!.hidden = isRecording
+        measureButton!.enabled = !isRecording
+        cancelButton!.hidden = !isRecording
+        cancelButton!.enabled = isRecording
+        doneButton!.hidden = !isRecording
+        doneButton!.enabled = isRecording
+        indicatorView!.hidden = !isRecording
     }
     
     func simulateRealtime() {
@@ -54,10 +82,20 @@ class MeasurementController: UIViewController {
     }
     
     @IBAction func startMeasurement(sender: UIButton) {
-        sender.enabled = false
-        sender.hidden = true
+        measurementRecorder?.start()
         currentManager?.startMeasurement()
+        updateActionButtons()
         simulateRealtime()
+    }
+    
+    @IBAction func cancelMeasurement(sender: UIButton) {
+        measurementRecorder?.cancel()
+        updateActionButtons()
+    }
+    
+    @IBAction func finishMeasurement(sender: UIButton) {
+        measurementRecorder?.finish()
+        updateActionButtons()
     }
     
     @IBAction func changeMeasurementMode(sender: UISegmentedControl) {
@@ -65,7 +103,6 @@ class MeasurementController: UIViewController {
         switch sender.selectedSegmentIndex {
         case 1:
             currentManager = heartFrequencyManager
-            simulateRealtime()
         case 0:
             currentManager = bloodPressureManager
         default:
