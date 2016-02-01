@@ -30,11 +30,8 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBOutlet weak var measurementPlanLabel: UILabel!
     @IBOutlet weak var measurementDetailLabel: UILabel!
-    @IBOutlet weak var measurementDetailView: UIView!
     @IBOutlet weak var measurementTable: UITableView!
-    @IBOutlet weak var newMeasurementLabel: UILabel!
     @IBOutlet weak var measurementRadar: RadarChartView!
-    var measurementEntryView: MeasurementEntryView?
     
     var patientRepository: PatientRepository?
     var planRepository: PlanRepository?
@@ -60,10 +57,6 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         
         currentPatient = patientRepository?.getCurrentPatient()
         currentPlan = planRepository?.currentPlan
-        
-        measurementEntryView = MeasurementEntryView(frame: measurementDetailView.frame, master: self)
-        measurementDetailView.addSubview(measurementEntryView!)
-        measurementEntryView?.hidden = true
 
         entries = [pendingEntriesTitle: currentPlan!.pendingEntries,
                     archivedEntriesTitle: currentPlan!.archivedEntries,
@@ -104,30 +97,55 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         yAxis.drawTopYLabelEntryEnabled = false
         yAxis.drawGridLinesEnabled = false
         yAxis.drawLabelsEnabled = false
-        yAxis.startAtZeroEnabled = false
+        yAxis.startAtZeroEnabled = true
         yAxis.drawLimitLinesBehindDataEnabled = false
         
         let xAxis = chart.xAxis
         xAxis.drawGridLinesEnabled = false
     }
     
+    // TODO: support missing vital parameters
     func updateChartData(selectedEntry: MeasurementPlanEntry) {
         let chart = self.measurementRadar
-        let xValues = ["Systolischer Blutdruck", "Diastolischer Blutdruck", "Pulsrate", "Blutzucker", "Sauferstoffsättigung", "Persönliches Befinden"]
         let measurement = selectedEntry.data
-        // TODO: support missing vital parameters
-        let values = [measurement?.systolicPressure, measurement?.diastolicPressure, measurement?.heartRate, 0, 0, 0]
-        let yValues = values.enumerate().map() {
+        
+        var xValues = ["Systolischer Blutdruck", "Diastolischer Blutdruck", "Pulsrate", "Blutzucker", "Sauferstoffsättigung", "Persönliches Befinden"]
+        var yValues: [ChartDataEntry]
+        
+        // pending dataset
+        
+        let supports = [selectedEntry.isBloodPressureEntry, selectedEntry.isBloodPressureEntry, selectedEntry.isHeartRateEntry, false, false, false]
+        yValues = supports.enumerate().map() {
             return ($0.1 != nil) ? ChartDataEntry(value: 100.0, xIndex: $0.0) : ChartDataEntry(value: 0.0, xIndex: $0.0)
         }
         
-        let dataset = RadarChartDataSet(yVals: yValues)
-        dataset.drawFilledEnabled = true
-        dataset.setColor(Colors.darkGray)
-        dataset.fillColor = Colors.darkGray
-        dataset.lineWidth = 2.0
+        let dataset1 = RadarChartDataSet(yVals: yValues, label: "Ausstehende Messung")
+        dataset1.drawFilledEnabled = true
+        dataset1.setColor(Colors.gray)
+        dataset1.fillColor = Colors.gray
+        dataset1.lineWidth = 2.0
+
+        // recorded dataset
         
-        let data = RadarChartData(xVals: xValues, dataSet: dataset)
+        let properties = [measurement?.systolicPressure, measurement?.diastolicPressure, measurement?.heartRate, nil, nil, nil]
+        yValues = properties.enumerate().map() {
+            return ($0.1 != nil) ? ChartDataEntry(value: 100.0, xIndex: $0.0) : ChartDataEntry(value: 0.0, xIndex: $0.0)
+        }
+        
+        let dataset2 = RadarChartDataSet(yVals: yValues, label: "Abgeschlossene Messung")
+        dataset2.drawFilledEnabled = true
+        dataset2.setColor(Colors.darkGray)
+        dataset2.fillColor = Colors.darkGray
+        dataset2.lineWidth = 2.0
+        
+        // annotate x-values
+        
+        for (index, recordedValue) in properties.enumerate() {
+            let annotation = (recordedValue != nil) ? "\n\(recordedValue)" : "\n(ausstehend)"
+            xValues[index] = xValues[index] + annotation
+        }
+        
+        let data = RadarChartData(xVals: xValues, dataSets: [dataset1, dataset2])
         chart.data = data
         
         chart.notifyDataSetChanged()
@@ -169,14 +187,9 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case 0:
-            newMeasurementLabel.hidden = false
-            measurementEntryView?.hidden = true
             addActiveEntry()
         default:
-            newMeasurementLabel.hidden = true
-            //measurementEntryView?.hidden = false
             let selectedEntry = _entryForIndexPath(indexPath)
-            measurementEntryView?.updateViewWith(selectedEntry)
             updateChartData(selectedEntry)
         }
     }

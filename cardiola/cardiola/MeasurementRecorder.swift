@@ -188,6 +188,7 @@ class MeasurementRecorder: Recorder {
         let alertController = UIAlertController(title: "Laufende Messung",
             message: "Bitte beende die aktuelle Messung, um eine neue Messung zu starten.", preferredStyle: .Alert)
         
+        
         let cancelAction = UIAlertAction(title: "Messung verwerfen", style: .Destructive) {
             [weak recorder = self, weak from = controller] (action) in
             recorder?.cancel()

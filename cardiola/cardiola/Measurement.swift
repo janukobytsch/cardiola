@@ -72,6 +72,19 @@ class Measurement: Object, PersistentModel {
         return formatDate(self.date, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
     }
     
+    // MARK: Charts
+    
+    // provides x and y values for plotting the attribute radar
+    var attributeRadar: ([String], [ChartDataEntry]) {
+        let xValues = ["Systolischer Blutdruck", "Diastolischer Blutdruck", "Pulsrate", "Blutzucker", "Sauferstoffsättigung", "Persönliches Befinden"]
+        // TODO: support missing vital parameters
+        let properties = [self.systolicPressure, self.diastolicPressure, self.heartRate, 0, 0, 0]
+        let yValues = properties.enumerate().map() {
+            return ($0.1 != nil) ? ChartDataEntry(value: 1.0, xIndex: $0.0) : ChartDataEntry(value: 0.0, xIndex: $0.0)
+        }
+        return (xValues, yValues)
+    }
+    
     // MARK: Initialization
 
     convenience init(heartRate: Int, systolicPressure: Int, diastolicPressure: Int) {
@@ -91,15 +104,16 @@ class Measurement: Object, PersistentModel {
         self.init(heartRate: heartRate, systolicPressure: 0, diastolicPressure: 0)
     }
 
-    // MARK: Creation
+    // MARK: Factory methods
 
     internal static func createRandom() -> Measurement {
         let systolic = random(min: 120, max: 180)
         let diastolic = random(min: 70, max: 100)
         let heartRate = random(min: 60, max: 130)
-        return Measurement(heartRate: heartRate, systolicPressure: systolic, diastolicPressure: diastolic)
+        let measurement = Measurement(heartRate: heartRate, systolicPressure: systolic, diastolicPressure: diastolic)
+        return measurement
     }
-    
+
     // MARK: PersistentModel
     
     dynamic var id: String = NSUUID().UUIDString

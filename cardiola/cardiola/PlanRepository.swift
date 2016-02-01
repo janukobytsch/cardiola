@@ -45,6 +45,8 @@ class PlanRepository {
             let timeInterval = NSTimeInterval(5 * 64 + index * 86400)
             let date = NSDate(timeIntervalSinceNow: timeInterval)
             let entry = MeasurementPlanEntry(dueDate: date)
+            entry.isBloodPressureEntry = random(min: 0, max: 1) == 0
+            entry.isHeartRateEntry = random(min: 0, max: 1) == 0
             entry.pending()
             entry.save()
             entries.append(entry)
