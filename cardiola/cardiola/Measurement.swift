@@ -11,11 +11,6 @@ import Foundation
 import Charts
 
 class Measurement: Object, PersistentModel {
-    dynamic var id: String = NSUUID().UUIDString
-    override static func primaryKey() -> String? {
-        return "id"
-    }
-
 
     static let SYSTOLIC_MAX = 200
     static let SYSTOLIC_AVG = 120
@@ -24,11 +19,41 @@ class Measurement: Object, PersistentModel {
     static let HEART_RATE_MAX = 160
     static let HEART_RATE_RESTING = 70
     static let HEART_RATE_STRESS = 130
+    
+    // MARK: Properties
 
     dynamic var patient: Patient?
-    let heartRate = RealmOptional<Int>()
-    let systolicPressure = RealmOptional<Int>()
-    let diastolicPressure = RealmOptional<Int>()
+    
+    private let _heartRate = RealmOptional<Int>()
+    var heartRate: Int? {
+        get {
+            return _heartRate.value
+        }
+        set(newValue) {
+            _heartRate.value = newValue
+        }
+    }
+    
+    private let _systolicPressure = RealmOptional<Int>()
+    var systolicPressure: Int? {
+        get {
+            return _systolicPressure.value
+        }
+        set(newValue) {
+            _systolicPressure.value = newValue
+        }
+    }
+    
+    private let _diastolicPressure = RealmOptional<Int>()
+    var diastolicPressure: Int? {
+        get {
+            return _diastolicPressure.value
+        }
+        set(newValue) {
+            _diastolicPressure.value = newValue
+        }
+    }
+    
     dynamic var date: NSDate?
 
     var formattedDate: String {
@@ -38,14 +63,14 @@ class Measurement: Object, PersistentModel {
     var formattedTime: String {
         return formatDate(self.date, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
     }
-
-    override init() { }
+    
+    // MARK: Initialization
 
     convenience init(heartRate: Int, systolicPressure: Int, diastolicPressure: Int) {
         self.init()
-        self.heartRate.value = heartRate
-        self.systolicPressure.value = systolicPressure
-        self.diastolicPressure.value = diastolicPressure
+        self.heartRate = heartRate
+        self.systolicPressure = systolicPressure
+        self.diastolicPressure = diastolicPressure
         self.date = NSDate()
     }
 
@@ -65,16 +90,25 @@ class Measurement: Object, PersistentModel {
         let heartRate = random(min: 60, max: 130)
         return Measurement(heartRate: heartRate, systolicPressure: systolic, diastolicPressure: diastolic)
     }
+    
+    // MARK: PersistentModel
+    
+    dynamic var id: String = NSUUID().UUIDString
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
 }
 
 
+// define convenience methods on measurement arrays
 extension _ArrayType where Generator.Element == Measurement {
 
     func averageHeartRate() -> Double? {
         guard self.count != 0 else {
             return nil
         }
-        let heartRates = self.flatMap({ $0.heartRate.value })
+        let heartRates = self.flatMap({ $0.heartRate })
         return Double(heartRates.reduce(0, combine: {$0 + $1 })) / Double(self.count)
     }
 
@@ -82,7 +116,7 @@ extension _ArrayType where Generator.Element == Measurement {
         guard self.count != 0 else {
             return nil
         }
-        let heartRates = self.flatMap({ $0.heartRate.value })
+        let heartRates = self.flatMap({ $0.heartRate })
         return heartRates.maxElement()
     }
 }

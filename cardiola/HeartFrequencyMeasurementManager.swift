@@ -155,7 +155,7 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
     
     func updateRealtimeData(with measurement: Measurement) {
         let chart = self.realtimeChart
-        let heartRate = measurement.heartRate.value ?? 0
+        let heartRate = measurement.heartRate ?? 0
         let xValue = measurement.formattedTime
         let xIndex = (chart.data?.xValCount ?? -1) + 1
         let entry = ChartDataEntry(value: Double(heartRate), xIndex: xIndex)

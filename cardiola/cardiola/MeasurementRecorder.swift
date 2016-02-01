@@ -17,7 +17,7 @@ protocol MeasurementRecorderState: class {
 
 class MeasurementRecorder: Recorder {
 
-    // MARK: Recorder states
+    // MARK: States
     
     private class BloodPressureRecorderState: MeasurementRecorderState {
         func update(measurement: Measurement, with result: MeasurementResult) {

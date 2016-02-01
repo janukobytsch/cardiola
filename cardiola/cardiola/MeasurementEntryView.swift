@@ -118,7 +118,7 @@ class MeasurementEntryView: UIView {
             if self.entry!.types.contains(MeasurementPlanEntryType.BloodPressure) {
                 bloodPressureStackView.hidden = false
                 
-                let valueText = "SYS:\t" + String((self.entry?.data?.systolicPressure.value)!) + "\nDIA:\t" + String((self.entry?.data?.diastolicPressure.value)!)
+                let valueText = "SYS:\t" + String((self.entry?.data?.systolicPressure!)!) + "\nDIA:\t" + String((self.entry?.data?.diastolicPressure)!)
                 bloodPressureValueLabel.numberOfLines = 2
                 bloodPressureValueLabel.text = valueText
             } else {
@@ -128,7 +128,7 @@ class MeasurementEntryView: UIView {
             if self.entry!.types.contains(MeasurementPlanEntryType.HeartRate) {
                 heartRateStackView.hidden = false
                 
-                let valueText = "HeartRate:\t" + String((self.entry?.data?.heartRate.value)!) + " BPM"
+                let valueText = "HeartRate:\t" + String((self.entry?.data?.heartRate!)!) + " BPM"
                 heartRateValueLabel.numberOfLines = 1
                 heartRateValueLabel.text = valueText
             } else {
@@ -143,13 +143,8 @@ class MeasurementEntryView: UIView {
     }
     
     func createNewMeasurement() {
-        // Check if we are on the same date
-        let calendar = NSCalendar.currentCalendar()
-        
-        let nowDate = NSDate(timeIntervalSinceNow: 0)
-        
-        let difference = calendar.components(.Day, fromDate:  (self.entry?.dueDate)!, toDate: nowDate, options: [])
-        if difference.day != 0 {
+        let isToday = self.entry?.dueDate?.isSameDayAs(NSDate())
+        if let isToday = isToday {
             masterView?.showAlertMessage("Falsches Datum", message: "Bitte Einträge nur an dem entsprechenden Datum erstellen")
         } else {
             self.entry?.setMeasurement(Measurement.createRandom())

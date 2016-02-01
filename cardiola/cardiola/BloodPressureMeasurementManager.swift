@@ -91,8 +91,8 @@ class BloodPressureMeasurementManager: MeasurementManager {
         var yValues = [BarChartDataEntry]()
         
         for (index, measurement) in measurements.enumerate() {
-            let systolicPressure = measurement.systolicPressure.value ?? 0
-            let diastolicPressure = measurement.diastolicPressure.value ?? 0
+            let systolicPressure = measurement.systolicPressure! ?? 0
+            let diastolicPressure = measurement.diastolicPressure ?? 0
             let values = [systolicPressure, diastolicPressure].map({ Double($0) })
             let entry = BarChartDataEntry(values: values, xIndex: index)
             yValues.append(entry)
@@ -111,12 +111,12 @@ class BloodPressureMeasurementManager: MeasurementManager {
     }
     
     func updateRealtimeData(with measurement: Measurement) {
-        let systolicValue = measurement.systolicPressure.value ?? 0
+        let systolicValue = measurement.systolicPressure ?? 0
         let systolicEntry = BarChartDataEntry(value: Double(systolicValue), xIndex: 0)
         let datasetSystolic = BarChartDataSet(yVals: [systolicEntry], label: "Systolisch")
         datasetSystolic.setColor(Colors.darkGray)
         
-        let diastolicValue = measurement.diastolicPressure.value ?? 0
+        let diastolicValue = measurement.diastolicPressure ?? 0
         let diastolicEntry = BarChartDataEntry(value: Double(diastolicValue), xIndex: 0)
         let datasetDiastolic = BarChartDataSet(yVals: [diastolicEntry], label: "Diastolisch")
         datasetDiastolic.setColor(Colors.gray)
