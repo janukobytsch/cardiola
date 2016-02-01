@@ -9,12 +9,6 @@
 import Foundation
 import RealmSwift
 
-// MARK: Type
-
-enum MeasurementPlanEntryType {
-    case BloodPressure, HeartRate
-}
-
 class MeasurementPlanEntry: Object, PersistentModel, Equatable {
     dynamic var id: String = NSUUID().UUIDString
     override static func primaryKey() -> String? {
@@ -24,7 +18,8 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
     dynamic var dueDate: NSDate?
     dynamic var isMandatory: Bool = false
     dynamic var data: Measurement?
-    var types: [MeasurementPlanEntryType] = [MeasurementPlanEntryType]()
+    dynamic var isBloodPressureEntry = false
+    dynamic var isHeartRateEntry = false
     
     var formattedDate: String {
         //        let formatter = NSDateFormatter()
@@ -36,15 +31,14 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
         return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.FullStyle)
     }
     
-    convenience init(dueDate: NSDate, isMandatory: Bool, types : [MeasurementPlanEntryType]? = nil) {
+    convenience init(dueDate: NSDate, isMandatory: Bool, isBloodPressureEntry: Bool = false, isHeartRateEntry: Bool = false) {
         self.init()
         self.isMandatory = isMandatory
         self.dueDate = dueDate
         self.data = nil
         
-        if types != nil {
-            self.addTypes(types!)
-        }
+        self.isBloodPressureEntry = isBloodPressureEntry
+        self.isHeartRateEntry = isHeartRateEntry
     }
     
     convenience init(dueDate: NSDate) {
@@ -54,15 +48,6 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
     func setMeasurement(measurement: Measurement) {
         self.data = measurement
     }
-    
-    func setTypes(types: [MeasurementPlanEntryType]) {
-        self.types = types
-    }
-    
-    func addTypes(types: [MeasurementPlanEntryType]) {
-        self.types += types
-    }
-    
     
     // MARK: Formatting
     
@@ -81,7 +66,7 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
         let timeInterval = NSTimeInterval(5 * 64 + random(min: 0, max: 14) * 86400)
         let date = NSDate(timeIntervalSinceNow: timeInterval)
         
-        let newEntry = MeasurementPlanEntry(dueDate: date, isMandatory: true, types: [MeasurementPlanEntryType.HeartRate, MeasurementPlanEntryType.BloodPressure])
+        let newEntry = MeasurementPlanEntry(dueDate: date, isMandatory: true, isBloodPressureEntry: true, isHeartRateEntry: true)
         // newEntry.setMeasurement(Measurement.createRandom())
         return newEntry
     }
