@@ -31,6 +31,7 @@
 		D34A6D611C5ECFA800054378 /* MeasurementRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34A6D5F1C5ECFA700054378 /* MeasurementRecorder.swift */; };
 		D34A6D621C5ECFA800054378 /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34A6D601C5ECFA700054378 /* Recorder.swift */; };
 		D34A6D661C5F014400054378 /* MeasurementResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34A6D651C5F014400054378 /* MeasurementResult.swift */; };
+		D34A6D6E1C5F1B0F00054378 /* SwinjectStoryboard+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34A6D6D1C5F1B0F00054378 /* SwinjectStoryboard+Setup.swift */; };
 		D36B09541C5C76DF0097155D /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09531C5C76DF0097155D /* DashboardController.swift */; };
 		D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09571C5C77CE0097155D /* MeasurementPlan.swift */; };
 		D36B095A1C5C78CD0097155D /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09591C5C78CD0097155D /* Patient.swift */; };
@@ -91,6 +92,7 @@
 		D34A6D5F1C5ECFA700054378 /* MeasurementRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurementRecorder.swift; sourceTree = "<group>"; };
 		D34A6D601C5ECFA700054378 /* Recorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
 		D34A6D651C5F014400054378 /* MeasurementResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurementResult.swift; sourceTree = "<group>"; };
+		D34A6D6D1C5F1B0F00054378 /* SwinjectStoryboard+Setup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwinjectStoryboard+Setup.swift"; sourceTree = "<group>"; };
 		D36B09531C5C76DF0097155D /* DashboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		D36B09571C5C77CE0097155D /* MeasurementPlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurementPlan.swift; sourceTree = "<group>"; };
 		D36B09591C5C78CD0097155D /* Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Patient.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				D380C1841C5E975500CDD5DD /* Array+Binning.swift */,
 				48A29EBF1C5EEF940046D3E5 /* Realm+List.swift */,
 				48A29EC11C5EF62D0046D3E5 /* Realm+Object.swift */,
+				D34A6D6D1C5F1B0F00054378 /* SwinjectStoryboard+Setup.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				D307FC091C5D19E5005B6C41 /* Measurement.swift in Sources */,
 				D34A6D621C5ECFA800054378 /* Recorder.swift in Sources */,
 				D307FC0D1C5D20CD005B6C41 /* Utils.swift in Sources */,
+				D34A6D6E1C5F1B0F00054378 /* SwinjectStoryboard+Setup.swift in Sources */,
 				D307FC131C5D5C69005B6C41 /* MeasurementManager.swift in Sources */,
 				48A29EC01C5EEF940046D3E5 /* Realm+List.swift in Sources */,
 				D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */,

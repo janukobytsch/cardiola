@@ -36,9 +36,6 @@ class MeasurementController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // todo inject shared dependencies
-        measurementRecorder = MeasurementRecorder(repository: MeasurementRepository())
-        
         let measurements = MeasurementRepository.createRandomDataset()
         
         bloodPressureManager = BloodPressureMeasurementManager(realtimeChart: realtimeBarChart, historyChart: historyBarChart)
@@ -49,8 +46,12 @@ class MeasurementController: UIViewController {
 
         currentManager = bloodPressureManager
         currentManager?.afterModeChanged()
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         updateActionButtons()
+        setNeedsFocusUpdate()
+        updateFocusIfNeeded()
     }
     
     override func didReceiveMemoryWarning() {
@@ -82,7 +83,7 @@ class MeasurementController: UIViewController {
     }
     
     @IBAction func startMeasurement(sender: UIButton) {
-        measurementRecorder?.start()
+        measurementRecorder?.start(from: self)
         currentManager?.startMeasurement()
         updateActionButtons()
         simulateRealtime()

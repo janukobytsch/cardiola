@@ -32,12 +32,11 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         return (currentPlan!.entries.filter { $0.data == nil })
     }
     
+    var patientRepository: PatientRepository?
+    var planRepository: PlanRepository?
     
-    //    var userRepository: UserRepository?
-    //    var planRepository: MeasurementPlanRepository?
-    var patientRepository = PatientRepository()
-    var planRepository = PlanRepository()
-    
+    var measurementRecorder: MeasurementRecorder?
+
     var currentPatient: Patient?
     var currentPlan: MeasurementPlan?
     
@@ -47,9 +46,9 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         measurementTable.dataSource = self
         measurementTable.delegate = self
         
-        currentPatient = patientRepository.getCurrentPatient()
+        currentPatient = patientRepository?.getCurrentPatient()
         if let patient = currentPatient {
-            currentPlan = planRepository.getPlan(from: patient)
+            currentPlan = planRepository?.getPlan(from: patient)
         }
         
         measurementEntryView = MeasurementEntryView(frame: measurementDetailView.frame, master: self)
@@ -132,6 +131,8 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         measurementTable.beginUpdates()
         measurementTable.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .Automatic)
         measurementTable.endUpdates()
+        
+        measurementRecorder?.start(from: self)
     }
     
     func updateEntryPosition(entry: MeasurementPlanEntry) {
@@ -145,6 +146,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             measurementTable.endUpdates()
             
             entry.save()
+            measurementRecorder?.start(from: self)
         }
     }
     

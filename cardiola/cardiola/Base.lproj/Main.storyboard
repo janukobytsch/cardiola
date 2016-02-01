@@ -232,7 +232,6 @@
                                         <rect key="frame" x="0.0" y="1" width="214" height="86"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Messen"/>
-                                        <state key="focused" title="Focused"/>
                                         <connections>
                                             <action selector="startMeasurement:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="64t-O1-u6D"/>
                                         </connections>

@@ -6,7 +6,7 @@
 //
 //
 
-import Foundation
+import UIKit
 
 
 protocol MeasurementRecorderState: class {
@@ -77,9 +77,19 @@ class MeasurementRecorder: Recorder {
     
     // MARK: Recorder
     
-    func start() {
+    func start(with measurement: Measurement, from controller: UIViewController) {
+        guard !self.isRecording() else {
+            self.showAlreadyRecordingAlert(controller)
+            return
+        }
         _isRecording = true
-        currentMeasurement = Measurement()
+        currentMeasurement = measurement
+        print(String(currentMeasurement!.id))
+    }
+    
+    func start(from controller: UIViewController) {
+        let newMeasurement = Measurement()
+        self.start(with: newMeasurement, from: controller)
     }
     
     func stop() {
@@ -87,17 +97,41 @@ class MeasurementRecorder: Recorder {
     }
     
     func finish() {
+        guard self.isRecording() else {
+            return
+        }
+        print(String(currentMeasurement!.id))
         _isRecording = false
         currentMeasurement!.date = NSDate()
         // TODO: store to database and upload to server
     }
     
     func cancel() {
+        guard self.isRecording() else {
+            return
+        }
+        print(String(currentMeasurement!.id))
         _isRecording = false
         currentMeasurement = nil
     }
     
     func isRecording() -> Bool {
         return _isRecording
+    }
+    
+    // MARK: Alerts
+    
+    func showAlreadyRecordingAlert(controller: UIViewController) {
+        let alertController = UIAlertController(title: "titel", message: "message", preferredStyle: .Alert)
+        
+        let cancelAction = UIAlertAction(title: "Zurück", style: .Cancel) { (action) in
+        }
+        alertController.addAction(cancelAction)
+
+        let ok = UIAlertAction(title: "OK", style: .Default) { (action) in }
+        alertController.addAction(ok)
+        
+        
+        controller.presentViewController(alertController, animated: true) { }
     }
 }

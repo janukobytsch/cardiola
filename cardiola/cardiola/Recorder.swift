@@ -6,12 +6,11 @@
 //
 //
 
-import Foundation
-
+import UIKit
 
 protocol Recorder: class {
     
-    func start()
+    func start(from controller: UIViewController)
     func cancel()
     func finish()
     func stop()

@@ -16,10 +16,16 @@ enum MeasurementPlanEntryType {
 }
 
 class MeasurementPlanEntry: Object, PersistentModel, Equatable {
+    
+    // MARK: PersistentModel
+    
     dynamic var id: String = NSUUID().UUIDString
+    
     override static func primaryKey() -> String? {
         return "id"
     }
+    
+    // MARK: Properties
     
     dynamic var dueDate: NSDate?
     dynamic var isMandatory: Bool = false
@@ -35,6 +41,8 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
     var formattedTime: String {
         return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.FullStyle)
     }
+    
+    // Mark: Initialization
     
     convenience init(dueDate: NSDate, isMandatory: Bool, types : [MeasurementPlanEntryType]? = nil) {
         self.init()
