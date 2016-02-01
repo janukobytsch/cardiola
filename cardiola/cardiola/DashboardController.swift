@@ -9,13 +9,24 @@
 import UIKit
 import Charts
 
-class DashboardController: UIViewController, UITableViewDelegate, UITableViewDataSource, ChartViewDelegate {
+class DashboardController: UIViewController, UITableViewDelegate, UITableViewDataSource, ChartViewDelegate, RecorderUpdateListener {
     
     let cellReuseIdentifier = "MeasurementTableViewCell"
+    
     let addCellTitle = "Neue Messung erstellen"
-    let doneEntriesTitle = "Erfasste Messungen"
-    let todoEntriesTitle = "Bevorstehende Messungen"
-    var entries: [String: [MeasurementPlanEntry]] = [String: [MeasurementPlanEntry]]()
+    let activeEntriesTitle = "Aktuelle Messung"
+    let archivedEntriesTitle = "Archivierte Messungen"
+    let pendingEntriesTitle = "Bevorstehende Messungen"
+    
+    enum EntrySection: Int {
+        case NewMeasurement = 0
+        case ActiveEntries = 1
+        case DoneEntries = 2
+        case TodoEntries = 3
+    }
+    
+    // dictionary containg mapping from section titles to section items
+    var entries = [String: [MeasurementPlanEntry]]()
     
     @IBOutlet weak var measurementPlanLabel: UILabel!
     @IBOutlet weak var measurementDetailLabel: UILabel!
@@ -23,14 +34,6 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var measurementTable: UITableView!
     @IBOutlet weak var newMeasurementLabel: UILabel!
     var measurementEntryView: MeasurementEntryView?
-    
-    var _entriesWithData: [MeasurementPlanEntry] {
-        return (currentPlan!.entries.filter { $0.data != nil })
-    }
-    
-    var _entriesWithoutData: [MeasurementPlanEntry] {
-        return (currentPlan!.entries.filter { $0.data == nil })
-    }
     
     var patientRepository: PatientRepository?
     var planRepository: PlanRepository?
@@ -43,19 +46,27 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // allows the recorder to propagate updates to the model
+        measurementRecorder?.addUpdateListener(self)
+        
         measurementTable.dataSource = self
         measurementTable.delegate = self
         
         currentPatient = patientRepository?.getCurrentPatient()
-        if let patient = currentPatient {
-            currentPlan = planRepository?.getPlan(from: patient)
-        }
+        currentPlan = planRepository?.currentPlan
         
         measurementEntryView = MeasurementEntryView(frame: measurementDetailView.frame, master: self)
         measurementDetailView.addSubview(measurementEntryView!)
         measurementEntryView?.hidden = true
-        
-        entries = [todoEntriesTitle: self._entriesWithoutData, doneEntriesTitle: self._entriesWithData]
+
+        entries = [pendingEntriesTitle: currentPlan!.pendingEntries,
+                    archivedEntriesTitle: currentPlan!.archivedEntries,
+                    activeEntriesTitle: currentPlan!.activeEntries]
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        // model might have changed meanwhile
+        measurementTable.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -99,21 +110,25 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if indexPath.section == 0 {
-            measurementEntryView?.hidden = true
+        switch indexPath.section {
+        case 0:
             newMeasurementLabel.hidden = false
-            let newEntry = MeasurementPlanEntry(dueDate: NSDate(timeIntervalSinceNow: 0))
-            newEntry.setMeasurement(Measurement.createRandom())
-            newEntry.isHeartRateEntry = true
-            newEntry.isBloodPressureEntry = true
-            
-            self.addNewEntry(newEntry)
-        } else {
+            measurementEntryView?.hidden = true
+            addActiveEntry()
+        default:
             newMeasurementLabel.hidden = true
             measurementEntryView?.hidden = false
             measurementEntryView?.updateViewWith(_entryForIndexPath(indexPath))
         }
+    }
+    
+    // MARK: RecorderUpdateListener
+    
+    func update() {
+        entries[activeEntriesTitle] = currentPlan!.activeEntries
+        entries[pendingEntriesTitle] = currentPlan!.pendingEntries
+        entries[archivedEntriesTitle] = currentPlan!.archivedEntries
+        measurementTable.reloadData()
     }
     
     /*
@@ -125,31 +140,29 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     // Pass the selected object to the new view controller.
     }
     */
-    
-    func addNewEntry(entry: MeasurementPlanEntry) {
-        self.currentPlan?.prependEntry(entry)
-        self.entries[doneEntriesTitle]?.insert(entry, atIndex: 0)
-        
-        measurementTable.beginUpdates()
-        measurementTable.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .Automatic)
-        measurementTable.endUpdates()
-        
+
+    func addActiveEntry() {
         measurementRecorder?.start(from: self)
     }
     
-    func updateEntryPosition(entry: MeasurementPlanEntry) {
-        if let idx = (self.entries[todoEntriesTitle]!).indexOf(entry) {
-            self.entries[doneEntriesTitle]!.append(entry)
-            self.entries[todoEntriesTitle]!.removeAtIndex(idx)
-            
-            measurementTable.beginUpdates()
-            measurementTable.deleteRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 2)], withRowAnimation: .Automatic)
-            measurementTable.insertRowsAtIndexPaths([NSIndexPath(forRow: self.entries[doneEntriesTitle]!.count - 1 , inSection: 1)], withRowAnimation: .Automatic)
-            measurementTable.endUpdates()
-            
-            entry.save()
-            measurementRecorder?.start(from: self)
-        }
+    func activateEntry(entry: MeasurementPlanEntry) {
+        measurementRecorder?.start(with: entry, from: self)
+//        if let idx = (self.entries[todoEntriesTitle]!).indexOf(entry) {
+//            self.entries[doneEntriesTitle]!.append(entry)
+//            self.entries[todoEntriesTitle]!.removeAtIndex(idx)
+//            
+//            measurementTable.beginUpdates()
+//            measurementTable.deleteRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 2)], withRowAnimation: .Automatic)
+//            measurementTable.insertRowsAtIndexPaths([NSIndexPath(forRow: self.entries[doneEntriesTitle]!.count - 1 , inSection: 1)], withRowAnimation: .Automatic)
+//            measurementTable.endUpdates()
+//            
+//            entry.save()
+//            measurementRecorder?.start(from: self)
+//        }
+    }
+    
+    func archiveEntry(entry: MeasurementPlanEntry) {
+        measurementRecorder?.finish()
     }
     
     

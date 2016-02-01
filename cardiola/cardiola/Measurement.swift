@@ -54,6 +54,14 @@ class Measurement: Object, PersistentModel {
         }
     }
     
+    var hasBloodPressure: Bool {
+        return self.diastolicPressure != nil || self.systolicPressure != nil
+    }
+    
+    var hasHeartRate: Bool {
+        return self.heartRate != nil
+    }
+    
     dynamic var date: NSDate?
 
     var formattedDate: String {
@@ -68,6 +76,7 @@ class Measurement: Object, PersistentModel {
 
     convenience init(heartRate: Int, systolicPressure: Int, diastolicPressure: Int) {
         self.init()
+        
         self.heartRate = heartRate
         self.systolicPressure = systolicPressure
         self.diastolicPressure = diastolicPressure

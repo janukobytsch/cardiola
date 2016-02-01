@@ -22,7 +22,8 @@ extension SwinjectStoryboard {
             c.measurementRecorder = r.resolve(MeasurementRecorder.self)
         }
         defaultContainer.register(MeasurementRecorder.self) { r in
-            MeasurementRecorder(repository: r.resolve(MeasurementRepository.self)!)
+            MeasurementRecorder(measurementRepository: r.resolve(MeasurementRepository.self)!,
+                planRepository: r.resolve(PlanRepository.self)!)
         }.inObjectScope(ObjectScope.Container)
         defaultContainer.register(MeasurementRepository.self) { _ in MeasurementRepository() }
         defaultContainer.register(PatientRepository.self) { _ in PatientRepository() }

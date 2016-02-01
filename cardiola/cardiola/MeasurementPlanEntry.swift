@@ -22,10 +22,16 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
     // MARK: Properties
 
     dynamic var dueDate: NSDate?
-    dynamic var isMandatory: Bool = false
     dynamic var data: Measurement?
+    
+    // vital parameters that should be included in the entrie's measurement
     dynamic var isBloodPressureEntry = false
     dynamic var isHeartRateEntry = false
+    
+    // assumes one of the following states
+    dynamic var isPending: Bool = false
+    dynamic var isActive: Bool = true
+    dynamic var isArchived: Bool = false
 
     var formattedDate: String {
         //        let formatter = NSDateFormatter()
@@ -36,23 +42,47 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
     var formattedTime: String {
         return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.FullStyle)
     }
+    
+    // MARK: Initializer
 
-    convenience init(dueDate: NSDate, isMandatory: Bool, isBloodPressureEntry: Bool = false, isHeartRateEntry: Bool = false) {
+    convenience init(dueDate: NSDate, isBloodPressureEntry: Bool = false, isHeartRateEntry: Bool = false) {
         self.init()
-        self.isMandatory = isMandatory
         self.dueDate = dueDate
         self.data = nil
-
         self.isBloodPressureEntry = isBloodPressureEntry
         self.isHeartRateEntry = isHeartRateEntry
     }
 
-    convenience init(dueDate: NSDate) {
-        self.init(dueDate: dueDate, isMandatory: true)
-    }
-
     func setMeasurement(measurement: Measurement) {
         self.data = measurement
+    }
+    
+    // MARK: States
+    
+    func activate() {
+        self.isActive = true
+        self.isArchived = false
+        self.isPending = false
+    }
+    
+    func archive() {
+        self.isActive = false
+        self.isArchived = true
+        self.isPending = false
+        self._synchronize()
+    }
+    
+    func pending() {
+        self.isActive = false
+        self.isArchived = false
+        self.isPending = true
+    }
+    
+    private func _synchronize() {
+        self.dueDate = self.data!.date ?? NSDate()
+        self.data!.date = self.dueDate
+        self.isBloodPressureEntry = self.data!.hasBloodPressure
+        self.isHeartRateEntry = self.data!.hasHeartRate
     }
 
     // MARK: Formatting
@@ -66,14 +96,19 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
 
     }
 
-    // MARK: Creation
-
-    internal static func createRandom() -> MeasurementPlanEntry {
-        let timeInterval = NSTimeInterval(5 * 64 + random(min: 0, max: 14) * 86400)
-        let date = NSDate(timeIntervalSinceNow: timeInterval)
-
-        let newEntry = MeasurementPlanEntry(dueDate: date, isMandatory: true, isBloodPressureEntry: true, isHeartRateEntry: true)
-        // newEntry.setMeasurement(Measurement.createRandom())
+    // MARK: Factory methods
+    
+    internal static func createVoluntaryPlanEntry(data: Measurement) -> MeasurementPlanEntry {
+        let entry = MeasurementPlanEntry(dueDate: NSDate(), isBloodPressureEntry: true, isHeartRateEntry: true)
+        entry.data = data
+        return entry
+    }
+    
+    internal static func withMeasurement(measurement: Measurement) -> MeasurementPlanEntry {
+        let date = measurement.date ?? NSDate()
+        let isBloodPressureEntry = measurement.diastolicPressure != nil || measurement.systolicPressure != nil
+        let isHeartRateEntry = measurement.heartRate != nil
+        let newEntry = MeasurementPlanEntry(dueDate: date, isBloodPressureEntry: isBloodPressureEntry, isHeartRateEntry: isHeartRateEntry)
         return newEntry
     }
 }
