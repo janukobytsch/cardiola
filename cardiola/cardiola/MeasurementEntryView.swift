@@ -10,6 +10,8 @@ import UIKit
 
 class MeasurementEntryView: UIView {
     
+    // MARK: Properties
+    
     var masterView: DashboardController?
     var entry: MeasurementPlanEntry?
     
@@ -102,11 +104,13 @@ class MeasurementEntryView: UIView {
         }
     }
     
-    // MARK: Interactions
+    // MARK: Setter
     
     func setMaster(view: DashboardController) {
         self.masterView = view
     }
+    
+    // MARK: UpdateView
     
     func updateView() {
         let hideNewButton = (self.entry?.data != nil)
@@ -115,7 +119,7 @@ class MeasurementEntryView: UIView {
         entryStackView.hidden = !hideNewButton
         
         if hideNewButton {
-            if self.entry!.types.contains(MeasurementPlanEntryType.BloodPressure) {
+            if self.entry!.isBloodPressureEntry {
                 bloodPressureStackView.hidden = false
                 
                 let valueText = "SYS:\t" + String((self.entry?.data?.systolicPressure!)!) + "\nDIA:\t" + String((self.entry?.data?.diastolicPressure)!)
@@ -125,7 +129,7 @@ class MeasurementEntryView: UIView {
                 bloodPressureStackView.hidden = true
             }
             
-            if self.entry!.types.contains(MeasurementPlanEntryType.HeartRate) {
+            if self.entry!.isHeartRateEntry {
                 heartRateStackView.hidden = false
                 
                 let valueText = "HeartRate:\t" + String((self.entry?.data?.heartRate!)!) + " BPM"
@@ -143,8 +147,8 @@ class MeasurementEntryView: UIView {
     }
     
     func createNewMeasurement() {
-        let isToday = self.entry?.dueDate?.isSameDayAs(NSDate())
-        if let isToday = isToday {
+        let isToday = (self.entry?.dueDate)!.isSameDayAs(NSDate())
+        if !isToday {
             masterView?.showAlertMessage("Falsches Datum", message: "Bitte Einträge nur an dem entsprechenden Datum erstellen")
         } else {
             self.entry?.setMeasurement(Measurement.createRandom())

@@ -9,87 +9,70 @@
 import Foundation
 import RealmSwift
 
-// MARK: Type
-
-enum MeasurementPlanEntryType {
-    case BloodPressure, HeartRate
-}
-
 class MeasurementPlanEntry: Object, PersistentModel, Equatable {
-    
+
     // MARK: PersistentModel
-    
+
     dynamic var id: String = NSUUID().UUIDString
-    
+
     override static func primaryKey() -> String? {
         return "id"
     }
-    
+
     // MARK: Properties
-    
+
     dynamic var dueDate: NSDate?
     dynamic var isMandatory: Bool = false
     dynamic var data: Measurement?
-    var types: [MeasurementPlanEntryType] = [MeasurementPlanEntryType]()
-    
+    dynamic var isBloodPressureEntry = false
+    dynamic var isHeartRateEntry = false
+
     var formattedDate: String {
         //        let formatter = NSDateFormatter()
         //        formatter.locale = NSLocale(localeIdentifier: "de_DE")
         return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
     }
-    
+
     var formattedTime: String {
         return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.FullStyle)
     }
-    
-    // Mark: Initialization
-    
-    convenience init(dueDate: NSDate, isMandatory: Bool, types : [MeasurementPlanEntryType]? = nil) {
+
+    convenience init(dueDate: NSDate, isMandatory: Bool, isBloodPressureEntry: Bool = false, isHeartRateEntry: Bool = false) {
         self.init()
         self.isMandatory = isMandatory
         self.dueDate = dueDate
         self.data = nil
-        
-        if types != nil {
-            self.addTypes(types!)
-        }
+
+        self.isBloodPressureEntry = isBloodPressureEntry
+        self.isHeartRateEntry = isHeartRateEntry
     }
-    
+
     convenience init(dueDate: NSDate) {
         self.init(dueDate: dueDate, isMandatory: true)
     }
-    
+
     func setMeasurement(measurement: Measurement) {
         self.data = measurement
     }
-    
-    func setTypes(types: [MeasurementPlanEntryType]) {
-        self.types = types
-    }
-    
-    func addTypes(types: [MeasurementPlanEntryType]) {
-        self.types += types
-    }
-    
-    
+
     // MARK: Formatting
-    
+
     private func _formatDate(dateStyle: NSDateFormatterStyle, timeStyle: NSDateFormatterStyle) -> String {
         guard let dueDate = self.dueDate else {
             return ""
         }
         return NSDateFormatter.localizedStringFromDate(dueDate, dateStyle: dateStyle,
             timeStyle: timeStyle)
-        
+
     }
-    
+
     // MARK: Creation
-    
+
     internal static func createRandom() -> MeasurementPlanEntry {
         let timeInterval = NSTimeInterval(5 * 64 + random(min: 0, max: 14) * 86400)
         let date = NSDate(timeIntervalSinceNow: timeInterval)
-        
-        let newEntry = MeasurementPlanEntry(dueDate: date, isMandatory: true, types: [MeasurementPlanEntryType.HeartRate, MeasurementPlanEntryType.BloodPressure])
+
+        let newEntry = MeasurementPlanEntry(dueDate: date, isMandatory: true, isBloodPressureEntry: true, isHeartRateEntry: true)
         // newEntry.setMeasurement(Measurement.createRandom())
         return newEntry
     }

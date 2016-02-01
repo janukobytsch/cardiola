@@ -49,7 +49,7 @@ class MeasurementPlan: Object, PersistentModel {
         for index in 0...6 {
             let timeInterval = NSTimeInterval(5 * 64 + index * 86400)
             let date = NSDate(timeIntervalSinceNow: timeInterval)
-            let entry = MeasurementPlanEntry(dueDate: date, isMandatory: true, types: [MeasurementPlanEntryType.HeartRate, MeasurementPlanEntryType.BloodPressure])
+            let entry = MeasurementPlanEntry(dueDate: date, isMandatory: true, isBloodPressureEntry: true, isHeartRateEntry: true)
             
             entries.append(entry)
         }
