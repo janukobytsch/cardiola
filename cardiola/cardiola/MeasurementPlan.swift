@@ -50,7 +50,8 @@ class MeasurementPlan: Object, PersistentModel {
             return
         }
         entries.removeAtIndex(index)
-        // TODO: delete realm object
+        
+        entry.delete()
     }
     
     // MARK: Initialization
@@ -59,5 +60,5 @@ class MeasurementPlan: Object, PersistentModel {
         self.init()
         self.entries.appendContentsOf(entries)
     }
-
+    
 }

@@ -19,6 +19,11 @@ struct BloodPressureResult: MeasurementResult {
         self.systolicPressure = systolicPressure
         self.diastolicPressure = diastolicPressure
     }
+    
+    init(measurement: Measurement) {
+        self.systolicPressure = measurement.systolicPressure!
+        self.diastolicPressure = measurement.diastolicPressure!
+    }
 }
 
 struct HeartRateResult: MeasurementResult {
@@ -27,5 +32,9 @@ struct HeartRateResult: MeasurementResult {
     
     init(heartRate: Int) {
         self.heartRate = heartRate
+    }
+    
+    init(measurement: Measurement) {
+        self.heartRate = measurement.heartRate!
     }
 }

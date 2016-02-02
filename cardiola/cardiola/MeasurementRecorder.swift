@@ -20,7 +20,7 @@ protocol RecorderUpdateListener: class {
 }
 
 class MeasurementRecorder: Recorder {
-
+    
     // MARK: States
     
     private class BloodPressureRecorderState: MeasurementRecorderState {
@@ -67,7 +67,7 @@ class MeasurementRecorder: Recorder {
     }
     
     // MARK: Initialization
-
+    
     required init(measurementRepository: MeasurementRepository, planRepository: PlanRepository, state: MeasurementRecorderState) {
         self.measurementRepository = measurementRepository
         self.planRepository = planRepository
@@ -124,7 +124,7 @@ class MeasurementRecorder: Recorder {
         
         // update plan container
         currentPlan.prependEntry(currentEntry!)
-
+        
         _isRecording = true
         print(String(currentMeasurement!.id))
         notifyListeners()
@@ -145,6 +145,7 @@ class MeasurementRecorder: Recorder {
         }
         
         // update models
+        currentEntry?.setMeasurement(currentMeasurement)
         currentEntry!.archive()
         
         // persist models
@@ -202,10 +203,10 @@ class MeasurementRecorder: Recorder {
             //recorder?.start(from: from!)
         }
         alertController.addAction(finishAction)
-
+        
         let ok = UIAlertAction(title: "Zurück", style: .Default) { (action) in }
         alertController.addAction(ok)
-
+        
         controller.presentViewController(alertController, animated: true) { }
     }
 }

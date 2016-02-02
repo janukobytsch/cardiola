@@ -16,7 +16,6 @@
 		48A29EBE1C5ED7BF0046D3E5 /* PersistentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A29EBD1C5ED7BF0046D3E5 /* PersistentModel.swift */; };
 		48A29EC01C5EEF940046D3E5 /* Realm+List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A29EBF1C5EEF940046D3E5 /* Realm+List.swift */; };
 		48A29EC21C5EF62D0046D3E5 /* Realm+Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A29EC11C5EF62D0046D3E5 /* Realm+Object.swift */; };
-		48C26AEF1C5EBA7800B16CF6 /* Cardiola.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48C26AED1C5EBA7800B16CF6 /* Cardiola.xcdatamodeld */; };
 		8B6D9D56F08C1E8BF22A81F0 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2FFE977571B23BA6B8F1EC /* Pods.framework */; };
 		D307FC071C5D1143005B6C41 /* MeasurementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC061C5D1143005B6C41 /* MeasurementController.swift */; };
 		D307FC091C5D19E5005B6C41 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307FC081C5D19E5005B6C41 /* Measurement.swift */; };
@@ -76,7 +75,6 @@
 		48A29EBD1C5ED7BF0046D3E5 /* PersistentModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentModel.swift; sourceTree = "<group>"; };
 		48A29EBF1C5EEF940046D3E5 /* Realm+List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Realm+List.swift"; sourceTree = "<group>"; };
 		48A29EC11C5EF62D0046D3E5 /* Realm+Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Realm+Object.swift"; sourceTree = "<group>"; };
-		48C26AEE1C5EBA7800B16CF6 /* Cardiola.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Cardiola.xcdatamodel; sourceTree = "<group>"; };
 		5C69A7268288979322C644B0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		5E2FFE977571B23BA6B8F1EC /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D4FA6461A3DFDB400E8C5D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -178,14 +176,13 @@
 				D34A6D6B1C5F105900054378 /* Views */,
 				D34A6D6C1C5F109C00054378 /* Repositories */,
 				485DA9341C57920600583AF0 /* Assets.xcassets */,
-				485DA9311C57920600583AF0 /* Main.storyboard */,
-				485DA92B1C57920600583AF0 /* AppDelegate.swift */,
-				485DA9361C57920600583AF0 /* Info.plist */,
-				D34A6D5F1C5ECFA700054378 /* MeasurementRecorder.swift */,
 				D34A6D601C5ECFA700054378 /* Recorder.swift */,
+				D34A6D5F1C5ECFA700054378 /* MeasurementRecorder.swift */,
 				D34A6D651C5F014400054378 /* MeasurementResult.swift */,
+				485DA92B1C57920600583AF0 /* AppDelegate.swift */,
 				D307FC0C1C5D20CD005B6C41 /* Utils.swift */,
-				48C26AED1C5EBA7800B16CF6 /* Cardiola.xcdatamodeld */,
+				485DA9311C57920600583AF0 /* Main.storyboard */,
+				485DA9361C57920600583AF0 /* Info.plist */,
 			);
 			path = cardiola;
 			sourceTree = "<group>";
@@ -449,7 +446,6 @@
 				D36B09641C5C8B220097155D /* PlanRepository.swift in Sources */,
 				48A29EC21C5EF62D0046D3E5 /* Realm+Object.swift in Sources */,
 				D36B09541C5C76DF0097155D /* DashboardController.swift in Sources */,
-				48C26AEF1C5EBA7800B16CF6 /* Cardiola.xcdatamodeld in Sources */,
 				D307FC091C5D19E5005B6C41 /* Measurement.swift in Sources */,
 				D34A6D621C5ECFA800054378 /* Recorder.swift in Sources */,
 				D307FC0D1C5D20CD005B6C41 /* Utils.swift in Sources */,
@@ -716,19 +712,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		48C26AED1C5EBA7800B16CF6 /* Cardiola.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				48C26AEE1C5EBA7800B16CF6 /* Cardiola.xcdatamodel */,
-			);
-			currentVersion = 48C26AEE1C5EBA7800B16CF6 /* Cardiola.xcdatamodel */;
-			path = Cardiola.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 485DA9201C57920600583AF0 /* Project object */;
 }

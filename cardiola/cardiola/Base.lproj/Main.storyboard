@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -36,7 +36,7 @@
                                                 <rect key="frame" x="0.0" y="54" width="815" height="66"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="869-xg-rqx" id="eDY-rS-gPu">
-                                                    <rect key="frame" x="0.0" y="0.0" width="815" height="66"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="799" height="66"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
@@ -163,6 +163,7 @@
                         <outlet property="measurementPlanLabel" destination="uwm-U1-FPT" id="AlC-iY-J5u"/>
                         <outlet property="measurementRadar" destination="Hku-pP-gkC" id="Oo7-I5-AKd"/>
                         <outlet property="measurementTable" destination="b7T-A9-zdx" id="De0-dE-71A"/>
+                        <segue destination="8rJ-Kc-sve" kind="presentation" identifier="startMeasuringSegue" modalTransitionStyle="flipHorizontal" id="Hqp-OF-jDE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
@@ -172,7 +173,7 @@
         <!--Measurement Controller-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController id="8rJ-Kc-sve" customClass="MeasurementController" customModule="cardiola" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MeasurementViewController" id="8rJ-Kc-sve" customClass="MeasurementController" customModule="cardiola" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L7p-HK-0SC"/>
                         <viewControllerLayoutGuide type="bottom" id="Djb-ko-YwX"/>
@@ -319,34 +320,34 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="VB8-26-EDY" secondAttribute="bottom" constant="30" id="02P-ua-hHe"/>
                             <constraint firstItem="TlF-aw-C9d" firstAttribute="centerY" secondItem="VV4-WV-dFG" secondAttribute="centerY" id="2Lf-tU-CM5"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Abf-9h-6zl" secondAttribute="trailing" constant="100" id="39O-sU-p9r"/>
                             <constraint firstItem="j9q-cg-R0R" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="100" id="3aP-0L-rD3"/>
-                            <constraint firstItem="TtB-Y4-6Mh" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="200" id="4oB-5m-8hT"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="bottom" secondItem="eAa-iD-KMS" secondAttribute="bottom" id="4tZ-dP-q8Q"/>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="ICG-qB-13Y" secondAttribute="bottom" constant="30" id="6q4-ws-hSi"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="top" secondItem="TtB-Y4-6Mh" secondAttribute="bottom" constant="50" id="7p8-VD-30X"/>
                             <constraint firstItem="j9q-cg-R0R" firstAttribute="centerY" secondItem="TtB-Y4-6Mh" secondAttribute="centerY" id="9uW-f8-aBH"/>
                             <constraint firstItem="ICG-qB-13Y" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="BYU-hC-EIE"/>
                             <constraint firstItem="6VA-6a-Y9o" firstAttribute="height" secondItem="eAa-iD-KMS" secondAttribute="height" id="CKp-2y-bki"/>
                             <constraint firstItem="eAa-iD-KMS" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="100" id="Cha-QY-Wzf"/>
                             <constraint firstItem="eAa-iD-KMS" firstAttribute="top" secondItem="TtB-Y4-6Mh" secondAttribute="bottom" constant="50" id="FEh-8I-CD5"/>
-                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="VB8-26-EDY" secondAttribute="bottom" constant="30" id="GD8-ju-OSw"/>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="eAa-iD-KMS" secondAttribute="bottom" constant="100" id="FGu-Wy-d9h"/>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="VV4-WV-dFG" secondAttribute="bottom" constant="100" id="FaW-91-Cbj"/>
                             <constraint firstItem="Abf-9h-6zl" firstAttribute="centerY" secondItem="TtB-Y4-6Mh" secondAttribute="centerY" id="GZE-4m-uQx"/>
                             <constraint firstItem="6VA-6a-Y9o" firstAttribute="centerY" secondItem="eAa-iD-KMS" secondAttribute="centerY" id="HHj-hE-eoh"/>
                             <constraint firstItem="TtB-Y4-6Mh" firstAttribute="height" secondItem="Abf-9h-6zl" secondAttribute="height" id="HRY-z8-KHE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VB8-26-EDY" secondAttribute="trailing" constant="100" id="IJO-NN-Djv"/>
                             <constraint firstItem="TtB-Y4-6Mh" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="ILv-VB-JCS"/>
-                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="ICG-qB-13Y" secondAttribute="bottom" constant="30" id="Nw8-Dt-B2j"/>
+                            <constraint firstItem="TtB-Y4-6Mh" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="200" id="KyY-VD-29M"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="top" secondItem="TtB-Y4-6Mh" secondAttribute="bottom" constant="50" id="OVQ-5I-aSl"/>
                             <constraint firstItem="VV4-WV-dFG" firstAttribute="leading" secondItem="eAa-iD-KMS" secondAttribute="trailing" constant="100" id="Ol7-OF-FSf"/>
                             <constraint firstItem="TlF-aw-C9d" firstAttribute="width" secondItem="VV4-WV-dFG" secondAttribute="width" id="PeR-ZL-Py0"/>
-                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="eAa-iD-KMS" secondAttribute="bottom" constant="100" id="TFw-RK-Iy9"/>
                             <constraint firstItem="Abf-9h-6zl" firstAttribute="leading" secondItem="TtB-Y4-6Mh" secondAttribute="trailing" id="UMJ-WI-8fm"/>
                             <constraint firstItem="TlF-aw-C9d" firstAttribute="height" secondItem="VV4-WV-dFG" secondAttribute="height" id="Ynh-GB-f88"/>
                             <constraint firstItem="6VA-6a-Y9o" firstAttribute="centerX" secondItem="eAa-iD-KMS" secondAttribute="centerX" id="lqx-ye-8DN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VV4-WV-dFG" secondAttribute="trailing" constant="100" id="pR3-YM-OfW"/>
                             <constraint firstItem="Abf-9h-6zl" firstAttribute="leading" secondItem="TtB-Y4-6Mh" secondAttribute="trailing" constant="1" id="pRL-zS-gA2"/>
-                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="VV4-WV-dFG" secondAttribute="bottom" constant="100" id="rRa-RN-RWC"/>
                             <constraint firstItem="TlF-aw-C9d" firstAttribute="centerX" secondItem="VV4-WV-dFG" secondAttribute="centerX" id="syZ-MR-1KD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VV4-WV-dFG" secondAttribute="trailing" constant="100" id="tlm-Bh-FNf"/>
                             <constraint firstItem="eAa-iD-KMS" firstAttribute="width" secondItem="VV4-WV-dFG" secondAttribute="width" id="xeQ-Bw-rf0"/>
@@ -407,4 +408,7 @@
         <image name="record" width="48" height="48"/>
         <image name="timeline" width="48" height="48"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Hqp-OF-jDE"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -10,17 +10,9 @@ import Foundation
 import RealmSwift
 
 class MeasurementPlanEntry: Object, PersistentModel, Equatable {
-
-    // MARK: PersistentModel
-
-    dynamic var id: String = NSUUID().UUIDString
-
-    override static func primaryKey() -> String? {
-        return "id"
-    }
-
+    
     // MARK: Properties
-
+    
     dynamic var dueDate: NSDate?
     dynamic var data: Measurement?
     
@@ -30,21 +22,21 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
     
     // assumes one of the following states
     dynamic var isPending: Bool = false
-    dynamic var isActive: Bool = true
-    dynamic var isArchived: Bool = false
-
+    dynamic var isActive: Bool = false
+    dynamic var isArchived: Bool = true
+    
     var formattedDate: String {
         //        let formatter = NSDateFormatter()
         //        formatter.locale = NSLocale(localeIdentifier: "de_DE")
         return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
     }
-
+    
     var formattedTime: String {
         return formatDate(self.dueDate, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.FullStyle)
     }
     
     // MARK: Initializer
-
+    
     convenience init(dueDate: NSDate, isBloodPressureEntry: Bool = false, isHeartRateEntry: Bool = false) {
         self.init()
         self.dueDate = dueDate
@@ -52,8 +44,8 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
         self.isBloodPressureEntry = isBloodPressureEntry
         self.isHeartRateEntry = isHeartRateEntry
     }
-
-    func setMeasurement(measurement: Measurement) {
+    
+    func setMeasurement(measurement: Measurement?) {
         self.data = measurement
     }
     
@@ -70,6 +62,7 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
         self.isArchived = true
         self.isPending = false
         self._synchronize()
+        self.save()
     }
     
     func pending() {
@@ -84,18 +77,18 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
         self.isBloodPressureEntry = self.data!.hasBloodPressure
         self.isHeartRateEntry = self.data!.hasHeartRate
     }
-
+    
     // MARK: Formatting
-
+    
     private func _formatDate(dateStyle: NSDateFormatterStyle, timeStyle: NSDateFormatterStyle) -> String {
         guard let dueDate = self.dueDate else {
             return ""
         }
         return NSDateFormatter.localizedStringFromDate(dueDate, dateStyle: dateStyle,
             timeStyle: timeStyle)
-
+        
     }
-
+    
     // MARK: Factory methods
     
     internal static func createVoluntaryPlanEntry(data: Measurement) -> MeasurementPlanEntry {
@@ -110,6 +103,27 @@ class MeasurementPlanEntry: Object, PersistentModel, Equatable {
         let isHeartRateEntry = measurement.heartRate != nil
         let newEntry = MeasurementPlanEntry(dueDate: date, isBloodPressureEntry: isBloodPressureEntry, isHeartRateEntry: isHeartRateEntry)
         return newEntry
+    }
+    
+    // MARK: PersistentModel
+    
+    dynamic var id: String = NSUUID().UUIDString
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
+    // MARK: Remove
+    
+    func delete() {
+        let realm = try! Realm()
+        
+        if realm.objects(MeasurementPlanEntry).indexOf(self) != nil {
+            
+            try! realm.write {
+                realm.delete(self)
+            }
+        }
     }
 }
 

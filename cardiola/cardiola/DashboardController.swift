@@ -37,7 +37,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     var planRepository: PlanRepository?
     
     var measurementRecorder: MeasurementRecorder?
-
+    
     var currentPatient: Patient?
     var currentPlan: MeasurementPlan?
     
@@ -55,12 +55,16 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         measurementTable.delegate = self
         measurementTable.remembersLastFocusedIndexPath = true
         
+        let playPauseRecognizer = UITapGestureRecognizer(target: self, action: "tablePlayPausePressed")
+        playPauseRecognizer.allowedPressTypes = [NSNumber(integer: UIPressType.PlayPause.rawValue)];
+        measurementTable.addGestureRecognizer(playPauseRecognizer)
+        
         currentPatient = patientRepository?.getCurrentPatient()
         currentPlan = planRepository?.currentPlan
-
+        
         entries = [pendingEntriesTitle: currentPlan!.pendingEntries,
-                    archivedEntriesTitle: currentPlan!.archivedEntries,
-                    activeEntriesTitle: currentPlan!.activeEntries]
+            archivedEntriesTitle: currentPlan!.archivedEntries,
+            activeEntriesTitle: currentPlan!.activeEntries]
         
         initRadarChart()
     }
@@ -77,7 +81,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     // MARK: Charts
-
+    
     func initRadarChart() {
         let chart = measurementRadar
         
@@ -105,18 +109,23 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     // TODO: support missing vital parameters
+    // TODO: Collect data
     func updateChartData(selectedEntry: MeasurementPlanEntry) {
         let chart = self.measurementRadar
         let measurement = selectedEntry.data
+        print("data", measurement)
         
         var xValues = ["Systolischer Blutdruck", "Diastolischer Blutdruck", "Pulsrate", "Blutzucker", "Sauferstoffsättigung", "Persönliches Befinden"]
-        var yValues: [ChartDataEntry]
+        var yValues = [ChartDataEntry]()
         
         // pending dataset
-        
-        let supports = [selectedEntry.isBloodPressureEntry, selectedEntry.isBloodPressureEntry, selectedEntry.isHeartRateEntry, false, false, false]
-        yValues = supports.enumerate().map() {
-            return ($0.1 != nil) ? ChartDataEntry(value: 100.0, xIndex: $0.0) : ChartDataEntry(value: 0.0, xIndex: $0.0)
+        if let pendingMeasurement =  measurementRecorder?.currentMeasurement {
+            
+            //let supports = [pending.isBloodPressureEntry, selectedEntry.isBloodPressureEntry, selectedEntry.isHeartRateEntry, false, false, false]
+            let properties = [pendingMeasurement.systolicPressure, pendingMeasurement.diastolicPressure, pendingMeasurement.heartRate, nil, nil, nil]
+            yValues = properties.enumerate().map() {
+                return ($0.element != nil) ? ChartDataEntry(value: Double($0.element!), xIndex: $0.0) : ChartDataEntry(value: 0.0, xIndex: $0.0)
+            }
         }
         
         let dataset1 = RadarChartDataSet(yVals: yValues, label: "Ausstehende Messung")
@@ -124,12 +133,12 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         dataset1.setColor(Colors.gray)
         dataset1.fillColor = Colors.gray
         dataset1.lineWidth = 2.0
-
+        
         // recorded dataset
         
         let properties = [measurement?.systolicPressure, measurement?.diastolicPressure, measurement?.heartRate, nil, nil, nil]
         yValues = properties.enumerate().map() {
-            return ($0.1 != nil) ? ChartDataEntry(value: 100.0, xIndex: $0.0) : ChartDataEntry(value: 0.0, xIndex: $0.0)
+            return ($0.element != nil) ? ChartDataEntry(value: Double($0.element!), xIndex: $0.0) : ChartDataEntry(value: 0.0, xIndex: $0.0)
         }
         
         let dataset2 = RadarChartDataSet(yVals: yValues, label: "Abgeschlossene Messung")
@@ -194,6 +203,16 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    // MARK: Longpresscallback
+    
+    func tablePlayPausePressed() {
+        
+        if measurementTable.indexPathForSelectedRow != nil &&
+            _entryForIndexPath(measurementTable.indexPathForSelectedRow!).data != nil {
+                showDeleteEntryDialog();
+        }
+    }
+    
     // MARK: RecorderUpdateListener
     
     func update() {
@@ -212,29 +231,45 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     // Pass the selected object to the new view controller.
     }
     */
-
+    
     func addActiveEntry() {
         measurementRecorder?.start(from: self)
+        tabBarController?.selectedIndex = 1
     }
     
     func activateEntry(entry: MeasurementPlanEntry) {
         measurementRecorder?.start(with: entry, from: self)
-//        if let idx = (self.entries[todoEntriesTitle]!).indexOf(entry) {
-//            self.entries[doneEntriesTitle]!.append(entry)
-//            self.entries[todoEntriesTitle]!.removeAtIndex(idx)
-//            
-//            measurementTable.beginUpdates()
-//            measurementTable.deleteRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 2)], withRowAnimation: .Automatic)
-//            measurementTable.insertRowsAtIndexPaths([NSIndexPath(forRow: self.entries[doneEntriesTitle]!.count - 1 , inSection: 1)], withRowAnimation: .Automatic)
-//            measurementTable.endUpdates()
-//            
-//            entry.save()
-//            measurementRecorder?.start(from: self)
-//        }
+        //        if let idx = (self.entries[todoEntriesTitle]!).indexOf(entry) {
+        //            self.entries[doneEntriesTitle]!.append(entry)
+        //            self.entries[todoEntriesTitle]!.removeAtIndex(idx)
+        //            
+        //            measurementTable.beginUpdates()
+        //            measurementTable.deleteRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 2)], withRowAnimation: .Automatic)
+        //            measurementTable.insertRowsAtIndexPaths([NSIndexPath(forRow: self.entries[doneEntriesTitle]!.count - 1 , inSection: 1)], withRowAnimation: .Automatic)
+        //            measurementTable.endUpdates()
+        //            
+        //            entry.save()
+        //            measurementRecorder?.start(from: self)
+        //        }
     }
     
     func archiveEntry(entry: MeasurementPlanEntry) {
         measurementRecorder?.finish()
+    }
+    
+    func removeSelectedEntry() {
+        
+        if let indexPath = measurementTable.indexPathForSelectedRow {
+            if Array(entries.keys)[indexPath.section - 1] == archivedEntriesTitle  {
+                let entry = _entryForIndexPath(indexPath)
+                
+                if entry.data != nil {
+                    //       currentPlan!.archivedEntries.removeAtIndex(currentPlan!.archivedEntries.indexOf(entry))
+                    entry.delete()
+                    //       self.update()
+                }
+            }
+        }
     }
     
     
@@ -251,6 +286,22 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             let ok = UIAlertAction(title: "OK", style: .Default) { (action) in }
             alertController.addAction(ok)
         }
+        
+        self.presentViewController(alertController, animated: true) { }
+    }
+    
+    func showDeleteEntryDialog() {
+        let alertController = UIAlertController(title: "Messung löschen",
+            message: "Soll die ausgewählte Messung gelöscht werden?", preferredStyle: .Alert)
+        
+        
+        let cancelAction = UIAlertAction(title: "Messung löschen", style: .Destructive) { (action) in
+            self.removeSelectedEntry()
+        }
+        alertController.addAction(cancelAction)
+        
+        let ok = UIAlertAction(title: "Zurück", style: .Default) { (action) in }
+        alertController.addAction(ok)
         
         self.presentViewController(alertController, animated: true) { }
     }

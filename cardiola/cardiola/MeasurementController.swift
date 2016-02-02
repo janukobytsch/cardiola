@@ -43,9 +43,13 @@ class MeasurementController: UIViewController {
         
         heartFrequencyManager = HeartFrequencyMeasurementManager(realtimeChart: realtimeLineChart, historyChart: heartRateHistoryChart)
         heartFrequencyManager!.updateHistoryData(with: measurements)
-
+        
         currentManager = bloodPressureManager
         currentManager?.afterModeChanged()
+        
+        if measurementRecorder?.isRecording() ?? false {
+            startMeasuringData()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -78,15 +82,22 @@ class MeasurementController: UIViewController {
             dispatch_after(waitTime, GlobalDispatchUtils.MainQueue) {
                 let measurement = Measurement.createRandom()
                 self.currentManager?.updateRealtimeData(with: measurement)
+                
+                self.measurementRecorder?.updateMeasurement(with: BloodPressureResult(measurement: measurement))
+                self.measurementRecorder?.updateMeasurement(with: HeartRateResult(measurement: measurement))
             }
         }
     }
     
+    func startMeasuringData() {
+        currentManager?.startMeasurement()
+        simulateRealtime()
+    }
+    
     @IBAction func startMeasurement(sender: UIButton) {
         measurementRecorder?.start(from: self)
-        currentManager?.startMeasurement()
         updateActionButtons()
-        simulateRealtime()
+        startMeasuringData()
     }
     
     @IBAction func cancelMeasurement(sender: UIButton) {
@@ -104,12 +115,15 @@ class MeasurementController: UIViewController {
         switch sender.selectedSegmentIndex {
         case 1:
             currentManager = heartFrequencyManager
+            measurementRecorder?.measureHeartRate()
         case 0:
             currentManager = bloodPressureManager
+            measurementRecorder?.measureBloodPressure()
         default:
             currentManager = bloodPressureManager
+            measurementRecorder?.measureBloodPressure()
         }
         currentManager?.afterModeChanged()
     }
-
+    
 }
