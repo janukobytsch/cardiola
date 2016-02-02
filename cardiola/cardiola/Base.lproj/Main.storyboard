@@ -162,6 +162,7 @@
                         <outlet property="measurementDetailLabel" destination="rb5-8x-PYR" id="Q0V-fg-3OM"/>
                         <outlet property="measurementPlanLabel" destination="uwm-U1-FPT" id="AlC-iY-J5u"/>
                         <outlet property="measurementRadar" destination="Hku-pP-gkC" id="Oo7-I5-AKd"/>
+                        <outlet property="measurementRadarTitle" destination="rb5-8x-PYR" id="zVu-Ct-swC"/>
                         <outlet property="measurementTable" destination="b7T-A9-zdx" id="De0-dE-71A"/>
                         <segue destination="8rJ-Kc-sve" kind="presentation" identifier="startMeasuringSegue" modalTransitionStyle="flipHorizontal" id="Hqp-OF-jDE"/>
                     </connections>

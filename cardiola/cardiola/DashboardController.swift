@@ -17,6 +17,8 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     let activeEntriesTitle = "Aktuelle Messung"
     let archivedEntriesTitle = "Archivierte Messungen"
     let pendingEntriesTitle = "Bevorstehende Messungen"
+    let measurementRadarTitleChart = "Messdetails"
+    let measurementRadarTitlePending = "Messung noch ausstehend"
     
     enum EntrySection: Int {
         case NewMeasurement = 0
@@ -31,6 +33,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var measurementPlanLabel: UILabel!
     @IBOutlet weak var measurementDetailLabel: UILabel!
     @IBOutlet weak var measurementTable: UITableView!
+    @IBOutlet weak var measurementRadarTitle: UILabel!
     @IBOutlet weak var measurementRadar: RadarChartView!
     
     var patientRepository: PatientRepository?
@@ -113,7 +116,6 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     func updateChartData(selectedEntry: MeasurementPlanEntry) {
         let chart = self.measurementRadar
         let measurement = selectedEntry.data
-        print("data", measurement)
         
         var xValues = ["Systolischer Blutdruck", "Diastolischer Blutdruck", "Pulsrate", "Blutzucker", "Sauferstoffsättigung", "Persönliches Befinden"]
         var yValues = [ChartDataEntry]()
@@ -157,6 +159,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         let data = RadarChartData(xVals: xValues, dataSets: [dataset1, dataset2])
         chart.data = data
         
+        chart.hidden = false
         chart.notifyDataSetChanged()
     }
     
@@ -199,14 +202,22 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             addActiveEntry()
         default:
             let selectedEntry = _entryForIndexPath(indexPath)
-            updateChartData(selectedEntry)
+            if !selectedEntry.isPending {
+                self.measurementRadarTitle.text = measurementRadarTitleChart
+                updateChartData(selectedEntry)
+            } else {
+                self.measurementRadarTitle.text = measurementRadarTitlePending
+            }
         }
+    }
+    
+    func tableView(tableView: UITableView, didUnhighlightRowAtIndexPath indexPath: NSIndexPath) {
+        self.measurementRadar.hidden = true
     }
     
     // MARK: Longpresscallback
     
     func tablePlayPausePressed() {
-        
         if measurementTable.indexPathForSelectedRow != nil &&
             _entryForIndexPath(measurementTable.indexPathForSelectedRow!).data != nil {
                 showDeleteEntryDialog();
@@ -258,15 +269,14 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func removeSelectedEntry() {
-        
         if let indexPath = measurementTable.indexPathForSelectedRow {
             if Array(entries.keys)[indexPath.section - 1] == archivedEntriesTitle  {
                 let entry = _entryForIndexPath(indexPath)
                 
                 if entry.data != nil {
-                    //       currentPlan!.archivedEntries.removeAtIndex(currentPlan!.archivedEntries.indexOf(entry))
-                    entry.delete()
-                    //       self.update()
+                    currentPlan?.removeEntry(entry)
+                    self.update()
+                    self.measurementRadar.hidden = true
                 }
             }
         }

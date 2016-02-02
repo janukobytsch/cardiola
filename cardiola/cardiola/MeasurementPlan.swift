@@ -42,7 +42,6 @@ class MeasurementPlan: Object, PersistentModel {
     
     func prependEntry(entry: MeasurementPlanEntry) {
         entries.insert(entry, atIndex: 0)
-        entry.save()
     }
     
     func removeEntry(entry: MeasurementPlanEntry) {
@@ -50,7 +49,6 @@ class MeasurementPlan: Object, PersistentModel {
             return
         }
         entries.removeAtIndex(index)
-        
         entry.delete()
     }
     
