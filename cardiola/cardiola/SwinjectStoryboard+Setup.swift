@@ -15,10 +15,8 @@ extension SwinjectStoryboard {
     class func setup() {
         defaultContainer.registerForStoryboard(MeasurementController.self) { r, c in
             c.measurementRecorder = r.resolve(MeasurementRecorder.self)
+            c.bloodpressureProvider = r.resolve(BloodPressureProvider.self)
         }
-        //defaultContainer.registerForStoryboard(MeasurementController.self) { r, c in
-        //    c.bloodPressureProvider = r.resolve(BloodPressureProvider.self)
-        //}
         
         defaultContainer.registerForStoryboard(DashboardController.self) { r, c in
             c.planRepository = r.resolve(PlanRepository.self)

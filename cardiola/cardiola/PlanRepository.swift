@@ -9,7 +9,7 @@
 import RealmSwift
 
 class PlanRepository {
-
+    
     private var _currentPlan: MeasurementPlan?
     
     var currentPlan: MeasurementPlan {
@@ -20,7 +20,6 @@ class PlanRepository {
             let dbEntries = realm.objects(MeasurementPlanEntry)
             
             entries.appendContentsOf(dbEntries.asArray())
-            print("Got from db", entries.count)
             
             if entries.count == 0 {
                 // generate mock data
@@ -40,7 +39,7 @@ class PlanRepository {
      */
     static func createRandomEntries() -> [MeasurementPlanEntry] {
         var entries = [MeasurementPlanEntry]()
-
+        
         for index in 0...3 {
             let timeInterval = NSTimeInterval(5 * 64 + index * 86400)
             let date = NSDate(timeIntervalSinceNow: timeInterval)
@@ -55,5 +54,5 @@ class PlanRepository {
         return entries
     }
     
-
+    
 }
