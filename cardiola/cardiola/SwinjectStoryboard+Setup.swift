@@ -16,15 +16,22 @@ extension SwinjectStoryboard {
         defaultContainer.registerForStoryboard(MeasurementController.self) { r, c in
             c.measurementRecorder = r.resolve(MeasurementRecorder.self)
         }
+        //defaultContainer.registerForStoryboard(MeasurementController.self) { r, c in
+        //    c.bloodPressureProvider = r.resolve(BloodPressureProvider.self)
+        //}
+        
         defaultContainer.registerForStoryboard(DashboardController.self) { r, c in
             c.planRepository = r.resolve(PlanRepository.self)
             c.patientRepository = r.resolve(PatientRepository.self)
             c.measurementRecorder = r.resolve(MeasurementRecorder.self)
         }
+        
         defaultContainer.register(MeasurementRecorder.self) { r in
             MeasurementRecorder(measurementRepository: r.resolve(MeasurementRepository.self)!,
                 planRepository: r.resolve(PlanRepository.self)!)
-        }.inObjectScope(ObjectScope.Container)
+            }.inObjectScope(ObjectScope.Container)
+        
+        defaultContainer.register(BloodPressureProvider.self) { _ in BloodPressureProvider() }
         defaultContainer.register(MeasurementRepository.self) { _ in MeasurementRepository() }
         defaultContainer.register(PatientRepository.self) { _ in PatientRepository() }
         defaultContainer.register(PlanRepository.self) { _ in PlanRepository() }

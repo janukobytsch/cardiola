@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48543FC11C607426006D2A45 /* BloodPressureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48543FC01C607426006D2A45 /* BloodPressureProvider.swift */; };
+		48543FC31C607433006D2A45 /* ResultProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48543FC21C607433006D2A45 /* ResultProvider.swift */; };
+		48543FC51C6076A0006D2A45 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48543FC41C6076A0006D2A45 /* Observer.swift */; };
 		485DA92C1C57920600583AF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485DA92B1C57920600583AF0 /* AppDelegate.swift */; };
 		485DA9331C57920600583AF0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 485DA9311C57920600583AF0 /* Main.storyboard */; };
 		485DA9351C57920600583AF0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 485DA9341C57920600583AF0 /* Assets.xcassets */; };
@@ -60,6 +63,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		48543FC01C607426006D2A45 /* BloodPressureProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodPressureProvider.swift; sourceTree = "<group>"; };
+		48543FC21C607433006D2A45 /* ResultProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultProvider.swift; sourceTree = "<group>"; };
+		48543FC41C6076A0006D2A45 /* Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		485DA9281C57920600583AF0 /* cardiola.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cardiola.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		485DA92B1C57920600583AF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		485DA9321C57920600583AF0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -170,17 +176,20 @@
 		485DA92A1C57920600583AF0 /* cardiola */ = {
 			isa = PBXGroup;
 			children = (
+				48543FC01C607426006D2A45 /* BloodPressureProvider.swift */,
+				48543FC21C607433006D2A45 /* ResultProvider.swift */,
+				48543FC41C6076A0006D2A45 /* Observer.swift */,
+				D34A6D601C5ECFA700054378 /* Recorder.swift */,
+				D34A6D5F1C5ECFA700054378 /* MeasurementRecorder.swift */,
+				D34A6D651C5F014400054378 /* MeasurementResult.swift */,
+				D307FC0C1C5D20CD005B6C41 /* Utils.swift */,
 				D34A6D681C5F0ED100054378 /* Extensions */,
 				D36B09561C5C77C20097155D /* Models */,
 				D34A6D691C5F0F1C00054378 /* Controllers */,
 				D34A6D6B1C5F105900054378 /* Views */,
 				D34A6D6C1C5F109C00054378 /* Repositories */,
 				485DA9341C57920600583AF0 /* Assets.xcassets */,
-				D34A6D601C5ECFA700054378 /* Recorder.swift */,
-				D34A6D5F1C5ECFA700054378 /* MeasurementRecorder.swift */,
-				D34A6D651C5F014400054378 /* MeasurementResult.swift */,
 				485DA92B1C57920600583AF0 /* AppDelegate.swift */,
-				D307FC0C1C5D20CD005B6C41 /* Utils.swift */,
 				485DA9311C57920600583AF0 /* Main.storyboard */,
 				485DA9361C57920600583AF0 /* Info.plist */,
 			);
@@ -452,10 +461,13 @@
 				D34A6D6E1C5F1B0F00054378 /* SwinjectStoryboard+Setup.swift in Sources */,
 				D307FC131C5D5C69005B6C41 /* MeasurementManager.swift in Sources */,
 				48A29EC01C5EEF940046D3E5 /* Realm+List.swift in Sources */,
+				48543FC51C6076A0006D2A45 /* Observer.swift in Sources */,
 				D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */,
+				48543FC31C607433006D2A45 /* ResultProvider.swift in Sources */,
 				D307FC1C1C5E918C005B6C41 /* String+Subscript.swift in Sources */,
 				D36B095E1C5C7BB40097155D /* NSDate+Operators.swift in Sources */,
 				D36B095C1C5C79CA0097155D /* MeasurementPlanEntry.swift in Sources */,
+				48543FC11C607426006D2A45 /* BloodPressureProvider.swift in Sources */,
 				D34A6D661C5F014400054378 /* MeasurementResult.swift in Sources */,
 				D380C1851C5E975500CDD5DD /* Array+Binning.swift in Sources */,
 				D307FC171C5D6DB9005B6C41 /* HeartFrequencyMeasurementManager.swift in Sources */,

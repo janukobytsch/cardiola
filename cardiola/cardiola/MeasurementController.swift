@@ -9,7 +9,7 @@
 import UIKit
 import Charts
 
-class MeasurementController: UIViewController {
+class MeasurementController: UIViewController, UpdateListener {
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var historyBarChart: BarChartView!
@@ -32,6 +32,7 @@ class MeasurementController: UIViewController {
     var currentManager: MeasurementManager?
     
     var measurementRecorder: MeasurementRecorder?
+    var bloodpressureProvider: BloodPressureProvider?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,8 @@ class MeasurementController: UIViewController {
         if measurementRecorder?.isRecording() ?? false {
             startMeasuringData()
         }
+        
+        bloodpressureProvider?.addUpdateListener(self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -63,6 +66,8 @@ class MeasurementController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: UI update
+    
     func updateActionButtons() {
         let isRecording = measurementRecorder?.isRecording() ?? false
         measureButton!.hidden = isRecording
@@ -73,6 +78,8 @@ class MeasurementController: UIViewController {
         doneButton!.enabled = isRecording
         indicatorView!.hidden = !isRecording
     }
+    
+    // MARK: Data handleing
     
     func simulateRealtime() {
         for count in 0...30 {
@@ -88,6 +95,11 @@ class MeasurementController: UIViewController {
             }
         }
     }
+    
+    func update() {
+    }
+    
+    // MARK: Mearsurement states
     
     func startMeasuringData() {
         currentManager?.startMeasurement()

@@ -32,7 +32,7 @@
                                         <rect key="frame" x="0.0" y="56" width="815" height="724"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" misplaced="YES" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="MeasurementTableViewCell" id="869-xg-rqx">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="MeasurementTableViewCell" id="869-xg-rqx">
                                                 <rect key="frame" x="0.0" y="54" width="815" height="66"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="869-xg-rqx" id="eDY-rS-gPu">
@@ -130,7 +130,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
                         <constraints>
                             <constraint firstItem="Euy-AC-ZFN" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="3gD-au-axh"/>
                             <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="9aN-0g-pkM" secondAttribute="bottom" constant="100" id="9Ge-Gk-jGr"/>
@@ -319,7 +319,7 @@
                                 </connections>
                             </segmentedControl>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
                         <constraints>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="VB8-26-EDY" secondAttribute="bottom" constant="30" id="02P-ua-hHe"/>
                             <constraint firstItem="TlF-aw-C9d" firstAttribute="centerY" secondItem="VV4-WV-dFG" secondAttribute="centerY" id="2Lf-tU-CM5"/>
@@ -388,7 +388,8 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="120"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.78823529411764703" green="0.090196078431372548" blue="0.12156862745098039" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.92156862750000001" green="0.22352941179999999" blue="0.23137254900000001" alpha="0.50414870690000002" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
@@ -410,6 +411,6 @@
         <image name="timeline" width="48" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Hqp-OF-jDE"/>
+        <segue reference="lzU-1b-eKA"/>
     </inferredMetricsTieBreakers>
 </document>
