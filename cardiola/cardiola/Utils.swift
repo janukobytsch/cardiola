@@ -55,10 +55,36 @@ func random(min min: Int, max:Int) -> Int {
     return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
-
 func formatDate(date: NSDate?, dateStyle: NSDateFormatterStyle, timeStyle: NSDateFormatterStyle) -> String {
     guard let date = date else {
         return ""
     }
     return NSDateFormatter.localizedStringFromDate(date, dateStyle: dateStyle, timeStyle: timeStyle)
+}
+
+func getActiveViewController() -> UIViewController? {
+    if var topController = UIApplication.sharedApplication().keyWindow?.rootViewController {
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+        
+        return topController
+    } else {
+        return nil
+    }
+}
+
+func showAlertMessage(controller: UIViewController, title: String, message: String, acceptable: Bool = false) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+    
+    let cancelAction = UIAlertAction(title: "Zurück", style: .Cancel) { (action) in
+    }
+    alertController.addAction(cancelAction)
+    
+    if acceptable {
+        let ok = UIAlertAction(title: "OK", style: .Default) { (action) in }
+        alertController.addAction(ok)
+    }
+    
+    controller.presentViewController(alertController, animated: true) { }
 }

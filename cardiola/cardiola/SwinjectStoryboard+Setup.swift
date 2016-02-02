@@ -24,9 +24,17 @@ extension SwinjectStoryboard {
             c.measurementRecorder = r.resolve(MeasurementRecorder.self)
         }
         
+        
+        defaultContainer.register(NetworkController.self) { r in
+            NetworkController(patientRepository: r.resolve(PatientRepository.self)!)
+        }
+        
         defaultContainer.register(MeasurementRecorder.self) { r in
-            MeasurementRecorder(measurementRepository: r.resolve(MeasurementRepository.self)!,
+            let recorder = MeasurementRecorder(measurementRepository: r.resolve(MeasurementRepository.self)!,
                 planRepository: r.resolve(PlanRepository.self)!)
+            recorder.networkController = NetworkController(patientRepository: r.resolve(PatientRepository.self)!)
+            return recorder
+            
             }.inObjectScope(ObjectScope.Container)
         
         defaultContainer.register(BloodPressureProvider.self) { _ in BloodPressureProvider() }

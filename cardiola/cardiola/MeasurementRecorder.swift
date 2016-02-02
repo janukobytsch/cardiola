@@ -66,6 +66,10 @@ class MeasurementRecorder: Recorder {
         return self.planRepository.currentPlan
     }
     
+    // MARK: Injected 
+    
+    var networkController: NetworkController?
+    
     // MARK: Initialization
     
     required init(measurementRepository: MeasurementRepository, planRepository: PlanRepository, state: MeasurementRecorderState) {
@@ -148,6 +152,9 @@ class MeasurementRecorder: Recorder {
         currentEntry?.setMeasurement(currentMeasurement)
         currentEntry!.archive()
         
+        // upload to server
+        _uploadResultToServer()
+        
         // persist models
         //currentPlan.save()
         
@@ -155,6 +162,10 @@ class MeasurementRecorder: Recorder {
         notifyListeners()
         
         // TODO: fetch classification results from server
+    }
+    
+    private func _uploadResultToServer() {
+        self.networkController?.uploadResult(self.currentEntry?.data!)
     }
     
     // discards the current plan

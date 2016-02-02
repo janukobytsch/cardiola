@@ -245,7 +245,10 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func addActiveEntry() {
         measurementRecorder?.start(from: self)
-        tabBarController?.selectedIndex = 1
+        let waitTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_MSEC)))
+        dispatch_after(waitTime, GlobalDispatchUtils.MainQueue) {
+            self.tabBarController?.selectedIndex = 1
+        }
     }
     
     func activateEntry(entry: MeasurementPlanEntry) {
@@ -285,20 +288,6 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     
     // MARK: Utils
     
-    func showAlertMessage(title: String, message: String, acceptable: Bool = false) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        
-        let cancelAction = UIAlertAction(title: "Zurück", style: .Cancel) { (action) in
-        }
-        alertController.addAction(cancelAction)
-        
-        if acceptable {
-            let ok = UIAlertAction(title: "OK", style: .Default) { (action) in }
-            alertController.addAction(ok)
-        }
-        
-        self.presentViewController(alertController, animated: true) { }
-    }
     
     func showDeleteEntryDialog() {
         let alertController = UIAlertController(title: "Messung löschen",

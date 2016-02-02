@@ -149,13 +149,13 @@ class MeasurementEntryView: UIView {
     func createNewMeasurement() {
         let isToday = (self.entry?.dueDate)!.isSameDayAs(NSDate())
         if !isToday {
-            masterView?.showAlertMessage("Falsches Datum", message: "Bitte Einträge nur an dem entsprechenden Datum erstellen")
+            showAlertMessage(masterView!, title: "Falsches Datum", message: "Bitte Einträge nur an dem entsprechenden Datum erstellen")
         } else {
-//            masterView?.addNewMeasurement()
-//            self.entry?.setMeasurement(Measurement.createRandom())
-//            self.updateViewWith(self.entry!)
-//            
-//            masterView?.updateEntryPosition(self.entry!)
+            //            masterView?.addNewMeasurement()
+            //            self.entry?.setMeasurement(Measurement.createRandom())
+            //            self.updateViewWith(self.entry!)
+            //            
+            //            masterView?.updateEntryPosition(self.entry!)
         }
     }
 }

@@ -18,6 +18,7 @@ class Patient: Object, PersistentModel {
     dynamic var hasChestPain: Bool = false
     dynamic var hasAngina: Bool = false
     dynamic var name: String?
+    dynamic var serverId: String?
     
     let plans = List<MeasurementPlan>()
     let bloodSugar = RealmOptional<Int>()
@@ -29,6 +30,8 @@ class Patient: Object, PersistentModel {
     }
     
     static func createDemoPatient() -> Patient {
-        return Patient(name: "Pep")
+        let demoPatient = Patient(name: "Pep")
+        demoPatient.serverId = "1"
+        return demoPatient
     }
 }

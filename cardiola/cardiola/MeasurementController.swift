@@ -31,6 +31,8 @@ class MeasurementController: UIViewController, UpdateListener {
     var heartFrequencyManager: HeartFrequencyMeasurementManager?
     var currentManager: MeasurementManager?
     
+    // MARK: Injected
+    
     var measurementRecorder: MeasurementRecorder?
     var bloodpressureProvider: BloodPressureProvider?
     
@@ -97,6 +99,7 @@ class MeasurementController: UIViewController, UpdateListener {
     }
     
     func update() {
+        print("got empty update")
     }
     
     // MARK: Mearsurement states
