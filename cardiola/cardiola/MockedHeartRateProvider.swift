@@ -16,7 +16,8 @@ class MockedHeartRateProvider: HeartRateProvider {
     private var _latestResult: HeartRateResult?
     
     override func startProviding() {
-        for count in 0...30 {
+        let numTicks = 10
+        for count in 0...numTicks {
             let delaySeconds = 600.0 * Double(count)
             let waitTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delaySeconds * Double(NSEC_PER_MSEC)))
             
@@ -24,6 +25,12 @@ class MockedHeartRateProvider: HeartRateProvider {
                 let measurement = Measurement.createRandom()
                 let result = HeartRateResult(measurement: measurement)
                 self.notifyListeners(result)
+                
+                if (count == numTicks) {
+                    for listener in self._listeners {
+                        listener.onFinishProviding()
+                    }
+                }
             }
         }
     }

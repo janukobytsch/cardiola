@@ -29,7 +29,7 @@ protocol MeasurementManager {
     
     // MARK: Measuring
     
-    func updateRealtimeData(with measurement: Measurement)
+    func updateRealtimeData()
     func updateHistoryData(with measurements: [Measurement])
     
 }

@@ -19,7 +19,8 @@ class MockedBloodPressureProvider: BloodPressureProvider {
     // MARK: ResultProvider
     
     override func startProviding() {
-        for count in 0...30 {
+        let numTicks = 10
+        for count in 0...numTicks {
             let delaySeconds = 600.0 * Double(count)
             let waitTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delaySeconds * Double(NSEC_PER_MSEC)))
             
@@ -27,6 +28,12 @@ class MockedBloodPressureProvider: BloodPressureProvider {
                 let measurement = Measurement.createRandom()
                 let result = BloodPressureResult(measurement: measurement)
                 self.notifyListeners(result)
+                
+                if (count == numTicks) {
+                    for listener in self._listeners {
+                        listener.onFinishProviding()
+                    }
+                }
             }
         }
     }

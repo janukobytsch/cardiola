@@ -113,7 +113,13 @@ class BloodPressureMeasurementManager: MeasurementManager, RecorderUpdateListene
         historyChart.notifyDataSetChanged()
     }
     
-    func updateRealtimeData(with measurement: Measurement) {
+    func updateRealtimeData() {
+        guard recorder.isRecording() else {
+            return
+        }
+        
+        let measurement = recorder.currentMeasurement!
+        
         let systolicValue = measurement.systolicPressure ?? 0
         let systolicEntry = BarChartDataEntry(value: Double(systolicValue), xIndex: 0)
         let datasetSystolic = BarChartDataSet(yVals: [systolicEntry], label: "Systolisch")
@@ -162,7 +168,8 @@ class BloodPressureMeasurementManager: MeasurementManager, RecorderUpdateListene
     // MARK: RecorderUpdateListener
     
     func update() {
-        realtimeChart.hidden = !recorder.isRecording()
+        realtimeChart.hidden = !(recorder.isRecording() || recorder.hasBloodPressure)
+        updateRealtimeData()
     }
     
 }

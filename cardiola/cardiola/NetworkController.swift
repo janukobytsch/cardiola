@@ -22,7 +22,7 @@ class NetworkController {
     var apiUrl: String {
         return NetworkController.serverUrl + "/api" //user/" + (self.patientRepository?.getCurrentPatient()?.serverId)!
     }
-    
+
     private static let defaultManager: Alamofire.Manager = {
         // Ignore SSL Certificate
         let serverTrustPolicies: [String: ServerTrustPolicy] = [

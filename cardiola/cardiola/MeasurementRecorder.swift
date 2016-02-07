@@ -23,6 +23,7 @@ protocol MeasurementRecorderState {
     
     init(measurement: Measurement)
     func onNewResult(result: MeasurementResult)
+    func discardResult()
 }
 
 // MARK: RecorderUpdateListener
@@ -32,6 +33,8 @@ protocol RecorderUpdateListener {
 }
 
 // the recorder serves as an additional layer to the data providers
+// stops recording either when it is requested by the user through MeasurementComponentDelegate
+// or the provider by means of ResultProviderListener
 
 class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponentDelegate {
     
@@ -44,9 +47,9 @@ class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponen
             self.measurement = measurement
         }
         
-        func onNewResult(result: MeasurementResult) {
-            // subclass responsibility
-        }
+        // subclass responsibilities
+        func onNewResult(result: MeasurementResult) { }
+        func discardResult() { }
     }
     
     private class BloodPressureRecorderState: BaseRecorderState {
@@ -57,6 +60,11 @@ class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponen
             measurement.systolicPressure = result.systolicPressure
             measurement.diastolicPressure = result.diastolicPressure
         }
+        
+        override func discardResult() {
+            measurement.systolicPressure = nil
+            measurement.diastolicPressure = nil
+        }
     }
     
     private class HeartRateRecorderState: BaseRecorderState {
@@ -65,6 +73,10 @@ class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponen
                 return
             }
             measurement.heartRate = result.heartRate
+        }
+        
+        override func discardResult() {
+            measurement.heartRate = nil
         }
     }
     
@@ -161,24 +173,32 @@ class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponen
     }
     
     func onNewResult(result: MeasurementResult) {
+        guard self.isRecording() else {
+            return
+        }
         // delegate result unwrapping to current state
-        _state?.onNewResult(result)
+        _state!.onNewResult(result)
         notifyListeners()
     }
     
     func onFinishProviding() {
-        
+        _currentProvider?.removeListener(self)
+        _isRecording = false
+        notifyListeners()
     }
     
     // MARK: MeasurementComponentDelegate
     
     func startComponent() {
+        _isRecording = true
         _currentProvider!.addListener(self)
         _currentProvider!.startProviding()
+        notifyListeners()
     }
     
     func cancelComponent() {
         stopComponent()
+        resetComponent()
     }
     
     func finishComponent() {
@@ -188,6 +208,13 @@ class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponen
     private func stopComponent() {
         _currentProvider!.removeListener(self)
         _currentProvider!.stopProviding()
+        _isRecording = false
+        notifyListeners()
+    }
+    
+    private func resetComponent() {
+        _state!.discardResult()
+        notifyListeners()
     }
     
     // MARK: Recorder
@@ -240,6 +267,9 @@ class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponen
     }
     
     func isRecording() -> Bool {
+        guard (currentEntry != nil) else {
+            return false
+        }
         return _isRecording
     }
     
@@ -272,6 +302,7 @@ class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponen
     private func _resetMeasurement() {
         print(String(currentMeasurement!.id))
         _isActive = false
+        _isRecording = false
         currentEntry = nil
     }
     

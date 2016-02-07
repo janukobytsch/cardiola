@@ -235,7 +235,6 @@
                                         <state key="focused" image="done_focused"/>
                                         <connections>
                                             <action selector="finishComponent:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="HKE-Aa-uQT"/>
-                                            <action selector="finishMeasurement:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="4HY-sA-0kB"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bB-fp-Qo8">

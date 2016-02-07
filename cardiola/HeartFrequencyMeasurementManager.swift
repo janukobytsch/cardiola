@@ -156,7 +156,13 @@ class HeartFrequencyMeasurementManager: MeasurementManager, RecorderUpdateListen
         return data
     }
     
-    func updateRealtimeData(with measurement: Measurement) {
+    func updateRealtimeData() {
+        guard recorder.isRecording() else {
+            return
+        }
+        
+        let measurement = recorder.currentMeasurement!
+        
         let chart = self.realtimeChart
         let heartRate = measurement.heartRate ?? 0
         let xValue = measurement.formattedTime
@@ -213,7 +219,8 @@ class HeartFrequencyMeasurementManager: MeasurementManager, RecorderUpdateListen
     // MARK: RecorderUpdateListener
     
     func update() {
-        realtimeChart.hidden = recorder.isRecording()
+        realtimeChart.hidden = !(recorder.isRecording() || recorder.hasHeartRate)
+        updateRealtimeData()
     }
     
 }
