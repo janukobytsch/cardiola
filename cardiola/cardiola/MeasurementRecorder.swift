@@ -8,23 +8,71 @@
 
 import UIKit
 
+// MARK: MeasurementComponentDelegate
 
-protocol MeasurementRecorderState: class {
-    // enfore type constraints at runtime due to limitations with associated types
-    func update(measurement: Measurement, with result: MeasurementResult)
+protocol MeasurementComponentDelegate {
+    func startComponent()
+    func cancelComponent()
+    func finishComponent()
 }
 
+// MARK: MeasurementRecorderState
 
-protocol RecorderUpdateListener: class {
+protocol MeasurementRecorderState: ResultProviderListener, MeasurementComponentDelegate {
+    var provider: ResultProvider { get }
+    var measurement: Measurement { get }
+    
+    init(provider: ResultProvider, measurement: Measurement)
+}
+
+// MARK: RecorderUpdateListener
+
+protocol RecorderUpdateListener {
     func update()
 }
 
-class MeasurementRecorder: Recorder {
+// the recorder serves as an additional layer to the data providers
+
+class MeasurementRecorder: Recorder, MeasurementComponentDelegate {
     
-    // MARK: States
+    // MARK: Recorder states
     
-    private class BloodPressureRecorderState: MeasurementRecorderState {
-        func update(measurement: Measurement, with result: MeasurementResult) {
+    private class BaseRecorderState: MeasurementRecorderState {
+        var provider: ResultProvider
+        var measurement: Measurement
+        
+        required init(provider: ResultProvider, measurement: Measurement) {
+            self.provider = provider
+            self.measurement = measurement
+        }
+        
+        func startComponent() {
+            provider.addListener(self)
+            provider.startProviding()
+        }
+        
+        func cancelComponent() {
+            stop()
+        }
+        
+        func finishComponent() {
+            stop()
+        }
+        
+        private func stop() {
+            provider.removeListener(self)
+            provider.stopProviding()
+
+        }
+        
+        // subclass responsibilities
+        func onFinishProviding() { }
+        func onNewResult(result: MeasurementResult) { }
+        func onStartProviding() { }
+    }
+    
+    private class BloodPressureRecorderState: BaseRecorderState {
+        override func onNewResult(result: MeasurementResult) {
             guard let result = result as? BloodPressureResult else {
                 return
             }
@@ -33,8 +81,8 @@ class MeasurementRecorder: Recorder {
         }
     }
     
-    private class HeartRateRecorderState: MeasurementRecorderState {
-        func update(measurement: Measurement, with result: MeasurementResult) {
+    private class HeartRateRecorderState: BaseRecorderState {
+        override func onNewResult(result: MeasurementResult) {
             guard let result = result as? HeartRateResult else {
                 return
             }
@@ -47,10 +95,17 @@ class MeasurementRecorder: Recorder {
     private var measurementRepository: MeasurementRepository
     private var planRepository: PlanRepository
     // need to assign default state due to to associated type limitations
-    private var state: MeasurementRecorderState
+    private var _state: MeasurementRecorderState?
+    
+    // whether a measurement entry is active
+    private var _isActive = false
+    
+    // whether the recorder is listening to a result provider
     private var _isRecording = false
+    
     private var _listener = [RecorderUpdateListener]()
     
+    // the currently active entry
     var currentEntry: MeasurementPlanEntry?
     
     var currentMeasurement: Measurement? {
@@ -62,6 +117,14 @@ class MeasurementRecorder: Recorder {
         }
     }
     
+    var hasHeartRate: Bool {
+        return currentMeasurement?.hasHeartRate ?? false
+    }
+    
+    var hasBloodPressure: Bool {
+        return currentMeasurement?.hasBloodPressure ?? false
+    }
+
     var currentPlan: MeasurementPlan {
         return self.planRepository.currentPlan
     }
@@ -69,31 +132,24 @@ class MeasurementRecorder: Recorder {
     // MARK: Injected 
     
     var networkController: NetworkController?
+    var bloodpressureProvider: BloodPressureProvider?
+    //var heartrateProvider: ResultProvider? // todo inject
     
     // MARK: Initialization
     
-    required init(measurementRepository: MeasurementRepository, planRepository: PlanRepository, state: MeasurementRecorderState) {
+    required init(measurementRepository: MeasurementRepository, planRepository: PlanRepository) {
         self.measurementRepository = measurementRepository
         self.planRepository = planRepository
-        self.state = state
-    }
-    
-    convenience init(measurementRepository: MeasurementRepository, planRepository: PlanRepository) {
-        let defaultState = BloodPressureRecorderState()
-        self.init(measurementRepository: measurementRepository, planRepository: planRepository, state: defaultState)
-    }
-    
-    func updateMeasurement(with result: MeasurementResult) {
-        guard let measurement = currentMeasurement else {
-            return
-        }
-        state.update(measurement, with: result)
     }
     
     // MARK: Observer
     
     func addUpdateListener(listener: RecorderUpdateListener) {
         self._listener.append(listener)
+    }
+    
+    func removeUpdateListener(listener: RecorderUpdateListener) {
+        // TODO
     }
     
     private func notifyListeners() {
@@ -105,46 +161,64 @@ class MeasurementRecorder: Recorder {
     // MARK: State transitions
     
     func measureBloodPressure() {
-        self.state = BloodPressureRecorderState()
+        activate(with: currentEntry)
+        _state = BloodPressureRecorderState(provider: bloodpressureProvider!,
+            measurement: currentMeasurement!)
+        _state!.startComponent()
     }
     
     func measureHeartRate() {
-        self.state = HeartRateRecorderState()
+        // TODO
+//        self._state = HeartRateRecorderState(provider: heartrateProvider!,
+//            measurement: currentMeasurement!)
+    }
+    
+    // MARK: MeasurementComponentDelegate
+    
+    func startComponent() {
+        _state!.startComponent()
+    }
+    
+    func cancelComponent() {
+        _state!.cancelComponent()
+    }
+    
+    func finishComponent() {
+        _state!.finishComponent()
     }
     
     // MARK: Recorder
     
     // creates a new measurement with a corresponding plan entry
-    func start(with planEntry: MeasurementPlanEntry?, from controller: UIViewController) {
-        guard !self.isRecording() else {
+    func startMeasurement(with planEntry: MeasurementPlanEntry?, from controller: UIViewController) {
+        guard !self.isActive() else {
             self.showAlreadyRecordingAlert(controller)
             return
         }
+        activate(with: planEntry)
+    }
+    
+    func startMeasurement(from controller: UIViewController) {
+        self.startMeasurement(with: nil, from: controller)
+    }
+    
+    func cancelMeasurement() {
+        guard self.isActive() else {
+            return
+        }
         
-        // activate existing entry or optionally create a new one
-        currentEntry = planEntry ?? MeasurementPlanEntry.createVoluntaryPlanEntry(Measurement())
-        currentMeasurement = planEntry?.data ?? Measurement()
-        currentEntry!.activate()
+        // remove entry from plan
+        currentPlan.removeEntry(currentEntry!)
         
-        // update plan container
-        currentPlan.prependEntry(currentEntry!)
+        // persist models
+        //currentPlan.save()
         
-        _isRecording = true
-        print(String(currentMeasurement!.id))
+        _resetMeasurement()
         notifyListeners()
     }
     
-    func start(from controller: UIViewController) {
-        self.start(with: nil, from: controller)
-    }
-    
-    func stop() {
-        // not supported
-    }
-    
-    // archives the current plan
-    func finish() {
-        guard self.isRecording() else {
+    func finishMeasurement() {
+        guard self.isActive() else {
             return
         }
         
@@ -158,29 +232,7 @@ class MeasurementRecorder: Recorder {
         // persist models
         //currentPlan.save()
         
-        reset()
-        notifyListeners()
-        
-        // TODO: fetch classification results from server
-    }
-    
-    private func _uploadResultToServer() {
-        self.networkController?.uploadResult(self.currentEntry?.data!)
-    }
-    
-    // discards the current plan
-    func cancel() {
-        guard self.isRecording() else {
-            return
-        }
-        
-        // remove entry from plan
-        currentPlan.removeEntry(currentEntry!)
-        
-        // persist models
-        //currentPlan.save()
-        
-        reset()
+        _resetMeasurement()
         notifyListeners()
     }
     
@@ -188,30 +240,56 @@ class MeasurementRecorder: Recorder {
         return _isRecording
     }
     
-    func reset() {
+    func isActive() -> Bool {
+        return _isActive
+    }
+    
+    private func activate(with planEntry: MeasurementPlanEntry?) {
+        guard !self.isActive() else {
+            return
+        }
+        
+        // activate existing entry or optionally create a new one
+        currentEntry = planEntry ?? MeasurementPlanEntry.createVoluntaryPlanEntry(Measurement())
+        currentMeasurement = planEntry?.data ?? Measurement()
+        currentEntry!.activate()
+        
+        // update plan container
+        currentPlan.prependEntry(currentEntry!)
+        
+        _isActive = true
         print(String(currentMeasurement!.id))
-        _isRecording = false
+        notifyListeners()
+    }
+    
+    private func _uploadResultToServer() {
+        self.networkController?.uploadResult(self.currentEntry?.data!)
+    }
+    
+    private func _resetMeasurement() {
+        print(String(currentMeasurement!.id))
+        _isActive = false
         currentEntry = nil
     }
     
     // MARK: Alerts
     
     func showAlreadyRecordingAlert(controller: UIViewController) {
-        let alertController = UIAlertController(title: "Laufende Messung",
-            message: "Bitte beende die aktuelle Messung, um eine neue Messung zu starten.", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "Aktive Messung",
+            message: "Bitte schließe die aktuelle Messung ab, um eine neue Messung zu starten.", preferredStyle: .Alert)
         
         
         let cancelAction = UIAlertAction(title: "Messung verwerfen", style: .Destructive) {
             [weak recorder = self, weak from = controller] (action) in
-            recorder?.cancel()
-            //recorder?.start(from: from!)
+            recorder?.cancelMeasurement()
+            //recorder?.startMeasurement(from: from!)
         }
         alertController.addAction(cancelAction)
         
         let finishAction = UIAlertAction(title: "Messung archivieren", style: .Default) {
             [weak recorder = self, weak from = controller] (action) in
-            recorder?.finish()
-            //recorder?.start(from: from!)
+            recorder?.finishMeasurement()
+            //recorder?.startMeasurement(from: from!)
         }
         alertController.addAction(finishAction)
         

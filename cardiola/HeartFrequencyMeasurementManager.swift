@@ -10,7 +10,7 @@ import Foundation
 import Charts
 
 
-class HeartFrequencyMeasurementManager: MeasurementManager {
+class HeartFrequencyMeasurementManager: MeasurementManager, RecorderUpdateListener {
     
     let MAX_VISIBLE_VALUES = 20
     
@@ -183,7 +183,12 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
         return dataset
     }
     
-    func startMeasurement() {
+    func hasComponent(recorder: MeasurementRecorder) -> Bool {
+        return recorder.hasHeartRate
+    }
+    
+    func startMeasurement(with recorder: MeasurementRecorder) {
+        recorder.measureHeartRate()
         realtimeChart.hidden = false
     }
     
@@ -199,6 +204,12 @@ class HeartFrequencyMeasurementManager: MeasurementManager {
         for view in views {
             view.hidden = false
         }
+    }
+    
+    // MARK: RecorderUpdateListener
+    
+    func update() {
+        // TODO: update views
     }
     
 }

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		48543FC11C607426006D2A45 /* BloodPressureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48543FC01C607426006D2A45 /* BloodPressureProvider.swift */; };
 		48543FC31C607433006D2A45 /* ResultProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48543FC21C607433006D2A45 /* ResultProvider.swift */; };
-		48543FC51C6076A0006D2A45 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48543FC41C6076A0006D2A45 /* Observer.swift */; };
 		48543FC71C6098FB006D2A45 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48543FC61C6098FB006D2A45 /* NetworkController.swift */; };
 		485DA92C1C57920600583AF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485DA92B1C57920600583AF0 /* AppDelegate.swift */; };
 		485DA9331C57920600583AF0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 485DA9311C57920600583AF0 /* Main.storyboard */; };
@@ -44,6 +43,8 @@
 		D36B09641C5C8B220097155D /* PlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B09631C5C8B220097155D /* PlanRepository.swift */; };
 		D380C1851C5E975500CDD5DD /* Array+Binning.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380C1841C5E975500CDD5DD /* Array+Binning.swift */; };
 		D380C1871C5E9A1500CDD5DD /* ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380C1861C5E9A1500CDD5DD /* ExtensionTests.swift */; };
+		D3C507851C63B0D900F84580 /* MockedBloodPressureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C507841C63B0D900F84580 /* MockedBloodPressureProvider.swift */; };
+		D3C507871C63B29A00F84580 /* Array+Remove.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C507861C63B29A00F84580 /* Array+Remove.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +67,6 @@
 /* Begin PBXFileReference section */
 		48543FC01C607426006D2A45 /* BloodPressureProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodPressureProvider.swift; sourceTree = "<group>"; };
 		48543FC21C607433006D2A45 /* ResultProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultProvider.swift; sourceTree = "<group>"; };
-		48543FC41C6076A0006D2A45 /* Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		48543FC61C6098FB006D2A45 /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		485DA9281C57920600583AF0 /* cardiola.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cardiola.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		485DA92B1C57920600583AF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +108,8 @@
 		D36B09631C5C8B220097155D /* PlanRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanRepository.swift; sourceTree = "<group>"; };
 		D380C1841C5E975500CDD5DD /* Array+Binning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Binning.swift"; sourceTree = "<group>"; };
 		D380C1861C5E9A1500CDD5DD /* ExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionTests.swift; sourceTree = "<group>"; };
+		D3C507841C63B0D900F84580 /* MockedBloodPressureProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockedBloodPressureProvider.swift; sourceTree = "<group>"; };
+		D3C507861C63B29A00F84580 /* Array+Remove.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Remove.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,9 +180,7 @@
 		485DA92A1C57920600583AF0 /* cardiola */ = {
 			isa = PBXGroup;
 			children = (
-				48543FC01C607426006D2A45 /* BloodPressureProvider.swift */,
-				48543FC21C607433006D2A45 /* ResultProvider.swift */,
-				48543FC41C6076A0006D2A45 /* Observer.swift */,
+				D3C507831C63B0A700F84580 /* Provider */,
 				D34A6D601C5ECFA700054378 /* Recorder.swift */,
 				D34A6D651C5F014400054378 /* MeasurementResult.swift */,
 				D34A6D5F1C5ECFA700054378 /* MeasurementRecorder.swift */,
@@ -227,6 +227,7 @@
 				48A29EBF1C5EEF940046D3E5 /* Realm+List.swift */,
 				48A29EC11C5EF62D0046D3E5 /* Realm+Object.swift */,
 				D34A6D6D1C5F1B0F00054378 /* SwinjectStoryboard+Setup.swift */,
+				D3C507861C63B29A00F84580 /* Array+Remove.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -272,6 +273,16 @@
 				48A29EBD1C5ED7BF0046D3E5 /* PersistentModel.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		D3C507831C63B0A700F84580 /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				48543FC01C607426006D2A45 /* BloodPressureProvider.swift */,
+				48543FC21C607433006D2A45 /* ResultProvider.swift */,
+				D3C507841C63B0D900F84580 /* MockedBloodPressureProvider.swift */,
+			);
+			name = Provider;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -464,7 +475,6 @@
 				D34A6D6E1C5F1B0F00054378 /* SwinjectStoryboard+Setup.swift in Sources */,
 				D307FC131C5D5C69005B6C41 /* MeasurementManager.swift in Sources */,
 				48A29EC01C5EEF940046D3E5 /* Realm+List.swift in Sources */,
-				48543FC51C6076A0006D2A45 /* Observer.swift in Sources */,
 				D36B09581C5C77CE0097155D /* MeasurementPlan.swift in Sources */,
 				48543FC31C607433006D2A45 /* ResultProvider.swift in Sources */,
 				D307FC1C1C5E918C005B6C41 /* String+Subscript.swift in Sources */,
@@ -479,9 +489,11 @@
 				D307FC0B1C5D1AF1005B6C41 /* MeasurementRepository.swift in Sources */,
 				D34A6D611C5ECFA800054378 /* MeasurementRecorder.swift in Sources */,
 				D307FC071C5D1143005B6C41 /* MeasurementController.swift in Sources */,
+				D3C507851C63B0D900F84580 /* MockedBloodPressureProvider.swift in Sources */,
 				485DA92C1C57920600583AF0 /* AppDelegate.swift in Sources */,
 				D36B09621C5C8AE00097155D /* PatientRepository.swift in Sources */,
 				48A29EBE1C5ED7BF0046D3E5 /* PersistentModel.swift in Sources */,
+				D3C507871C63B29A00F84580 /* Array+Remove.swift in Sources */,
 				D307FC151C5D6130005B6C41 /* BloodPressureMeasurementManager.swift in Sources */,
 				48907A9A1C5D8E47009AFC56 /* MeasurementEntryView.swift in Sources */,
 				D36B095A1C5C78CD0097155D /* Patient.swift in Sources */,

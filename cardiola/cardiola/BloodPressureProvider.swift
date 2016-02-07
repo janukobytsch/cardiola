@@ -12,7 +12,7 @@ class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate,
     
     // MARK: Properties
     
-    private var _listener = [UpdateListener]()
+    private var _listener = [ResultProviderListener]()
     private var _latestResult: BloodPressureResult? = nil
     private var _manager: CBCentralManager!
     private var _andBTCi: CBPeripheral!
@@ -20,6 +20,30 @@ class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate,
     required override init() {
         super.init()
         _manager = CBCentralManager(delegate: self, queue: nil)
+    }
+    
+    // MARK: ResultProvider
+    
+    func startProviding() {
+        // todo
+    }
+    
+    func stopProviding() {
+        // todo
+    }
+    
+    func latestResult() -> MeasurementResult? {
+        return _latestResult
+    }
+    
+    // MARK: Observer
+    
+    func addListener(listener: ResultProviderListener) {
+        self._listener.append(listener)
+    }
+    
+    func removeListener(listener: ResultProviderListener) {
+        // todo
     }
     
     // MARK: CentralManagerDelegate
@@ -90,27 +114,10 @@ class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate,
         print("STAT: \(msg)")
     }
     
-    // MARK: Observer
-    
-    func addUpdateListener(listener: UpdateListener) {
-        self._listener.append(listener)
-    }
-    
-    private func notifyListeners() {
-        for listener in _listener {
-            listener.update()
-        }
-    }
-    
     // MARK: Data handling
     
     private func _saveNewResult(newResult: BloodPressureResult) {
         _latestResult = newResult
-        notifyListeners()
+        //notifyListeners()
     }
-    
-    func latestResult() -> MeasurementResult? {
-        return _latestResult
-    }
-    
 }

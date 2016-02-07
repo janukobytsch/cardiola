@@ -15,7 +15,6 @@ extension SwinjectStoryboard {
     class func setup() {
         defaultContainer.registerForStoryboard(MeasurementController.self) { r, c in
             c.measurementRecorder = r.resolve(MeasurementRecorder.self)
-            c.bloodpressureProvider = r.resolve(BloodPressureProvider.self)
         }
         
         defaultContainer.registerForStoryboard(DashboardController.self) { r, c in
@@ -33,11 +32,12 @@ extension SwinjectStoryboard {
             let recorder = MeasurementRecorder(measurementRepository: r.resolve(MeasurementRepository.self)!,
                 planRepository: r.resolve(PlanRepository.self)!)
             recorder.networkController = NetworkController(patientRepository: r.resolve(PatientRepository.self)!)
+            recorder.bloodpressureProvider = r.resolve(BloodPressureProvider.self)!
             return recorder
-            
             }.inObjectScope(ObjectScope.Container)
         
-        defaultContainer.register(BloodPressureProvider.self) { _ in BloodPressureProvider() }
+        // todo replace mocked provider with bluetooth provider
+        defaultContainer.register(BloodPressureProvider.self) { _ in MockedBloodPressureProvider() }
         defaultContainer.register(MeasurementRepository.self) { _ in MeasurementRepository() }
         defaultContainer.register(PatientRepository.self) { _ in PatientRepository() }
         defaultContainer.register(PlanRepository.self) { _ in PlanRepository() }

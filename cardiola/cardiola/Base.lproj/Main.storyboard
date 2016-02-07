@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -219,30 +219,31 @@
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Abf-9h-6zl">
                                 <rect key="frame" x="1418" y="200" width="382" height="88"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bB-fp-Qo8">
-                                        <rect key="frame" x="0.0" y="1" width="214" height="86"/>
-                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                        <state key="normal" title="Messen"/>
-                                        <connections>
-                                            <action selector="startMeasurement:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="64t-O1-u6D"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wFZ-Sc-vnh">
-                                        <rect key="frame" x="230" y="0.0" width="68" height="88"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="68" height="88"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="20" maxX="10" maxY="20"/>
                                         <state key="normal" image="cancel_focused"/>
                                         <state key="focused" image="cancel_focused"/>
                                         <connections>
-                                            <action selector="cancelMeasurement:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="PRs-rw-UKo"/>
+                                            <action selector="cancelComponent:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="qXZ-BU-SjC"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bmf-rr-QTY">
-                                        <rect key="frame" x="314" y="0.0" width="68" height="88"/>
+                                        <rect key="frame" x="84" y="0.0" width="68" height="88"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="20" maxX="10" maxY="20"/>
                                         <state key="normal" image="done_focused"/>
                                         <state key="focused" image="done_focused"/>
                                         <connections>
+                                            <action selector="finishComponent:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="HKE-Aa-uQT"/>
                                             <action selector="finishMeasurement:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="4HY-sA-0kB"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bB-fp-Qo8">
+                                        <rect key="frame" x="168" y="1" width="214" height="86"/>
+                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                        <state key="normal" title="Messen"/>
+                                        <connections>
+                                            <action selector="startOrFinishMeasurement:" destination="8rJ-Kc-sve" eventType="primaryActionTriggered" id="6Qg-GL-Pn7"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -369,6 +370,7 @@
                         <outlet property="doneButton" destination="Bmf-rr-QTY" id="uQS-Fv-E2d"/>
                         <outlet property="heartRateHistoryChart" destination="TlF-aw-C9d" id="Ody-7y-8I4"/>
                         <outlet property="historyBarChart" destination="VV4-WV-dFG" id="J4X-Wa-l7D"/>
+                        <outlet property="indicatorLabel" destination="41y-Xo-zvN" id="bjd-75-vn4"/>
                         <outlet property="indicatorView" destination="j9q-cg-R0R" id="Bqe-4v-rvS"/>
                         <outlet property="measureButton" destination="0bB-fp-Qo8" id="ipt-iB-2YC"/>
                         <outlet property="realtimeBarChart" destination="eAa-iD-KMS" id="GZg-LJ-VE6"/>

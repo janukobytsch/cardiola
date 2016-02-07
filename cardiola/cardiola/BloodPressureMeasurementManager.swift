@@ -9,7 +9,7 @@
 import Foundation
 import Charts
 
-class BloodPressureMeasurementManager: MeasurementManager {
+class BloodPressureMeasurementManager: MeasurementManager, RecorderUpdateListener {
     
     var historyChart: BarChartView
     var realtimeChart: BarChartView
@@ -132,7 +132,12 @@ class BloodPressureMeasurementManager: MeasurementManager {
         chart.notifyDataSetChanged()
     }
     
-    func startMeasurement() {
+    func hasComponent(recorder: MeasurementRecorder) -> Bool {
+        return recorder.hasBloodPressure
+    }
+    
+    func startMeasurement(with recorder: MeasurementRecorder) {
+        recorder.measureBloodPressure()
         realtimeChart.hidden = false
     }
     
@@ -148,6 +153,12 @@ class BloodPressureMeasurementManager: MeasurementManager {
         for view in views {
             view.hidden = false
         }
+    }
+    
+    // MARK: RecorderUpdateListener
+    
+    func update() {
+        // TODO: update views
     }
     
 }

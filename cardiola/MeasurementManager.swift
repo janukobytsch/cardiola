@@ -9,7 +9,8 @@
 import Foundation
 import Charts
 
-internal protocol MeasurementManager {
+// serves as a sub-controller
+protocol MeasurementManager {
 
     // MARK: Initializer
     
@@ -17,7 +18,8 @@ internal protocol MeasurementManager {
     
     // MARK: Delegate
     
-    func startMeasurement()
+    func startMeasurement(with recorder: MeasurementRecorder)
+    func hasComponent(recorder: MeasurementRecorder) -> Bool
     func beforeModeChanged()
     func afterModeChanged()
     

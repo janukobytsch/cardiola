@@ -11,12 +11,40 @@ import XCTest
 
 class ExtensionTests: XCTestCase {
     
+    private class Foo {}
+    private struct Bar {}
+    
     var strings: [String]?
     var measurements: [Measurement]?
     
     override func setUp() {
         self.strings = ["Lorem", "Ipsum", "Dolor", "Sit", "Amet", "Lorem"]
         self.measurements = [Measurement(heartRate: 70), Measurement(heartRate: 100), Measurement(heartRate: 70)]
+    }
+    
+    func testArrayRemoveSameObject() {
+        // Given
+        let a = Foo()
+        var elements = [a]
+        
+        // When
+        elements.remove(a)
+        
+        // Then
+        XCTAssertTrue(elements.count == 0)
+    }
+    
+    func testArrayRemoveDifferentObject() {
+        // Given
+        let a = Foo()
+        let b = Foo()
+        var elements = [a]
+        
+        // When
+        elements.remove(b)
+        
+        // Then
+        XCTAssertTrue(elements.count == 1)
     }
 
     func testBinningForPrimitives() {

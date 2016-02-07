@@ -23,6 +23,4 @@ class cardiolaTests: XCTestCase {
         super.tearDown()
     }
     
-    
-    
 }

@@ -10,10 +10,13 @@ import UIKit
 
 protocol Recorder: class {
     
-    func start(from controller: UIViewController)
-    func cancel()
-    func finish()
-    func stop()
+    func startMeasurement(from controller: UIViewController)
+    func cancelMeasurement()
+    func finishMeasurement()
     
+    // whether a measurement is attached
+    func isActive() -> Bool
+    
+    // whether a component is being recorded
     func isRecording() -> Bool
 }

@@ -9,7 +9,14 @@
 import UIKit
 import Charts
 
-class MeasurementController: UIViewController, UpdateListener {
+class MeasurementController: UIViewController, RecorderUpdateListener {
+    
+    let indicatorTextRecording = "Messung läuft"
+    let indicatorTextMissing = "Vitalparameter fehlt"
+    let indicatorTextDone = "Vitalparameter erfasst"
+    
+    let measureStartText = "Messen"
+    let measureFinishText = "Messung abschließen"
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var historyBarChart: BarChartView!
@@ -20,6 +27,7 @@ class MeasurementController: UIViewController, UpdateListener {
     @IBOutlet weak var measureButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var indicatorLabel: UILabel!
     
     override var preferredFocusedView: UIView? {
         get {
@@ -34,10 +42,11 @@ class MeasurementController: UIViewController, UpdateListener {
     // MARK: Injected
     
     var measurementRecorder: MeasurementRecorder?
-    var bloodpressureProvider: BloodPressureProvider?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        measurementRecorder?.addUpdateListener(self)
         
         let measurements = MeasurementRepository.createRandomDataset()
         
@@ -49,16 +58,14 @@ class MeasurementController: UIViewController, UpdateListener {
         
         currentManager = bloodPressureManager
         currentManager?.afterModeChanged()
-        
-        if measurementRecorder?.isRecording() ?? false {
-            startMeasuringData()
-        }
-        
-        bloodpressureProvider?.addUpdateListener(self)
     }
     
     override func viewWillAppear(animated: Bool) {
-        updateActionButtons()
+//        if measurementRecorder?.isRecording() ?? false {
+//            currentManager?.startMeasurement()
+//        }
+        
+        updateViews()
         setNeedsFocusUpdate()
         updateFocusIfNeeded()
     }
@@ -66,63 +73,64 @@ class MeasurementController: UIViewController, UpdateListener {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        measurementRecorder?.removeUpdateListener(self)
     }
     
     // MARK: UI update
     
-    func updateActionButtons() {
+    func updateViews() {
+        let isActive = measurementRecorder?.isActive() ?? false
         let isRecording = measurementRecorder?.isRecording() ?? false
+        let hasComponent = currentManager?.hasComponent(measurementRecorder!) ?? false
+        
+        // textual indicator
+        indicatorLabel.text = (isRecording) ? indicatorTextRecording : (hasComponent) ? indicatorTextDone : indicatorTextMissing
+        indicatorView!.hidden = !(isRecording || isActive)
+        
+        // measure button
+        let measureTitle = (!hasComponent) ? measureStartText : measureFinishText
+        measureButton.setTitle(measureTitle, forState: .Normal)
         measureButton!.hidden = isRecording
         measureButton!.enabled = !isRecording
+        
+        // component buttons
         cancelButton!.hidden = !isRecording
         cancelButton!.enabled = isRecording
         doneButton!.hidden = !isRecording
         doneButton!.enabled = isRecording
-        indicatorView!.hidden = !isRecording
     }
     
-    // MARK: Data handleing
-    
-    func simulateRealtime() {
-        for count in 0...30 {
-            let delaySeconds = 600.0 * Double(count)
-            let waitTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delaySeconds * Double(NSEC_PER_MSEC)))
-            
-            dispatch_after(waitTime, GlobalDispatchUtils.MainQueue) {
-                let measurement = Measurement.createRandom()
-                self.currentManager?.updateRealtimeData(with: measurement)
-                
-                self.measurementRecorder?.updateMeasurement(with: BloodPressureResult(measurement: measurement))
-                self.measurementRecorder?.updateMeasurement(with: HeartRateResult(measurement: measurement))
-            }
-        }
-    }
+    // MARK: RecorderUpdateListener
     
     func update() {
-        print("got empty update")
+        updateViews()
+        
+        // managers do not need to register explicitely as observers
+        if let manager = currentManager as? RecorderUpdateListener {
+            manager.update()
+        }
+    }
+
+    // MARK: Measurement states
+
+    @IBAction func startOrFinishMeasurement(sender: UIButton) {
+        if currentManager!.hasComponent(measurementRecorder!) {
+            // component already recorded
+            measurementRecorder?.finishMeasurement()
+        } else {
+            currentManager?.startMeasurement(with: measurementRecorder!)
+        }
+        updateViews()
     }
     
-    // MARK: Mearsurement states
-    
-    func startMeasuringData() {
-        currentManager?.startMeasurement()
-        simulateRealtime()
+    @IBAction func finishComponent(sender: UIButton) {
+        measurementRecorder?.finishComponent()
+        updateViews()
     }
     
-    @IBAction func startMeasurement(sender: UIButton) {
-        measurementRecorder?.start(from: self)
-        updateActionButtons()
-        startMeasuringData()
-    }
-    
-    @IBAction func cancelMeasurement(sender: UIButton) {
-        measurementRecorder?.cancel()
-        updateActionButtons()
-    }
-    
-    @IBAction func finishMeasurement(sender: UIButton) {
-        measurementRecorder?.finish()
-        updateActionButtons()
+    @IBAction func cancelComponent(sender: UIButton) {
+        measurementRecorder?.cancelComponent()
+        updateViews()
     }
     
     @IBAction func changeMeasurementMode(sender: UISegmentedControl) {
@@ -130,13 +138,10 @@ class MeasurementController: UIViewController, UpdateListener {
         switch sender.selectedSegmentIndex {
         case 1:
             currentManager = heartFrequencyManager
-            measurementRecorder?.measureHeartRate()
         case 0:
             currentManager = bloodPressureManager
-            measurementRecorder?.measureBloodPressure()
         default:
             currentManager = bloodPressureManager
-            measurementRecorder?.measureBloodPressure()
         }
         currentManager?.afterModeChanged()
     }

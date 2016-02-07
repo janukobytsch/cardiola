@@ -244,7 +244,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     */
     
     func addActiveEntry() {
-        measurementRecorder?.start(from: self)
+        measurementRecorder?.startMeasurement(from: self)
         let waitTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_MSEC)))
         dispatch_after(waitTime, GlobalDispatchUtils.MainQueue) {
             self.tabBarController?.selectedIndex = 1
@@ -252,7 +252,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func activateEntry(entry: MeasurementPlanEntry) {
-        measurementRecorder?.start(with: entry, from: self)
+        measurementRecorder?.startMeasurement(with: entry, from: self)
         //        if let idx = (self.entries[todoEntriesTitle]!).indexOf(entry) {
         //            self.entries[doneEntriesTitle]!.append(entry)
         //            self.entries[todoEntriesTitle]!.removeAtIndex(idx)
@@ -268,7 +268,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func archiveEntry(entry: MeasurementPlanEntry) {
-        measurementRecorder?.finish()
+        measurementRecorder?.finishMeasurement()
     }
     
     func removeSelectedEntry() {
