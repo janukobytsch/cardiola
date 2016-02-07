@@ -89,7 +89,9 @@ class BloodPressureMeasurementManager: MeasurementManager, RecorderUpdateListene
         legend.xEntrySpace = 2.0
     }
     
-    func updateHistoryData(with measurements: [Measurement]) {
+    func updateHistoryData() {
+        let measurements = recorder.currentPlan.archivedEntries.flatMap() { $0.data }
+        
         var xValues = [String]()
         var yValues = [BarChartDataEntry]()
         
@@ -104,7 +106,7 @@ class BloodPressureMeasurementManager: MeasurementManager, RecorderUpdateListene
             xValues.append(date)
         }
         
-        let dataset = BarChartDataSet(yVals: yValues, label: "Systolic pressure")
+        let dataset = BarChartDataSet(yVals: yValues)
         dataset.colors = [Colors.darkGray, Colors.gray]
         dataset.stackLabels = ["Systolisch", "Diastolisch"]
         

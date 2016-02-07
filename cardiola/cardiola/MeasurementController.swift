@@ -47,26 +47,17 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
         super.viewDidLoad()
         
         measurementRecorder?.addUpdateListener(self)
-        
-        let measurements = MeasurementRepository.createRandomDataset()
-        
+
         bloodPressureManager = BloodPressureMeasurementManager(realtimeChart: realtimeBarChart,
             historyChart: historyBarChart, recorder: measurementRecorder!)
-        bloodPressureManager!.updateHistoryData(with: measurements)
-        
         heartFrequencyManager = HeartFrequencyMeasurementManager(realtimeChart: realtimeLineChart,
             historyChart: heartRateHistoryChart, recorder: measurementRecorder!)
-        heartFrequencyManager!.updateHistoryData(with: measurements)
         
         currentManager = bloodPressureManager
         currentManager?.afterModeChanged()
     }
     
     override func viewWillAppear(animated: Bool) {
-//        if measurementRecorder?.isRecording() ?? false {
-//            currentManager?.startMeasurement()
-//        }
-        
         updateViews()
         setNeedsFocusUpdate()
         updateFocusIfNeeded()
@@ -80,7 +71,12 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
     
     // MARK: UI update
     
-    func updateViews() {
+    private func updateViews() {
+        updateActionButtons()
+        currentManager!.updateHistoryData()
+    }
+    
+    private func updateActionButtons() {
         let isActive = measurementRecorder?.isActive() ?? false
         let isRecording = measurementRecorder?.isRecording() ?? false
         let hasComponent = currentManager?.hasComponent() ?? false
@@ -107,7 +103,7 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
     func update() {
         updateViews()
         
-        // managers do not need to register explicitely as observers
+        // managers do not need to register explicitely as listeners to the recorder
         if let manager = currentManager as? RecorderUpdateListener {
             manager.update()
         }

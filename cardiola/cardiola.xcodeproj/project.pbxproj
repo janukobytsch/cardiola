@@ -185,10 +185,6 @@
 			isa = PBXGroup;
 			children = (
 				D3C507831C63B0A700F84580 /* Provider */,
-				D34A6D601C5ECFA700054378 /* Recorder.swift */,
-				D34A6D651C5F014400054378 /* MeasurementResult.swift */,
-				D34A6D5F1C5ECFA700054378 /* MeasurementRecorder.swift */,
-				D307FC0C1C5D20CD005B6C41 /* Utils.swift */,
 				D34A6D681C5F0ED100054378 /* Extensions */,
 				D36B09561C5C77C20097155D /* Models */,
 				D34A6D691C5F0F1C00054378 /* Controllers */,
@@ -196,6 +192,7 @@
 				D34A6D6C1C5F109C00054378 /* Repositories */,
 				485DA9341C57920600583AF0 /* Assets.xcassets */,
 				485DA92B1C57920600583AF0 /* AppDelegate.swift */,
+				D307FC0C1C5D20CD005B6C41 /* Utils.swift */,
 				485DA9311C57920600583AF0 /* Main.storyboard */,
 				485DA9361C57920600583AF0 /* Info.plist */,
 			);
@@ -287,6 +284,9 @@
 				D3C507841C63B0D900F84580 /* MockedBloodPressureProvider.swift */,
 				D3C507881C6789FC00F84580 /* HeartRateProvider.swift */,
 				D3C5078A1C678A5900F84580 /* MockedHeartRateProvider.swift */,
+				D34A6D651C5F014400054378 /* MeasurementResult.swift */,
+				D34A6D601C5ECFA700054378 /* Recorder.swift */,
+				D34A6D5F1C5ECFA700054378 /* MeasurementRecorder.swift */,
 			);
 			name = Provider;
 			sourceTree = "<group>";

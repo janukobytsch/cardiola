@@ -100,7 +100,9 @@ class HeartFrequencyMeasurementManager: MeasurementManager, RecorderUpdateListen
         }
     }
     
-    func updateHistoryData(with measurements: [Measurement]) {
+    func updateHistoryData() {
+        let measurements = recorder.currentPlan.archivedEntries.flatMap() { $0.data }
+        
         guard measurements.count > 0 else {
             return
         }

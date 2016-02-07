@@ -130,7 +130,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Euy-AC-ZFN" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="3gD-au-axh"/>
                             <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="9aN-0g-pkM" secondAttribute="bottom" constant="100" id="9Ge-Gk-jGr"/>
@@ -319,7 +319,7 @@
                                 </connections>
                             </segmentedControl>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="VB8-26-EDY" secondAttribute="bottom" constant="30" id="02P-ua-hHe"/>
                             <constraint firstItem="TlF-aw-C9d" firstAttribute="centerY" secondItem="VV4-WV-dFG" secondAttribute="centerY" id="2Lf-tU-CM5"/>
