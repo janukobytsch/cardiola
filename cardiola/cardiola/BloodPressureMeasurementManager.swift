@@ -14,13 +14,16 @@ class BloodPressureMeasurementManager: MeasurementManager, RecorderUpdateListene
     var historyChart: BarChartView
     var realtimeChart: BarChartView
     
+    var recorder: MeasurementRecorder
+    
     var views: [UIView] {
         return [historyChart, realtimeChart]
     }
     
-    required init(realtimeChart: ChartViewBase, historyChart: ChartViewBase) {
+    required init(realtimeChart: ChartViewBase, historyChart: ChartViewBase, recorder: MeasurementRecorder) {
         self.historyChart = historyChart as! BarChartView
         self.realtimeChart = realtimeChart as! BarChartView
+        self.recorder = recorder
         initRealtimeChart()
         initHistoryChart()
         beforeModeChanged()
@@ -132,13 +135,13 @@ class BloodPressureMeasurementManager: MeasurementManager, RecorderUpdateListene
         chart.notifyDataSetChanged()
     }
     
-    func hasComponent(recorder: MeasurementRecorder) -> Bool {
+    func hasComponent() -> Bool {
         return recorder.hasBloodPressure
     }
     
-    func startMeasurement(with recorder: MeasurementRecorder) {
+    func startMeasurement() {
         recorder.measureBloodPressure()
-        realtimeChart.hidden = false
+        update()
     }
     
     func beforeModeChanged() {
@@ -153,12 +156,13 @@ class BloodPressureMeasurementManager: MeasurementManager, RecorderUpdateListene
         for view in views {
             view.hidden = false
         }
+        update()
     }
     
     // MARK: RecorderUpdateListener
     
     func update() {
-        // TODO: update views
+        realtimeChart.hidden = !recorder.isRecording()
     }
     
 }

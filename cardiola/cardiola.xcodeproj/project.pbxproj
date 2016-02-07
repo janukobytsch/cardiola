@@ -45,6 +45,8 @@
 		D380C1871C5E9A1500CDD5DD /* ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D380C1861C5E9A1500CDD5DD /* ExtensionTests.swift */; };
 		D3C507851C63B0D900F84580 /* MockedBloodPressureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C507841C63B0D900F84580 /* MockedBloodPressureProvider.swift */; };
 		D3C507871C63B29A00F84580 /* Array+Remove.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C507861C63B29A00F84580 /* Array+Remove.swift */; };
+		D3C507891C6789FC00F84580 /* HeartRateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C507881C6789FC00F84580 /* HeartRateProvider.swift */; };
+		D3C5078B1C678A5900F84580 /* MockedHeartRateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C5078A1C678A5900F84580 /* MockedHeartRateProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +112,8 @@
 		D380C1861C5E9A1500CDD5DD /* ExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionTests.swift; sourceTree = "<group>"; };
 		D3C507841C63B0D900F84580 /* MockedBloodPressureProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockedBloodPressureProvider.swift; sourceTree = "<group>"; };
 		D3C507861C63B29A00F84580 /* Array+Remove.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Remove.swift"; sourceTree = "<group>"; };
+		D3C507881C6789FC00F84580 /* HeartRateProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeartRateProvider.swift; sourceTree = "<group>"; };
+		D3C5078A1C678A5900F84580 /* MockedHeartRateProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockedHeartRateProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +285,8 @@
 				48543FC01C607426006D2A45 /* BloodPressureProvider.swift */,
 				48543FC21C607433006D2A45 /* ResultProvider.swift */,
 				D3C507841C63B0D900F84580 /* MockedBloodPressureProvider.swift */,
+				D3C507881C6789FC00F84580 /* HeartRateProvider.swift */,
+				D3C5078A1C678A5900F84580 /* MockedHeartRateProvider.swift */,
 			);
 			name = Provider;
 			sourceTree = "<group>";
@@ -470,6 +476,7 @@
 				48A29EC21C5EF62D0046D3E5 /* Realm+Object.swift in Sources */,
 				D36B09541C5C76DF0097155D /* DashboardController.swift in Sources */,
 				D307FC091C5D19E5005B6C41 /* Measurement.swift in Sources */,
+				D3C5078B1C678A5900F84580 /* MockedHeartRateProvider.swift in Sources */,
 				D34A6D621C5ECFA800054378 /* Recorder.swift in Sources */,
 				D307FC0D1C5D20CD005B6C41 /* Utils.swift in Sources */,
 				D34A6D6E1C5F1B0F00054378 /* SwinjectStoryboard+Setup.swift in Sources */,
@@ -495,6 +502,7 @@
 				48A29EBE1C5ED7BF0046D3E5 /* PersistentModel.swift in Sources */,
 				D3C507871C63B29A00F84580 /* Array+Remove.swift in Sources */,
 				D307FC151C5D6130005B6C41 /* BloodPressureMeasurementManager.swift in Sources */,
+				D3C507891C6789FC00F84580 /* HeartRateProvider.swift in Sources */,
 				48907A9A1C5D8E47009AFC56 /* MeasurementEntryView.swift in Sources */,
 				D36B095A1C5C78CD0097155D /* Patient.swift in Sources */,
 			);

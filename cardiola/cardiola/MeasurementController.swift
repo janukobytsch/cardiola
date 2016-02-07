@@ -50,10 +50,12 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
         
         let measurements = MeasurementRepository.createRandomDataset()
         
-        bloodPressureManager = BloodPressureMeasurementManager(realtimeChart: realtimeBarChart, historyChart: historyBarChart)
+        bloodPressureManager = BloodPressureMeasurementManager(realtimeChart: realtimeBarChart,
+            historyChart: historyBarChart, recorder: measurementRecorder!)
         bloodPressureManager!.updateHistoryData(with: measurements)
         
-        heartFrequencyManager = HeartFrequencyMeasurementManager(realtimeChart: realtimeLineChart, historyChart: heartRateHistoryChart)
+        heartFrequencyManager = HeartFrequencyMeasurementManager(realtimeChart: realtimeLineChart,
+            historyChart: heartRateHistoryChart, recorder: measurementRecorder!)
         heartFrequencyManager!.updateHistoryData(with: measurements)
         
         currentManager = bloodPressureManager
@@ -81,7 +83,7 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
     func updateViews() {
         let isActive = measurementRecorder?.isActive() ?? false
         let isRecording = measurementRecorder?.isRecording() ?? false
-        let hasComponent = currentManager?.hasComponent(measurementRecorder!) ?? false
+        let hasComponent = currentManager?.hasComponent() ?? false
         
         // textual indicator
         indicatorLabel.text = (isRecording) ? indicatorTextRecording : (hasComponent) ? indicatorTextDone : indicatorTextMissing
@@ -114,11 +116,11 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
     // MARK: Measurement states
 
     @IBAction func startOrFinishMeasurement(sender: UIButton) {
-        if currentManager!.hasComponent(measurementRecorder!) {
+        if currentManager!.hasComponent() {
             // component already recorded
             measurementRecorder?.finishMeasurement()
         } else {
-            currentManager?.startMeasurement(with: measurementRecorder!)
+            currentManager?.startMeasurement()
         }
         updateViews()
     }
@@ -144,6 +146,7 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
             currentManager = bloodPressureManager
         }
         currentManager?.afterModeChanged()
+        updateViews()
     }
     
 }

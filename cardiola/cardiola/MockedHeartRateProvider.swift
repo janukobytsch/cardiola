@@ -1,22 +1,19 @@
 //
-//  MockedBloodPressureProvider.swift
+//  MockedHeartRateProvider.swift
 //  cardiola
 //
-//  Created by Janusch Jacoby on 04/02/16.
+//  Created by Janusch Jacoby on 07/02/16.
 //  Copyright © 2016 BPPolze. All rights reserved.
 //
 
 import Foundation
 
-
-class MockedBloodPressureProvider: BloodPressureProvider {
+class MockedHeartRateProvider: HeartRateProvider {
     
     // MARK: Properties
     
     private var _listeners = [ResultProviderListener]()
-    private var _latestResult: BloodPressureResult?
-    
-    // MARK: ResultProvider
+    private var _latestResult: HeartRateResult?
     
     override func startProviding() {
         for count in 0...30 {
@@ -25,7 +22,7 @@ class MockedBloodPressureProvider: BloodPressureProvider {
             
             dispatch_after(waitTime, GlobalDispatchUtils.MainQueue) {
                 let measurement = Measurement.createRandom()
-                let result = BloodPressureResult(measurement: measurement)
+                let result = HeartRateResult(measurement: measurement)
                 self.notifyListeners(result)
             }
         }
@@ -35,7 +32,7 @@ class MockedBloodPressureProvider: BloodPressureProvider {
         // todo
     }
     
-    override func latestResult() -> MeasurementResult? {
+   override  func latestResult() -> MeasurementResult? {
         // todo
         return nil
     }
@@ -48,7 +45,7 @@ class MockedBloodPressureProvider: BloodPressureProvider {
         // todo
     }
     
-    func notifyListeners(result: BloodPressureResult) {
+    func notifyListeners(result: HeartRateResult) {
         for listener in self._listeners {
             listener.onNewResult(result)
         }

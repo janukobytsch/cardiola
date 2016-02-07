@@ -18,11 +18,11 @@ protocol MeasurementComponentDelegate {
 
 // MARK: MeasurementRecorderState
 
-protocol MeasurementRecorderState: ResultProviderListener, MeasurementComponentDelegate {
-    var provider: ResultProvider { get }
+protocol MeasurementRecorderState {
     var measurement: Measurement { get }
     
-    init(provider: ResultProvider, measurement: Measurement)
+    init(measurement: Measurement)
+    func onNewResult(result: MeasurementResult)
 }
 
 // MARK: RecorderUpdateListener
@@ -33,42 +33,20 @@ protocol RecorderUpdateListener {
 
 // the recorder serves as an additional layer to the data providers
 
-class MeasurementRecorder: Recorder, MeasurementComponentDelegate {
+class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponentDelegate {
     
     // MARK: Recorder states
     
     private class BaseRecorderState: MeasurementRecorderState {
-        var provider: ResultProvider
         var measurement: Measurement
         
-        required init(provider: ResultProvider, measurement: Measurement) {
-            self.provider = provider
+        required init(measurement: Measurement) {
             self.measurement = measurement
         }
         
-        func startComponent() {
-            provider.addListener(self)
-            provider.startProviding()
+        func onNewResult(result: MeasurementResult) {
+            // subclass responsibility
         }
-        
-        func cancelComponent() {
-            stop()
-        }
-        
-        func finishComponent() {
-            stop()
-        }
-        
-        private func stop() {
-            provider.removeListener(self)
-            provider.stopProviding()
-
-        }
-        
-        // subclass responsibilities
-        func onFinishProviding() { }
-        func onNewResult(result: MeasurementResult) { }
-        func onStartProviding() { }
     }
     
     private class BloodPressureRecorderState: BaseRecorderState {
@@ -105,6 +83,8 @@ class MeasurementRecorder: Recorder, MeasurementComponentDelegate {
     
     private var _listener = [RecorderUpdateListener]()
     
+    private var _currentProvider: ResultProvider?
+    
     // the currently active entry
     var currentEntry: MeasurementPlanEntry?
     
@@ -133,7 +113,7 @@ class MeasurementRecorder: Recorder, MeasurementComponentDelegate {
     
     var networkController: NetworkController?
     var bloodpressureProvider: BloodPressureProvider?
-    //var heartrateProvider: ResultProvider? // todo inject
+    var heartrateProvider: HeartRateProvider?
     
     // MARK: Initialization
     
@@ -162,29 +142,52 @@ class MeasurementRecorder: Recorder, MeasurementComponentDelegate {
     
     func measureBloodPressure() {
         activate(with: currentEntry)
-        _state = BloodPressureRecorderState(provider: bloodpressureProvider!,
-            measurement: currentMeasurement!)
-        _state!.startComponent()
+        _state = BloodPressureRecorderState(measurement: currentMeasurement!)
+        _currentProvider = bloodpressureProvider
+        startComponent()
     }
     
     func measureHeartRate() {
-        // TODO
-//        self._state = HeartRateRecorderState(provider: heartrateProvider!,
-//            measurement: currentMeasurement!)
+        activate(with: currentEntry)
+        _state = HeartRateRecorderState(measurement: currentMeasurement!)
+        _currentProvider = heartrateProvider
+        startComponent()
+    }
+    
+    // MARK: ResultProviderListener
+    
+    func onStartProviding() {
+        
+    }
+    
+    func onNewResult(result: MeasurementResult) {
+        // delegate result unwrapping to current state
+        _state?.onNewResult(result)
+        notifyListeners()
+    }
+    
+    func onFinishProviding() {
+        
     }
     
     // MARK: MeasurementComponentDelegate
     
     func startComponent() {
-        _state!.startComponent()
+        _currentProvider!.addListener(self)
+        _currentProvider!.startProviding()
     }
     
     func cancelComponent() {
-        _state!.cancelComponent()
+        stopComponent()
     }
     
     func finishComponent() {
-        _state!.finishComponent()
+        stopComponent()
+    }
+    
+    private func stopComponent() {
+        _currentProvider!.removeListener(self)
+        _currentProvider!.stopProviding()
     }
     
     // MARK: Recorder

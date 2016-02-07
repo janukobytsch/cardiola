@@ -33,11 +33,14 @@ extension SwinjectStoryboard {
                 planRepository: r.resolve(PlanRepository.self)!)
             recorder.networkController = NetworkController(patientRepository: r.resolve(PatientRepository.self)!)
             recorder.bloodpressureProvider = r.resolve(BloodPressureProvider.self)!
+            recorder.heartrateProvider = r.resolve(HeartRateProvider.self)!
             return recorder
             }.inObjectScope(ObjectScope.Container)
         
-        // todo replace mocked provider with bluetooth provider
+        // todo replace mocked providers with bluetooth providers
         defaultContainer.register(BloodPressureProvider.self) { _ in MockedBloodPressureProvider() }
+        defaultContainer.register(HeartRateProvider.self) { _ in MockedHeartRateProvider() }
+        
         defaultContainer.register(MeasurementRepository.self) { _ in MeasurementRepository() }
         defaultContainer.register(PatientRepository.self) { _ in PatientRepository() }
         defaultContainer.register(PlanRepository.self) { _ in PlanRepository() }

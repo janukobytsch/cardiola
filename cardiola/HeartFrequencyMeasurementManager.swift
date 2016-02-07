@@ -17,13 +17,16 @@ class HeartFrequencyMeasurementManager: MeasurementManager, RecorderUpdateListen
     var historyChart: CombinedChartView
     var realtimeChart: LineChartView
     
+    var recorder: MeasurementRecorder
+    
     var views: [UIView] {
         return [historyChart, realtimeChart]
     }
     
-    required init(realtimeChart: ChartViewBase, historyChart: ChartViewBase) {
+    required init(realtimeChart: ChartViewBase, historyChart: ChartViewBase, recorder: MeasurementRecorder) {
         self.historyChart = historyChart as! CombinedChartView
         self.realtimeChart = realtimeChart as! LineChartView
+        self.recorder = recorder
         initRealtimeChart()
         initHistoryChart()
         beforeModeChanged()
@@ -183,13 +186,13 @@ class HeartFrequencyMeasurementManager: MeasurementManager, RecorderUpdateListen
         return dataset
     }
     
-    func hasComponent(recorder: MeasurementRecorder) -> Bool {
+    func hasComponent() -> Bool {
         return recorder.hasHeartRate
     }
     
-    func startMeasurement(with recorder: MeasurementRecorder) {
+    func startMeasurement() {
         recorder.measureHeartRate()
-        realtimeChart.hidden = false
+        update()
     }
     
     func beforeModeChanged() {
@@ -204,12 +207,13 @@ class HeartFrequencyMeasurementManager: MeasurementManager, RecorderUpdateListen
         for view in views {
             view.hidden = false
         }
+        update()
     }
     
     // MARK: RecorderUpdateListener
     
     func update() {
-        // TODO: update views
+        realtimeChart.hidden = recorder.isRecording()
     }
     
 }
