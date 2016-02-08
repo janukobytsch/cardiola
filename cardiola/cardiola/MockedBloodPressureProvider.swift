@@ -13,7 +13,6 @@ class MockedBloodPressureProvider: BloodPressureProvider {
     
     // MARK: Properties
     
-    private var _listeners = [ResultProviderListener]()
     private var _latestResult: BloodPressureResult?
     
     // MARK: ResultProvider
@@ -47,15 +46,7 @@ class MockedBloodPressureProvider: BloodPressureProvider {
         return nil
     }
     
-    override func addListener(listener: ResultProviderListener) {
-        self._listeners.append(listener)
-    }
-    
-    override func removeListener(listener: ResultProviderListener) {
-        // todo
-    }
-    
-    func notifyListeners(result: BloodPressureResult) {
+    override func notifyListeners(result: BloodPressureResult) {
         for listener in self._listeners {
             listener.onNewResult(result)
         }

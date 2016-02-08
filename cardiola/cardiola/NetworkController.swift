@@ -11,6 +11,8 @@ import Alamofire
 
 class NetworkController {
     
+    // TODO Refactoring after server refactoring
+    
     // MARK: Class Properties
     static let serverAddress = "172.16.18.134"
     static let serverPort = "5000"
@@ -22,7 +24,7 @@ class NetworkController {
     var apiUrl: String {
         return NetworkController.serverUrl + "/api" //user/" + (self.patientRepository?.getCurrentPatient()?.serverId)!
     }
-
+    
     private static let defaultManager: Alamofire.Manager = {
         // Ignore SSL Certificate
         let serverTrustPolicies: [String: ServerTrustPolicy] = [

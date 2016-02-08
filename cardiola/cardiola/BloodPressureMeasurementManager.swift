@@ -96,7 +96,7 @@ class BloodPressureMeasurementManager: MeasurementManager, RecorderUpdateListene
         var yValues = [BarChartDataEntry]()
         
         for (index, measurement) in measurements.enumerate() {
-            let systolicPressure = measurement.systolicPressure! ?? 0
+            let systolicPressure = measurement.systolicPressure ?? 0
             let diastolicPressure = measurement.diastolicPressure ?? 0
             let values = [systolicPressure, diastolicPressure].map({ Double($0) })
             let entry = BarChartDataEntry(values: values, xIndex: index)

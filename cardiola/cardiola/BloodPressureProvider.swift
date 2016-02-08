@@ -10,12 +10,16 @@ import CoreBluetooth
 
 class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate, CBPeripheralDelegate {
     
+    // MARK: Class variables
+    static let bloodPressureUUID = "2A35"
+    
     // MARK: Properties
     
-    private var _listener = [ResultProviderListener]()
+    internal var _listeners = [ResultProviderListener]()
+    internal var _isProviding = false
     private var _latestResult: BloodPressureResult? = nil
     private var _manager: CBCentralManager!
-    private var _andBTCi: CBPeripheral!
+    private var _lsBPM: CBPeripheral!
     
     required override init() {
         super.init()
@@ -25,11 +29,11 @@ class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate,
     // MARK: ResultProvider
     
     func startProviding() {
-        // todo
+        _isProviding = true
     }
     
     func stopProviding() {
-        // todo
+        _isProviding = false
     }
     
     func latestResult() -> MeasurementResult? {
@@ -39,22 +43,34 @@ class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate,
     // MARK: Observer
     
     func addListener(listener: ResultProviderListener) {
-        self._listener.append(listener)
+        _listeners.append(listener)
     }
     
     func removeListener(listener: ResultProviderListener) {
-        // todo
+        // TODO
+    }
+    
+    
+    func notifyListeners(result: BloodPressureResult) {
+        for listener in self._listeners {
+            listener.onNewResult(result)
+        }
     }
     
     // MARK: CentralManagerDelegate
     
     func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
-        print("Connected to peripheral")
+        peripheral.delegate = self
+        peripheral.discoverServices(nil)
         
     }
     
     func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
-        print("discoverd", peripheral.name)
+        
+        _lsBPM = peripheral
+        _lsBPM.delegate = self
+        _manager.stopScan()
+        _manager.connectPeripheral(_lsBPM, options: nil)
     }
     
     // MARK: PeripheralDelegate
@@ -71,14 +87,14 @@ class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate,
     
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
         
-        print("discoverd service", service.UUID)
         if let characterArray = service.characteristics as [CBCharacteristic]!
         {
-            for cc in characterArray
+            for characteristic in characterArray
             {
-                if(cc.UUID.UUIDString == "FF06") {
-                    print("Schritte gefunden")
-                    peripheral.readValueForCharacteristic(cc)
+                // Name: Blood Pressure Measurement - Assigned Number: 0x2A35
+                if(characteristic.UUID.UUIDString == BloodPressureProvider.bloodPressureUUID) {
+                    peripheral.readValueForCharacteristic(characteristic)
+                    peripheral.setNotifyValue(true, forCharacteristic: characteristic)
                 }
             }
             
@@ -87,11 +103,23 @@ class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate,
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
+        guard characteristic.value != nil else {
+            return
+        }
         
-        print("updated value", characteristic.UUID)
-        if(characteristic.UUID.UUIDString == "FF06") {
-            let value = UnsafePointer<Int>(characteristic.value!.bytes).memory
-            print("Gelaufene Schritte heute: \(value)")
+        if(characteristic.UUID.UUIDString == BloodPressureProvider.bloodPressureUUID) {
+            // Since lsBPM does use Ints instead of SFloat we just can use UInt16 and have no need for converting
+            var systolic: UInt16 = 0
+            var diastolic: UInt16 = 0
+            var pulse: UInt16 = 0
+            var flags: Int8 = 0
+            
+            characteristic.value?.getBytes(&flags, range: NSRange(location: 0, length: 1))
+            characteristic.value?.getBytes(&systolic, range: NSRange(location: 1, length: 2))
+            characteristic.value?.getBytes(&diastolic, range: NSRange(location: 3, length: 2))
+            characteristic.value?.getBytes(&pulse, range: NSRange(location: 5, length: 2))
+            
+            _saveNewResult(BloodPressureResult(systolicPressure: Int(systolic), diastolicPressure: Int(diastolic)))
         }
         
     }
@@ -99,25 +127,30 @@ class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate,
     // MARK: HandleingStateChange
     
     @objc func centralManagerDidUpdateState(central: CBCentralManager) {
-        var msg = ""
+        var status = ""
+        
         switch (central.state) {
-            
         case .PoweredOff:
-            msg = "Bluetooth leider ausgeschaltet"
+            status = "Bluetooth turned of"
         case .PoweredOn:
-            msg = "Bluetooth ist eingeschaltet"
+            status = "Bluetooth turned on"
             _manager.scanForPeripheralsWithServices(nil, options: nil)
         case .Unsupported:
-            msg = "Bluetooth nicht verfügbar"
+            status = "Bluetooth not available"
         default: break
         }
-        print("STAT: \(msg)")
+        
+        print("STAT: \(status)")
     }
     
     // MARK: Data handling
     
     private func _saveNewResult(newResult: BloodPressureResult) {
         _latestResult = newResult
-        //notifyListeners()
+        
+        if _isProviding {
+            notifyListeners(newResult)
+        }
     }
+    
 }
