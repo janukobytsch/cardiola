@@ -50,14 +50,10 @@ class BluetoothController: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
             _manager.connectPeripheral(peripheral, options: nil)
         }
         
-        if peripheral.name == "LS BPM" && _lsBPM == nil {
+        if peripheral.name == "LS BPM" {
             _lsBPM = peripheral
             peripheral.delegate = self
             _manager.connectPeripheral(peripheral, options: nil)
-        }
-        
-        if _polarH7 != nil && _lsBPM != nil {
-            _manager.stopScan()
         }
     }
     
