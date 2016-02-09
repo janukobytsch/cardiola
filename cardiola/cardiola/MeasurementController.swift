@@ -47,7 +47,7 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
         super.viewDidLoad()
         
         measurementRecorder?.addUpdateListener(self)
-
+        
         bloodPressureManager = BloodPressureMeasurementManager(realtimeChart: realtimeBarChart,
             historyChart: historyBarChart, recorder: measurementRecorder!)
         heartFrequencyManager = HeartFrequencyMeasurementManager(realtimeChart: realtimeLineChart,
@@ -108,9 +108,9 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
             manager.update()
         }
     }
-
+    
     // MARK: Measurement states
-
+    
     @IBAction func startOrFinishMeasurement(sender: UIButton) {
         if currentManager!.hasComponent() {
             // component already recorded
@@ -136,10 +136,13 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
         switch sender.selectedSegmentIndex {
         case 1:
             currentManager = heartFrequencyManager
+            heartFrequencyManager?.startMeasurement()
         case 0:
             currentManager = bloodPressureManager
+            bloodPressureManager?.startMeasurement()
         default:
             currentManager = bloodPressureManager
+            bloodPressureManager?.startMeasurement()
         }
         currentManager?.afterModeChanged()
         updateViews()

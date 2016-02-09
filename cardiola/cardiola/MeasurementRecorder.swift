@@ -116,7 +116,7 @@ class MeasurementRecorder: Recorder, ResultProviderListener, MeasurementComponen
     var hasBloodPressure: Bool {
         return currentMeasurement?.hasBloodPressure ?? false
     }
-
+    
     var currentPlan: MeasurementPlan {
         return self.planRepository.currentPlan
     }

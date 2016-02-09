@@ -37,13 +37,15 @@ extension SwinjectStoryboard {
             return recorder
             }.inObjectScope(ObjectScope.Container)
         
-        // todo replace mocked providers with bluetooth providers
-        defaultContainer.register(BloodPressureProvider.self) { _ in BloodPressureProvider() }
-        defaultContainer.register(HeartRateProvider.self) { _ in MockedHeartRateProvider() }
+        defaultContainer.register(BloodPressureProvider.self) { r in
+            BloodPressureProvider(r.resolve(BluetoothController.self)!) }
+        defaultContainer.register(HeartRateProvider.self) { r in
+            HeartRateProvider(r.resolve(BluetoothController.self)!) }
         
         defaultContainer.register(MeasurementRepository.self) { _ in MeasurementRepository() }
         defaultContainer.register(PatientRepository.self) { _ in PatientRepository() }
         defaultContainer.register(PlanRepository.self) { _ in PlanRepository() }
+        defaultContainer.register(BluetoothController.self) { _ in BluetoothController() }
     }
     
 }
