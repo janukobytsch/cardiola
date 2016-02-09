@@ -115,19 +115,30 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
         if currentManager!.hasComponent() {
             // component already recorded
             measurementRecorder?.finishMeasurement()
+            segmentedControl.setEnabled(true, forSegmentAtIndex: 0)
+            segmentedControl.setEnabled(true, forSegmentAtIndex: 1)
         } else {
             currentManager?.startMeasurement()
+            
+            segmentedControl.setEnabled(0 == segmentedControl.selectedSegmentIndex, forSegmentAtIndex: 0)
+            segmentedControl.setEnabled(1 == segmentedControl.selectedSegmentIndex, forSegmentAtIndex: 1)
         }
         updateViews()
     }
     
     @IBAction func finishComponent(sender: UIButton) {
         measurementRecorder?.finishComponent()
+        
+        segmentedControl.setEnabled(true, forSegmentAtIndex: 0)
+        segmentedControl.setEnabled(true, forSegmentAtIndex: 1)
         updateViews()
     }
     
     @IBAction func cancelComponent(sender: UIButton) {
         measurementRecorder?.cancelComponent()
+        
+        segmentedControl.setEnabled(true, forSegmentAtIndex: 0)
+        segmentedControl.setEnabled(true, forSegmentAtIndex: 1)
         updateViews()
     }
     
@@ -136,13 +147,10 @@ class MeasurementController: UIViewController, RecorderUpdateListener {
         switch sender.selectedSegmentIndex {
         case 1:
             currentManager = heartFrequencyManager
-            heartFrequencyManager?.startMeasurement()
         case 0:
             currentManager = bloodPressureManager
-            bloodPressureManager?.startMeasurement()
         default:
             currentManager = bloodPressureManager
-            bloodPressureManager?.startMeasurement()
         }
         currentManager?.afterModeChanged()
         updateViews()
