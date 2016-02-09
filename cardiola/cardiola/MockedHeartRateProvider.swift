@@ -12,7 +12,6 @@ class MockedHeartRateProvider: HeartRateProvider {
     
     // MARK: Properties
     
-    private var _listeners = [ResultProviderListener]()
     private var _latestResult: HeartRateResult?
     
     override func startProviding() {
@@ -39,7 +38,7 @@ class MockedHeartRateProvider: HeartRateProvider {
         // todo
     }
     
-   override  func latestResult() -> MeasurementResult? {
+    override  func latestResult() -> MeasurementResult? {
         // todo
         return nil
     }
@@ -50,11 +49,5 @@ class MockedHeartRateProvider: HeartRateProvider {
     
     override func removeListener(listener: ResultProviderListener) {
         // todo
-    }
-    
-    func notifyListeners(result: HeartRateResult) {
-        for listener in self._listeners {
-            listener.onNewResult(result)
-        }
     }
 }

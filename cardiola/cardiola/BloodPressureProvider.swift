@@ -11,7 +11,7 @@ import CoreBluetooth
 class BloodPressureProvider: NSObject, ResultProvider, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     // MARK: Class variables
-    static let bloodPressureUUID = "2A35"
+    private static let bloodPressureUUID = "2A35"
     
     // MARK: Properties
     
