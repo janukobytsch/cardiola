@@ -24,7 +24,8 @@ class MeasurementPlan: Object, PersistentModel {
     let entries = List<MeasurementPlanEntry>()
     
     var archivedEntries: [MeasurementPlanEntry] {
-        return self._collectEntries() { $0.isArchived }
+        var entries = self._collectEntries() { $0.isArchived }
+        return entries.sort() { $0.data?.date!.compare(($1.data?.date!)!) == .OrderedDescending }
     }
     
     var pendingEntries: [MeasurementPlanEntry] {
